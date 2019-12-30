@@ -1,0 +1,668 @@
+Description: blhc workarounds
+ Builds zstd-small (not included in any packages) with
+ hardening flags.
+ Provides verbosity to blhc by removing most @s from Makefiles.
+ Slightly changes some status-related @echos to prevent false-
+ positive "Nonverbose Build" errors from blhc.
+Author: Justin Aplin <japlin@gmail.com>
+--- libzstd.orig/Makefile
++++ libzstd/Makefile
+@@ -46,16 +46,16 @@
+ 
+ .PHONY: lib lib-release libzstd.a
+ lib lib-release :
+-	@$(MAKE) -C $(ZSTDDIR) $@
++	$(MAKE) -C $(ZSTDDIR) $@
+ 
+ .PHONY: zstd zstd-release
+ zstd zstd-release:
+-	@$(MAKE) -C $(PRGDIR) $@
++	$(MAKE) -C $(PRGDIR) $@
+ 	cp $(PRGDIR)/zstd$(EXT) .
+ 
+ .PHONY: zstdmt
+ zstdmt:
+-	@$(MAKE) -C $(PRGDIR) $@
++	$(MAKE) -C $(PRGDIR) $@
+ 	cp $(PRGDIR)/zstd$(EXT) ./zstdmt$(EXT)
+ 
+ .PHONY: zlibwrapper
+@@ -109,18 +109,18 @@
+ 
+ .PHONY: clean
+ clean:
+-	@$(MAKE) -C $(ZSTDDIR) $@ > $(VOID)
+-	@$(MAKE) -C $(PRGDIR) $@ > $(VOID)
+-	@$(MAKE) -C $(TESTDIR) $@ > $(VOID)
+-	@$(MAKE) -C $(ZWRAPDIR) $@ > $(VOID)
+-	@$(MAKE) -C examples/ $@ > $(VOID)
+-	@$(MAKE) -C contrib/gen_html $@ > $(VOID)
+-	@$(MAKE) -C contrib/pzstd $@ > $(VOID)
+-	@$(MAKE) -C contrib/seekable_format/examples $@ > $(VOID)
+-	@$(MAKE) -C contrib/largeNbDicts $@ > $(VOID)
+-	@$(RM) zstd$(EXT) zstdmt$(EXT) tmp*
+-	@$(RM) -r lz4
+-	@echo Cleaning completed
++	$(MAKE) -C $(ZSTDDIR) $@ > $(VOID)
++	$(MAKE) -C $(PRGDIR) $@ > $(VOID)
++	$(MAKE) -C $(TESTDIR) $@ > $(VOID)
++	$(MAKE) -C $(ZWRAPDIR) $@ > $(VOID)
++	$(MAKE) -C examples/ $@ > $(VOID)
++	$(MAKE) -C contrib/gen_html $@ > $(VOID)
++	$(MAKE) -C contrib/pzstd $@ > $(VOID)
++	$(MAKE) -C contrib/seekable_format/examples $@ > $(VOID)
++	$(MAKE) -C contrib/largeNbDicts $@ > $(VOID)
++	$(RM) zstd$(EXT) zstdmt$(EXT) tmp*
++	$(RM) -r lz4
++	@echo "Cleaning completed"
+ 
+ #------------------------------------------------------------------------------
+ # make install is validated only for Linux, macOS, Hurd and some BSD targets
+@@ -143,7 +143,7 @@
+ ## list: Print all targets and their descriptions (if provided)
+ .PHONY: list
+ list:
+-	@TARGETS=$$($(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
++	TARGETS=$$($(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
+ 		| awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+ 		| $(EGREP) -v  -e '^[^[:alnum:]]' | sort); \
+ 	{ \
+@@ -158,13 +158,13 @@
+ 
+ .PHONY: install armtest usan asan uasan
+ install:
+-	@$(MAKE) -C $(ZSTDDIR) $@
+-	@$(MAKE) -C $(PRGDIR) $@
++	$(MAKE) -C $(ZSTDDIR) $@
++	$(MAKE) -C $(PRGDIR) $@
+ 
+ .PHONY: uninstall
+ uninstall:
+-	@$(MAKE) -C $(ZSTDDIR) $@
+-	@$(MAKE) -C $(PRGDIR) $@
++	$(MAKE) -C $(ZSTDDIR) $@
++	$(MAKE) -C $(PRGDIR) $@
+ 
+ .PHONY: travis-install
+ travis-install:
+--- libzstd.orig/contrib/gen_html/Makefile
++++ libzstd/contrib/gen_html/Makefile
+@@ -47,5 +47,5 @@
+ 
+ .PHONY: clean
+ clean:
+-	@$(RM) gen_html$(EXT)
+-	@echo Cleaning completed
++	$(RM) gen_html$(EXT)
++	@echo "Cleaning completed"
+--- libzstd.orig/contrib/linux-kernel/test/Makefile
++++ libzstd/contrib/linux-kernel/test/Makefile
+@@ -26,17 +26,17 @@
+ 
+ # Install libfuzzer
+ libFuzzer.a:
+-	@$(RM) -rf Fuzzer
+-	@git clone https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer
+-	@./Fuzzer/build.sh
++	$(RM) -rf Fuzzer
++	git clone https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer
++	./Fuzzer/build.sh
+ 
+ # Install googletest
+ .PHONY: googletest
+ googletest:
+-	@$(RM) -rf googletest
+-	@git clone https://github.com/google/googletest
+-	@mkdir -p googletest/build
+-	@cd googletest/build && cmake .. && $(MAKE)
++	$(RM) -rf googletest
++	git clone https://github.com/google/googletest
++	mkdir -p googletest/build
++	cd googletest/build && cmake .. && $(MAKE)
+ 
+ clean:
+ 	$(RM) -f *.{o,a} ../lib/zstd/*.{o,a} ../lib/*.o
+--- libzstd.orig/contrib/pzstd/Makefile
++++ libzstd/contrib/pzstd/Makefile
+@@ -214,10 +214,10 @@
+ .PHONY: googletest
+ googletest: PZSTD_CCXXFLAGS += -fPIC
+ googletest:
+-	@$(RM) -rf googletest
+-	@git clone https://github.com/google/googletest
+-	@mkdir -p googletest/build
+-	@cd googletest/build && cmake $(GTEST_CMAKEFLAGS) -DCMAKE_CXX_FLAGS="$(ALL_CXXFLAGS)" .. && $(MAKE)
++	$(RM) -rf googletest
++	git clone https://github.com/google/googletest
++	mkdir -p googletest/build
++	cd googletest/build && cmake $(GTEST_CMAKEFLAGS) -DCMAKE_CXX_FLAGS="$(ALL_CXXFLAGS)" .. && $(MAKE)
+ 
+ .PHONY: googletest32
+ googletest32: PZSTD_CCXXFLAGS  += -m32
+@@ -234,7 +234,7 @@
+ 	$(RM) -f utils/test/*.o utils/test/*Test$(EXT) utils/test/*.Td utils/test/*.d
+ 	$(RM) -f $(PROGDIR)/*.o $(PROGDIR)/*.Td $(PROGDIR)/*.d
+ 	$(MAKE) -C $(ZSTDDIR) clean
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
+ 
+ 
+ # Cancel implicit rules
+--- libzstd.orig/contrib/seekable_format/examples/Makefile
++++ libzstd/contrib/seekable_format/examples/Makefile
+@@ -46,8 +46,8 @@
+ 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS) -o $@ -pthread
+ 
+ clean:
+-	@rm -f core *.o tmp* result* *.zst \
++	rm -f core *.o tmp* result* *.zst \
+ 		seekable_compression seekable_decompression \
+ 		seekable_decompression_mem \
+ 		parallel_processing parallel_compression
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
+--- libzstd.orig/doc/educational_decoder/Makefile
++++ libzstd/doc/educational_decoder/Makefile
+@@ -36,27 +36,27 @@
+ 	$(CC) $(FLAGS) $^ -o $@
+ 
+ clean:
+-	@$(RM) harness
+-	@$(RM) -rf harness.dSYM  # MacOS specific
++	$(RM) harness
++	$(RM) -rf harness.dSYM  # MacOS specific
+ 
+ test: harness
+ 	#
+ 	# Testing single-file decompression with educational decoder
+ 	#
+-	@$(ZSTD) -f README.md -o tmp.zst
+-	@./harness tmp.zst tmp
+-	@$(DIFF) -s tmp README.md
+-	@$(RM) tmp*
++	$(ZSTD) -f README.md -o tmp.zst
++	./harness tmp.zst tmp
++	$(DIFF) -s tmp README.md
++	$(RM) tmp*
+ 	#
+ 	# Testing dictionary decompression with education decoder
+ 	#
+ 	# note : files are presented multiple for training, to reach minimum threshold
+-	@$(ZSTD) --train harness.c zstd_decompress.c zstd_decompress.h README.md \
++	$(ZSTD) --train harness.c zstd_decompress.c zstd_decompress.h README.md \
+                   harness.c zstd_decompress.c zstd_decompress.h README.md \
+                   harness.c zstd_decompress.c zstd_decompress.h README.md \
+                   -o dictionary
+-	@$(ZSTD) -f README.md -D dictionary -o tmp.zst
+-	@./harness tmp.zst tmp dictionary
+-	@$(DIFF) -s tmp README.md
+-	@$(RM) tmp* dictionary
+-	@$(MAKE) clean
++	$(ZSTD) -f README.md -D dictionary -o tmp.zst
++	./harness tmp.zst tmp dictionary
++	$(DIFF) -s tmp README.md
++	$(RM) tmp* dictionary
++	$(MAKE) clean
+--- libzstd.orig/examples/Makefile
++++ libzstd/examples/Makefile
+@@ -53,37 +53,37 @@
+ 	$(CC) $(CPPFLAGS) $(CFLAGS) $< $(LIB) $(LDFLAGS) -o $@
+ 
+ clean:
+-	@rm -f core *.o tmp* result* *.zst \
++	rm -f core *.o tmp* result* *.zst \
+         simple_compression simple_decompression \
+         multiple_simple_compression \
+         dictionary_compression dictionary_decompression \
+         streaming_compression streaming_decompression \
+         multiple_streaming_compression streaming_memory_usage
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
+ 
+ test: all
+ 	cp README.md tmp
+ 	cp Makefile tmp2
+-	@echo -- Simple compression tests
++	@echo "-- Simple compression tests"
+ 	./simple_compression tmp
+ 	./simple_decompression tmp.zst
+ 	./multiple_simple_compression *.c
+ 	./streaming_decompression tmp.zst > /dev/null
+-	@echo -- Streaming memory usage
++	@echo "-- Streaming memory usage"
+ 	./streaming_memory_usage
+-	@echo -- Streaming compression tests
++	@echo "-- Streaming compression tests"
+ 	./streaming_compression tmp
+ 	./streaming_decompression tmp.zst > /dev/null
+-	@echo -- Edge cases detection
++	@echo "-- Edge cases detection"
+ 	! ./streaming_decompression tmp    # invalid input, must fail
+ 	! ./simple_decompression tmp       # invalid input, must fail
+ 	touch tmpNull                      # create 0-size file
+ 	./simple_compression tmpNull
+ 	./simple_decompression tmpNull.zst # 0-size frame : must work
+-	@echo -- Multiple streaming tests
++	@echo "-- Multiple streaming tests"
+ 	./multiple_streaming_compression *.c
+-	@echo -- Dictionary compression tests
++	@echo "-- Dictionary compression tests"
+ 	./dictionary_compression tmp2 tmp README.md
+ 	./dictionary_decompression tmp2.zst tmp.zst README.md
+ 	$(RM) tmp* *.zst
+-	@echo tests completed
++	@echo "tests completed"
+--- libzstd.orig/lib/Makefile
++++ libzstd/lib/Makefile
+@@ -150,8 +150,8 @@
+ 
+ libzstd.a: ARFLAGS = rcs
+ libzstd.a: $(ZSTD_OBJ)
+-	@echo compiling static library
+-	@$(AR) $(ARFLAGS) $@ $^
++	@echo "==> compiling static library"
++	$(AR) $(ARFLAGS) $@ $^
+ 
+ libzstd.a-mt: CPPFLAGS += -DZSTD_MULTITHREAD
+ libzstd.a-mt: libzstd.a
+@@ -160,7 +160,7 @@
+ 
+ LIBZSTD = dll\libzstd.dll
+ $(LIBZSTD): $(ZSTD_FILES)
+-	@echo compiling dynamic library $(LIBVER)
++	@echo "==> compiling dynamic library $(LIBVER)"
+ 	$(CC) $(FLAGS) -DZSTD_DLL_EXPORT=1 -Wl,--out-implib,dll\libzstd.lib -shared $^ -o $@
+ 
+ else
+@@ -168,11 +168,11 @@
+ LIBZSTD = libzstd.$(SHARED_EXT_VER)
+ $(LIBZSTD): LDFLAGS += -shared -fPIC -fvisibility=hidden
+ $(LIBZSTD): $(ZSTD_FILES)
+-	@echo compiling dynamic library $(LIBVER)
+-	@$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
+-	@echo creating versioned links
+-	@ln -sf $@ libzstd.$(SHARED_EXT_MAJOR)
+-	@ln -sf $@ libzstd.$(SHARED_EXT)
++	@echo "==> compiling dynamic library $(LIBVER)"
++	$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
++	@echo "creating versioned links"
++	ln -sf $@ libzstd.$(SHARED_EXT_MAJOR)
++	ln -sf $@ libzstd.$(SHARED_EXT)
+ 
+ endif
+ 
+@@ -196,16 +196,16 @@
+ ZSTD_NOMT_FILES = $(filter-out $(ZSTDMT_FILES),$(ZSTD_FILES))
+ libzstd-nomt: LDFLAGS += -shared -fPIC -fvisibility=hidden
+ libzstd-nomt: $(ZSTD_NOMT_FILES)
+-	@echo compiling single-thread dynamic library $(LIBVER)
+-	@echo files : $(ZSTD_NOMT_FILES)
+-	@$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
++	@echo "==> compiling single-thread dynamic library $(LIBVER)"
++	@echo "files : $(ZSTD_NOMT_FILES)"
++	$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
+ 
+ clean:
+-	@$(RM) -r *.dSYM   # macOS-specific
+-	@$(RM) core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
+-	@$(RM) dll/libzstd.dll dll/libzstd.lib libzstd-nomt*
+-	@$(RM) common/*.o compress/*.o decompress/*.o dictBuilder/*.o legacy/*.o deprecated/*.o
+-	@echo Cleaning library completed
++	$(RM) -r *.dSYM   # macOS-specific
++	$(RM) core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
++	$(RM) dll/libzstd.dll dll/libzstd.lib libzstd-nomt*
++	$(RM) common/*.o compress/*.o decompress/*.o dictBuilder/*.o legacy/*.o deprecated/*.o
++	@echo "Cleaning library completed"
+ 
+ #-----------------------------------------------------------------------------
+ # make install is validated only for Linux, macOS, BSD, Hurd and Solaris targets
+@@ -242,48 +242,48 @@
+ 
+ libzstd.pc:
+ libzstd.pc: libzstd.pc.in
+-	@echo creating pkgconfig
+-	@sed -e 's|@PREFIX@|$(PREFIX)|' \
++	@echo "creating pkgconfig"
++	sed -e 's|@PREFIX@|$(PREFIX)|' \
+              -e 's|@VERSION@|$(VERSION)|' \
+              $< >$@
+ 
+ install: install-pc install-static install-shared install-includes
+-	@echo zstd static and shared library installed
++	@echo "zstd static and shared library installed"
+ 
+ install-pc: libzstd.pc
+-	@$(INSTALL) -d -m 755 $(DESTDIR)$(PKGCONFIGDIR)/
+-	@$(INSTALL_DATA) libzstd.pc $(DESTDIR)$(PKGCONFIGDIR)/
++	$(INSTALL) -d -m 755 $(DESTDIR)$(PKGCONFIGDIR)/
++	$(INSTALL_DATA) libzstd.pc $(DESTDIR)$(PKGCONFIGDIR)/
+ 
+ install-static: libzstd.a
+-	@echo Installing static library
+-	@$(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
+-	@$(INSTALL_DATA) libzstd.a $(DESTDIR)$(LIBDIR)
++	@echo "Installing static library"
++	$(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
++	$(INSTALL_DATA) libzstd.a $(DESTDIR)$(LIBDIR)
+ 
+ install-shared: libzstd
+-	@echo Installing shared library
+-	@$(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
+-	@$(INSTALL_PROGRAM) $(LIBZSTD) $(DESTDIR)$(LIBDIR)
+-	@ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+-	@ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++	@echo "Installing shared library"
++	$(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
++	$(INSTALL_PROGRAM) $(LIBZSTD) $(DESTDIR)$(LIBDIR)
++	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
++	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
+ 
+ install-includes:
+-	@echo Installing includes
+-	@$(INSTALL) -d -m 755 $(DESTDIR)$(INCLUDEDIR)/
+-	@$(INSTALL_DATA) zstd.h $(DESTDIR)$(INCLUDEDIR)
+-	@$(INSTALL_DATA) common/zstd_errors.h $(DESTDIR)$(INCLUDEDIR)
+-	@$(INSTALL_DATA) deprecated/zbuff.h $(DESTDIR)$(INCLUDEDIR)     # prototypes generate deprecation warnings
+-	@$(INSTALL_DATA) dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)
++	@echo "Installing includes"
++	$(INSTALL) -d -m 755 $(DESTDIR)$(INCLUDEDIR)/
++	$(INSTALL_DATA) zstd.h $(DESTDIR)$(INCLUDEDIR)
++	$(INSTALL_DATA) common/zstd_errors.h $(DESTDIR)$(INCLUDEDIR)
++	$(INSTALL_DATA) deprecated/zbuff.h $(DESTDIR)$(INCLUDEDIR)     # prototypes generate deprecation warnings
++	$(INSTALL_DATA) dictBuilder/zdict.h $(DESTDIR)$(INCLUDEDIR)
+ 
+ uninstall:
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
+-	@$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
+-	@$(RM) $(DESTDIR)$(LIBDIR)/$(LIBZSTD)
+-	@$(RM) $(DESTDIR)$(PKGCONFIGDIR)/libzstd.pc
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h   # Deprecated streaming functions
+-	@$(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
+-	@echo zstd libraries successfully uninstalled
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
++	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
++	$(RM) $(DESTDIR)$(LIBDIR)/$(LIBZSTD)
++	$(RM) $(DESTDIR)$(PKGCONFIGDIR)/libzstd.pc
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zbuff.h   # Deprecated streaming functions
++	$(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
++	@echo "zstd libraries successfully uninstalled"
+ 
+ endif
+--- libzstd.orig/programs/Makefile
++++ libzstd/programs/Makefile
+@@ -221,7 +221,7 @@
+ 	$(MAKE) zstd MOREFLAGS=-fprofile-use
+ 
+ # minimal target, with only zstd compression and decompression. no bench. no legacy.
+-zstd-small: CFLAGS = -Os -s
++zstd-small: CFLAGS = -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Os -s
+ zstd-frugal zstd-small: $(ZSTD_FILES) zstdcli.c util.c timefn.c fileio.c
+ 	$(CC) $(FLAGS) -DZSTD_NOBENCH -DZSTD_NODICT $^ -o $@$(EXT)
+ 
+@@ -241,12 +241,12 @@
+ .PHONY: clean
+ clean:
+ 	$(MAKE) -C $(ZSTDDIR) clean
+-	@$(RM) $(ZSTDDIR)/decompress/*.o $(ZSTDDIR)/decompress/zstd_decompress.gcda
+-	@$(RM) core *.o tmp* result* *.gcda dictionary *.zst \
++	$(RM) $(ZSTDDIR)/decompress/*.o $(ZSTDDIR)/decompress/zstd_decompress.gcda
++	$(RM) core *.o tmp* result* *.gcda dictionary *.zst \
+         zstd$(EXT) zstd32$(EXT) zstd-compress$(EXT) zstd-decompress$(EXT) \
+         zstd-small$(EXT) zstd-frugal$(EXT) zstd-nolegacy$(EXT) zstd4$(EXT) \
+         *.gcda default.profraw have_zlib$(EXT)
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
+ 
+ MD2ROFF = ronn
+ MD2ROFF_FLAGS = --roff --warnings --manual="User Commands" --organization="zstd $(ZSTD_VERSION)"
+@@ -293,7 +293,7 @@
+ ## list: Print all targets and their descriptions (if provided)
+ .PHONY: list
+ list:
+-	@TARGETS=$$($(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
++	TARGETS=$$($(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
+ 		| awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+ 		| $(EGREP) -v  -e '^[^[:alnum:]]' | sort); \
+ 	{ \
+@@ -340,35 +340,35 @@
+ 
+ .PHONY: install
+ install: zstd
+-	@echo Installing binaries
+-	@$(INSTALL) -d -m 755 $(DESTDIR)$(BINDIR)/ $(DESTDIR)$(MAN1DIR)/
+-	@$(INSTALL_PROGRAM) zstd $(DESTDIR)$(BINDIR)/zstd
+-	@ln -sf zstd $(DESTDIR)$(BINDIR)/zstdcat
+-	@ln -sf zstd $(DESTDIR)$(BINDIR)/unzstd
+-	@ln -sf zstd $(DESTDIR)$(BINDIR)/zstdmt
+-	@$(INSTALL_SCRIPT) zstdless $(DESTDIR)$(BINDIR)/zstdless
+-	@$(INSTALL_SCRIPT) zstdgrep $(DESTDIR)$(BINDIR)/zstdgrep
+-	@echo Installing man pages
+-	@$(INSTALL_MAN) zstd.1 $(DESTDIR)$(MAN1DIR)/zstd.1
+-	@ln -sf zstd.1 $(DESTDIR)$(MAN1DIR)/zstdcat.1
+-	@ln -sf zstd.1 $(DESTDIR)$(MAN1DIR)/unzstd.1
+-	@$(INSTALL_MAN) zstdgrep.1 $(DESTDIR)$(MAN1DIR)/zstdgrep.1
+-	@$(INSTALL_MAN) zstdless.1 $(DESTDIR)$(MAN1DIR)/zstdless.1
+-	@echo zstd installation completed
++	@echo "Installing binaries"
++	$(INSTALL) -d -m 755 $(DESTDIR)$(BINDIR)/ $(DESTDIR)$(MAN1DIR)/
++	$(INSTALL_PROGRAM) zstd $(DESTDIR)$(BINDIR)/zstd
++	ln -sf zstd $(DESTDIR)$(BINDIR)/zstdcat
++	ln -sf zstd $(DESTDIR)$(BINDIR)/unzstd
++	ln -sf zstd $(DESTDIR)$(BINDIR)/zstdmt
++	$(INSTALL_SCRIPT) zstdless $(DESTDIR)$(BINDIR)/zstdless
++	$(INSTALL_SCRIPT) zstdgrep $(DESTDIR)$(BINDIR)/zstdgrep
++	@echo "Installing man pages"
++	$(INSTALL_MAN) zstd.1 $(DESTDIR)$(MAN1DIR)/zstd.1
++	ln -sf zstd.1 $(DESTDIR)$(MAN1DIR)/zstdcat.1
++	ln -sf zstd.1 $(DESTDIR)$(MAN1DIR)/unzstd.1
++	$(INSTALL_MAN) zstdgrep.1 $(DESTDIR)$(MAN1DIR)/zstdgrep.1
++	$(INSTALL_MAN) zstdless.1 $(DESTDIR)$(MAN1DIR)/zstdless.1
++	@echo "zstd installation completed"
+ 
+ .PHONY: uninstall
+ uninstall:
+-	@$(RM) $(DESTDIR)$(BINDIR)/zstdgrep
+-	@$(RM) $(DESTDIR)$(BINDIR)/zstdless
+-	@$(RM) $(DESTDIR)$(BINDIR)/zstdcat
+-	@$(RM) $(DESTDIR)$(BINDIR)/unzstd
+-	@$(RM) $(DESTDIR)$(BINDIR)/zstdmt
+-	@$(RM) $(DESTDIR)$(BINDIR)/zstd
+-	@$(RM) $(DESTDIR)$(MAN1DIR)/zstdless.1
+-	@$(RM) $(DESTDIR)$(MAN1DIR)/zstdgrep.1
+-	@$(RM) $(DESTDIR)$(MAN1DIR)/zstdcat.1
+-	@$(RM) $(DESTDIR)$(MAN1DIR)/unzstd.1
+-	@$(RM) $(DESTDIR)$(MAN1DIR)/zstd.1
+-	@echo zstd programs successfully uninstalled
++	$(RM) $(DESTDIR)$(BINDIR)/zstdgrep
++	$(RM) $(DESTDIR)$(BINDIR)/zstdless
++	$(RM) $(DESTDIR)$(BINDIR)/zstdcat
++	$(RM) $(DESTDIR)$(BINDIR)/unzstd
++	$(RM) $(DESTDIR)$(BINDIR)/zstdmt
++	$(RM) $(DESTDIR)$(BINDIR)/zstd
++	$(RM) $(DESTDIR)$(MAN1DIR)/zstdless.1
++	$(RM) $(DESTDIR)$(MAN1DIR)/zstdgrep.1
++	$(RM) $(DESTDIR)$(MAN1DIR)/zstdcat.1
++	$(RM) $(DESTDIR)$(MAN1DIR)/unzstd.1
++	$(RM) $(DESTDIR)$(MAN1DIR)/zstd.1
++	@echo "zstd programs successfully uninstalled"
+ 
+ endif
+--- libzstd.orig/tests/Makefile
++++ libzstd/tests/Makefile
+@@ -79,7 +79,7 @@
+ .PHONY: default all all32 allnothread dll clean test test32 test-all versionsTest
+ 
+ default: fullbench
+-	@echo $(ZSTDMT_OBJECTS)
++	@echo "$(ZSTDMT_OBJECTS)"
+ 
+ all: fullbench fuzzer zstreamtest paramgrill datagen decodecorpus roundTripCrash \
+      fullbench-lib poolTests
+@@ -243,9 +243,9 @@
+ clean:
+ 	$(MAKE) -C $(ZSTDDIR) clean
+ 	$(MAKE) -C $(PRGDIR) clean
+-	@$(RM) -fR $(TESTARTEFACT)
+-	@$(RM) -rf tmp*  # some test directories are named tmp*
+-	@$(RM) core *.o *.tmp result* *.gcda dictionary *.zst \
++	$(RM) -fR $(TESTARTEFACT)
++	$(RM) -rf tmp*  # some test directories are named tmp*
++	$(RM) core *.o *.tmp result* *.gcda dictionary *.zst \
+         $(PRGDIR)/zstd$(EXT) $(PRGDIR)/zstd32$(EXT) \
+         fullbench$(EXT) fullbench32$(EXT) \
+         fullbench-lib$(EXT) fullbench-dll$(EXT) \
+@@ -255,7 +255,7 @@
+         datagen$(EXT) paramgrill$(EXT) roundTripCrash$(EXT) longmatch$(EXT) \
+         symbols$(EXT) invalidDictionaries$(EXT) legacy$(EXT) poolTests$(EXT) \
+         decodecorpus$(EXT) checkTag$(EXT) bigdict$(EXT)
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
+ 
+ 
+ #----------------------------------------------------------------------------------
+@@ -274,7 +274,7 @@
+ 	./datagen -g2930KB | $(VALGRIND) $(PRGDIR)/zstd -5 -vf - -o tmp
+ 	$(VALGRIND) $(PRGDIR)/zstd -vdf tmp -c > $(VOID)
+ 	./datagen -g64MB | $(VALGRIND) $(PRGDIR)/zstd -vf - -c > $(VOID)
+-	@rm tmp
++	rm tmp
+ 	$(VALGRIND) ./fuzzer -T1mn -t1
+ 	$(VALGRIND) ./fullbench -i1
+ 
+@@ -298,7 +298,7 @@
+ 
+ .PHONY: list
+ list:
+-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
++	$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
+ 
+ .PHONY: shortest
+ shortest: ZSTDRTTEST=
+@@ -412,9 +412,9 @@
+ 
+ test-decodecorpus-cli: decodecorpus
+ 	@echo "\n ---- decodecorpus basic cli tests ----"
+-	@mkdir testdir
++	mkdir testdir
+ 	./decodecorpus -n5 -otestdir -ptestdir
+-	@cd testdir && \
++	cd testdir && \
+ 	$(ZSTD) -d z000000.zst -o tmp0 && \
+ 	$(ZSTD) -d z000001.zst -o tmp1 && \
+ 	$(ZSTD) -d z000002.zst -o tmp2 && \
+@@ -429,7 +429,7 @@
+ 	cd ..
+ 	@echo "\n ---- decodecorpus dictionary cli tests ----"
+ 	./decodecorpus -n5 -otestdir -ptestdir --use-dict=1MB
+-	@cd testdir && \
++	cd testdir && \
+ 	$(ZSTD) -d z000000.zst -D dictionary -o tmp0 && \
+ 	$(ZSTD) -d z000001.zst -D dictionary -o tmp1 && \
+ 	$(ZSTD) -d z000002.zst -D dictionary -o tmp2 && \
+@@ -441,7 +441,7 @@
+ 	diff z000003 tmp3 && \
+ 	diff z000004 tmp4 && \
+ 	cd ..
+-	@rm -rf testdir
++	rm -rf testdir
+ 
+ test-pool: poolTests
+ 	$(QEMU_SYS) ./poolTests
+--- libzstd.orig/tests/fuzz/Makefile
++++ libzstd/tests/fuzz/Makefile
+@@ -118,7 +118,7 @@
+ 	$(AR) $(FUZZ_ARFLAGS) $@ regression_driver.o
+ 
+ corpora/%_seed_corpus.zip:
+-	@mkdir -p corpora
++	mkdir -p corpora
+ 	$(DOWNLOAD) $@ $(CORPORA_URL_PREFIX)$*_seed_corpus.zip
+ 
+ corpora/%: corpora/%_seed_corpus.zip
+@@ -135,13 +135,13 @@
+ 	$(PYTHON) ./fuzz.py regression all
+ 
+ clean:
+-	@$(MAKE) -C $(ZSTDDIR) clean
+-	@$(RM) *.a *.o
+-	@$(RM) simple_round_trip stream_round_trip simple_decompress \
++	$(MAKE) -C $(ZSTDDIR) clean
++	$(RM) *.a *.o
++	$(RM) simple_round_trip stream_round_trip simple_decompress \
+            stream_decompress block_decompress block_round_trip \
+            simple_compress dictionary_round_trip dictionary_decompress \
+            zstd_frame_info
+ 
+ cleanall:
+-	@$(RM) -r Fuzzer
+-	@$(RM) -r corpora
++	$(RM) -r Fuzzer
++	$(RM) -r corpora
+--- libzstd.orig/tests/gzip/Makefile
++++ libzstd/tests/gzip/Makefile
+@@ -16,20 +16,20 @@
+ all: test-helin-segv test-hufts test-keep test-list test-memcpy-abuse test-mixed
+ all: test-null-suffix-clobber test-stdin test-trailing-nul test-unpack-invalid
+ all: test-zdiff test-zgrep-context test-zgrep-f test-zgrep-signal test-znew-k test-z-suffix
+-	@echo Testing completed
++	@echo "Testing completed"
+ 
+ .PHONY: zstd
+ zstd:
+ 	$(MAKE) -C $(PRGDIR) zstd
+ 	ln -sf $(PRGDIR)/zstd gzip
+-	@echo PATH=$(PATH)
++	@echo "PATH=$(PATH)"
+ 	gzip --version
+ 
+ .PHONY: clean
+ clean:
+-	@$(MAKE) -C $(PRGDIR) $@ > $(VOID)
+-	@$(RM) *.trs *.log
+-	@echo Cleaning completed
++	$(MAKE) -C $(PRGDIR) $@ > $(VOID)
++	$(RM) *.trs *.log
++	@echo "Cleaning completed"
+ 
+ 
+ #------------------------------------------------------------------------------
+@@ -38,7 +38,7 @@
+ ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU FreeBSD DragonFly NetBSD))
+ 
+ test-%: zstd
+-	@./test-driver.sh --test-name $* --log-file $*.log --trs-file $*.trs --expect-failure "no" --color-tests "yes" --enable-hard-errors "yes" ./$*.sh
++	./test-driver.sh --test-name $* --log-file $*.log --trs-file $*.trs --expect-failure "no" --color-tests "yes" --enable-hard-errors "yes" ./$*.sh
+ 	# || echo ignoring error
+ 
+ endif
+--- libzstd.orig/zlibWrapper/Makefile
++++ libzstd/zlibWrapper/Makefile
+@@ -50,14 +50,14 @@
+ 	./fitblk 40960 <$(TEST_FILE)
+ 	./fitblk_zstd 10240 <$(TEST_FILE)
+ 	./fitblk_zstd 40960 <$(TEST_FILE)
+-	@echo ---- minigzip start ----
++	@echo "---- minigzip start ----"
+ 	./minigzip_zstd example$(EXT)
+ 	#cp example$(EXT).gz example$(EXT)_zstd.gz
+ 	./minigzip_zstd -d example$(EXT).gz
+ 	./minigzip example$(EXT)
+ 	#cp example$(EXT).gz example$(EXT)_gz.gz
+ 	./minigzip_zstd -d example$(EXT).gz
+-	@echo ---- minigzip end ----
++	@echo "---- minigzip end ----"
+ 	./zwrapbench -qi1b3B1K $(TEST_FILE)
+ 	./zwrapbench -rqi1b1e5 ../lib ../programs ../tests
+ 
+@@ -114,4 +114,4 @@
+ 
+ clean:
+ 	-$(RM) $(ZLIBWRAPPER_PATH)/*.o $(EXAMPLE_PATH)/*.o *.o foo.gz example$(EXT) example_zstd$(EXT) fitblk$(EXT) fitblk_zstd$(EXT) zwrapbench$(EXT) minigzip$(EXT) minigzip_zstd$(EXT)
+-	@echo Cleaning completed
++	@echo "Cleaning completed"
