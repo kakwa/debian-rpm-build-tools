@@ -1,64 +1,54 @@
-Amkecpak, a makefile based packaging framework.
+Decription
+----------
 
-.. image:: https://travis-ci.org/kakwa/amkecpak.svg?branch=master
-   :target: https://travis-ci.org/kakwa/amkecpak
-    
-.. image:: https://readthedocs.org/projects/amkecpak/badge/?version=latest
-    :target: http://amkecpak.readthedocs.org/en/latest/?badge=latest
-    :alt: Documentation Status
+This repository contains .deb (Debian) packaging scripts of RHEL/CentOS/Fedora packaging tools (mock, dnf, createrepo_c).
 
-----
+Status
+------
 
-:Doc:    `Documentation on ReadTheDoc <http://amkecpak.readthedocs.org/en/latest/>`_
-:Dev:    `GitHub <https://github.com/kakwa/amkecpak>`_
-:Author:  Pierre-Francois Carpentier - copyright © 2017
-
-----
-
+These tools seems to work fine up to EL7, but building for EL8 packages saddly doesn't work yet, and newer Fedora releases are likely to suffer the same issue.
 
 Packaging documentation in a nutshell
 -------------------------------------
 
 .. sourcecode:: bash
     
-    # Install the packaing tools
-    $ apt-get install make debhelper reprepro cowbuilder wget
-    # or
-    $ yum install make rpm-sign expect rpm-build createrepo mock wget
+  # Install the packaing tools
+  $ apt-get install make debhelper reprepro cowbuilder wget
 
-    # Init a package foo
-    $ ./common/init_pkg.sh -n foo
+  # gpg key generation (one time thing)
+  $ gpg --gen-key
+  
+  # editing the global configuration (edit the gpg key and packager name)
+  $ vim common/buildenv/Makefile.config
 
-    $ cd foo/
+  # build for Debian buster
+  $ make deb_repo DIST=buster -j4
 
-    # Implementing the package
-    $ vim Makefile
-    $ make manifest
-    $ vim debian/rules ; vim debian/control
-    $ vim rpm/component.spec
+  # build for Debian sid
+  $ make deb_repo DIST=sid -j4
 
-    # Help for the various targets
-    $ make help
+These packaging scripts reuses the amkecpak framework. If you need more information, read the `detailed documentation <http://amkecpak.readthedocs.org/en/latest/>`_.
 
-    # Building the packages
-    $ make deb
-    $ make rpm
-    
-    # Same in chroots, targeting specific distribution versions
-    $ make deb_chroot DIST=jessie
-    $ make rpm_chroot DIST=el7
+Repository
+----------
 
-    $ cd ../
+The generated packages are available here:
 
-    # gpg key generation (one time thing)
-    $ gpg --gen-key
-    
-    # editing the global configuration
-    $ vim common/buildenv/Makefile.config
+* https://mirror.kakwalab.ovh/debian-rpm-build-tools/
 
-    # Building the repositories
-    # Use ERROR=skip to ignore package build failures and continue building the repo
-    $ make deb_repo -j 4 DIST=jessie # ERROR=skip
-    $ make rpm_repo -j 1 DIST=el7    # ERROR=skip
+To install the repository:
 
-If you need more information, read the `detailed documentation <http://amkecpak.readthedocs.org/en/latest/>`_.
+.. sourcecode:: bash
+
+  # Set the distribution code name:
+  export DIST=buster
+
+  # Add the GPG key
+  wget -qO - https://mirror.kakwalab.ovh/debian-rpm-build-tools/GPG-KEY.pub | apt-key add -
+
+  # Add the repository
+  echo "deb [arch=amd64] http://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${DIST}/ ${DIST} main" >/etc/apt/sources.list.d/rpm-build-tools.list
+
+  # Install the rpm building tools
+  apt install dnf createrepo-c mock
