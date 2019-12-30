@@ -12,7 +12,7 @@ Build-Depends:
  pkg-config,
  librpm-dev,
  rpm,
- libzstd-dev,
+ libzstd-dev (>= 1.4.0),
  libcmocka-dev
 Standards-Version: 3.8.4
 Homepage: @URL@ 
