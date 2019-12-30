@@ -1,0 +1,48 @@
+Description: Alias renamed API symbols
+ Add aliases for two renamed but unchanged symbols to avoid a useless
+ dependency. Add compiler warnings when compiling against the old symbols.
+Author: Justin Aplin <japlin@gmail.com>
+--- libzstd.orig/lib/compress/zstd_compress.c
++++ libzstd/lib/compress/zstd_compress.c
+@@ -518,6 +518,10 @@
+     return ZSTD_CCtxParams_setParameter(&cctx->requestedParams, param, value);
+ }
+ 
++size_t ZSTD_CCtxParam_setParameter(
++        ZSTD_CCtx_params* CCtxParams, ZSTD_cParameter param, int value)
++        __attribute__((alias("ZSTD_CCtxParams_setParameter")));
++
+ size_t ZSTD_CCtxParams_setParameter(ZSTD_CCtx_params* CCtxParams,
+                                     ZSTD_cParameter param, int value)
+ {
+@@ -706,6 +710,10 @@
+     return ZSTD_CCtxParams_getParameter(&cctx->requestedParams, param, value);
+ }
+ 
++size_t ZSTD_CCtxParam_getParameter(
++        ZSTD_CCtx_params* CCtxParams, ZSTD_cParameter param, int* value)
++         __attribute__((alias("ZSTD_CCtxParams_getParameter")));
++
+ size_t ZSTD_CCtxParams_getParameter(
+         ZSTD_CCtx_params* CCtxParams, ZSTD_cParameter param, int* value)
+ {
+--- libzstd.orig/lib/zstd.h
++++ libzstd/lib/zstd.h
+@@ -1560,6 +1560,8 @@
+  * @result : 0, or an error code (which can be tested with ZSTD_isError()).
+  */
+ ZSTDLIB_API size_t ZSTD_CCtxParams_setParameter(ZSTD_CCtx_params* params, ZSTD_cParameter param, int value);
++ZSTDLIB_API size_t ZSTD_CCtxParam_setParameter(ZSTD_CCtx_params* params, ZSTD_cParameter param, int value)
++                    __attribute__ ((deprecated ("Deprecated in 1.4.0, use ZSTD_CCtxParams_setParameter instead")));
+ 
+ /*! ZSTD_CCtxParams_getParameter() :
+  * Similar to ZSTD_CCtx_getParameter.
+@@ -1567,6 +1569,8 @@
+  * @result : 0, or an error code (which can be tested with ZSTD_isError()).
+  */
+ ZSTDLIB_API size_t ZSTD_CCtxParams_getParameter(ZSTD_CCtx_params* params, ZSTD_cParameter param, int* value);
++ZSTDLIB_API size_t ZSTD_CCtxParam_getParameter(ZSTD_CCtx_params* params, ZSTD_cParameter param, int* value)
++                    __attribute__ ((deprecated ("Deprecated in 1.4.0, use ZSTD_CCtxParams_getParameter instead")));
+ 
+ /*! ZSTD_CCtx_setParametersUsingCCtxParams() :
+  *  Apply a set of ZSTD_CCtx_params to the compression context.
