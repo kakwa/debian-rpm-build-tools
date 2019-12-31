@@ -29,6 +29,7 @@ Build-Depends:
  gobject-introspection,
  python-gobject-2-dev,
  python3-autopep8,
+ python-autopep8,
  python-gobject,
  python3-gi,
  libgirepository1.0-dev
