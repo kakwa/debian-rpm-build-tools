@@ -50,5 +50,8 @@ To install the repository:
   # Add the repository
   echo "deb [arch=amd64] http://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${DIST}/ ${DIST} main" >/etc/apt/sources.list.d/rpm-build-tools.list
 
+  # Update repository indexes
+  apt update
+  
   # Install the rpm building tools
   apt install dnf createrepo-c mock
