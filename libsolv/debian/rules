@@ -37,6 +37,7 @@ DEB_CMAKE_EXTRA_FLAGS := \
                          -DENABLE_PUBKEY=1 \
                          -DENABLE_SUSEREPO=1 \
                          -DENABLE_RPMMD=1 \
+                         -DENABLE_ZCHUNK_COMPRESSION=1 \
                          -DENABLE_RPMDB=1 \
                          -DENABLE_RPMDB_BYRPMHEADER=1 \
                          -DENABLE_HELIXREPO=1 \

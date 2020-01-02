@@ -18,6 +18,6 @@ HOME=/tmp
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-             -DCMAKE_CXX_FLAGS="-pthread" -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3
+             -DCMAKE_CXX_FLAGS="-pthread" -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3 -DWITH_ZCHUNK=ON
 
 override_dh_auto_test:

@@ -13,8 +13,10 @@ Build-Depends:
  librpm-dev (>= 4),
  liblzma-dev,
  libbz2-dev,
+ libzck-dev,
  python3-dev,
  libpython3-dev,
+ libzstd-dev,
  swig,
 Standards-Version: 4.4.1
 Rules-Requires-Root: no
@@ -27,6 +29,8 @@ Multi-Arch: same
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ libzck,
+ libzstd1,
 Description: dependency solver using a satisfiability algorithm (shared library)
  This dependency solver code in this package is based on two major, but
  independent, blocks:
