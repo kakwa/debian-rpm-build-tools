@@ -15,4 +15,4 @@ DEST=$$(pwd)/debian/@NAME@
 	dh $@ 
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DENABLE_TESTS=OFF
+	dh_auto_configure -- -DENABLE_TESTS=OFF -DWITH_ZCHUNK=ON -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3

@@ -19,7 +19,6 @@ Build-Depends:
  libzstd-dev,
  python3-gpg,
  python3-nose,
- python-nose,
  python3-pyxattr
 Standards-Version: 3.8.4
 Homepage: @URL@ 
@@ -37,9 +36,9 @@ Depends: ${misc:Depends}, @NAME@
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
-Package: python-@NAME@
+Package: python3-@NAME@
 Architecture: all
-Depends: ${misc:Depends}, @NAME@, python
-Description: @SUMMARY@, Python 2 bindings
+Depends: ${misc:Depends}, @NAME@, python3
+Description: @SUMMARY@, Python 3 bindings
  @DESCRIPTION@
 
