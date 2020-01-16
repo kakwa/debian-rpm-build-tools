@@ -3,11 +3,6 @@ Decription
 
 This repository contains .deb (Debian) packaging scripts of RHEL/CentOS/Fedora packaging tools (mock, dnf, createrepo_c).
 
-Status
-------
-
-These tools seems to work fine up to EL7, but building for EL8 packages saddly doesn't work yet, and newer Fedora releases are likely to suffer the same issue.
-
 Packaging documentation in a nutshell
 -------------------------------------
 
