@@ -10,7 +10,7 @@ Build-Depends:
  cmake,
  libexpat1-dev,
  zlib1g-dev,
- librpm-dev (>= 4),
+ librpm-dev (>= 4.15),
  liblzma-dev,
  libbz2-dev,
  libzck-dev,

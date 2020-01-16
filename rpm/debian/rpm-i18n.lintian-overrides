@@ -1,0 +1,4 @@
+# These are line wrapping erros not easy to fix
+rpm-i18n: manpage-has-errors-from-man usr/share/man/pl/man8/rpm.8.gz * cannot adjust line
+rpm-i18n: manpage-has-errors-from-man usr/share/man/pl/man8/rpmbuild.8.gz * cannot adjust line
+rpm-i18n: manpage-has-errors-from-man usr/share/man/ru/man8/rpm.8.gz * cannot adjust line
