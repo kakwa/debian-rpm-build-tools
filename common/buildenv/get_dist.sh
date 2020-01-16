@@ -36,6 +36,12 @@ case $1 in
     echo 18.4:ubu:ubuntu-18.4; exit 0;;
   cosmic)
     echo 18.10:ubu:ubuntu-18.10; exit 0;;
+  disco)
+    echo 19.4:ubu:ubuntu-19.4; exit 0;;
+  eoan)
+    echo 19.10:ubu:ubuntu-19.10; exit 0;;
+  focal)
+    echo 20.4:ubu:ubuntu-20.4; exit 0;;
   
   # Fedora code names:
   fc24)
@@ -52,6 +58,8 @@ case $1 in
     echo 29:fc:fedora-29; exit 0;;
   fc30)
     echo 30:fc:fedora-30; exit 0;;
+  fc31)
+    echo 31:fc:fedora-31; exit 0;;
   
   # RHEL/CentOS code names:
   el6)

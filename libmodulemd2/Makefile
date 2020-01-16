@@ -28,7 +28,7 @@ LICENSE=MIT
 #   <dist>:    the distribution code name (examples: 'deb', 'el', 'fc')
 #   <version>: the version number to ignore
 #
-SKIP=<=:deb:8 >=:el:0 >=:fc:0 >=:ubu:0
+SKIP=<=:deb:8 >=:el:0 >=:fc:0 <=:ubu:17.10
 
 ###############################################################################
 # Rule #

@@ -16,5 +16,8 @@ DEST=$$(pwd)/debian/@NAME@
 
 override_dh_auto_test:
 
+override_dh_auto_configure:
+	dh_auto_configure -- -Ddeveloper_build=false
+
 override_dh_auto_install:
 	dh_auto_install
