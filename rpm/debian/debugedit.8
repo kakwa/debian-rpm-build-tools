@@ -1,0 +1,50 @@
+.TH "DEBUGEDIT" "8" "10 September 2013" "Michal Cihar"
+
+.SH NAME
+debugedit \- Debuginfo editing helper
+.SH SYNOPSIS
+.B debugedit
+.RI [ options ] " files" ...
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B debugedit
+command, which can be used to edit debuginfo section of object files
+(either binaries or separate debug info files).
+
+It is useful for producing consistent information in binaries for debugging
+regardless build location.
+
+.SH OPTIONS
+These programs follow the usual GNU command line syntax, with long
+options starting with two dashes (`-').
+A summary of options is included below.
+For a complete description, see the Info files.
+.TP
+.B \-?, \-\-help
+Show summary of options.
+.TP
+.B \-b, \-\-base-dir=STRING
+base build directory of objects
+.TP
+.B \-d, \-\-dest-dir=STRING
+directory to rewrite base-dir into
+.TP
+.B \-l, \-\-list-file=STRING
+file where to put list of source and header file names
+.TP
+.B \-i, \-\-build-id
+recompute build ID note and print ID on stdout
+
+.SH EXAMPLES
+
+.PP
+debugedit \-b `pwd` \-d /usr/lib/debug
+.RS 4
+Rewrites path compliled into binary from current directory to
+/usr/lib/debug.
+.RE
+
+
+.SH SEE ALSO
+.BR rpm (8)

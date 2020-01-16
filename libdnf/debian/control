@@ -19,7 +19,7 @@ Build-Depends:
  libxml2-dev,
  liblzma-dev,
  libssl-dev,
- librpm-dev,
+ librpm-dev (>= 4.15),
  libdrpm-dev,
  libexpat1-dev,
  python3-dev,

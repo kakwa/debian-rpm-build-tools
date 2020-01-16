@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+
+DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
+CPPFLAGS+=$(shell pkg-config --cflags nss)
+
+ifeq (linux,$(DEB_HOST_ARCH_OS))
+       configure_flags +=--with-cap --with-selinux
+endif
+
+configure_flags += \
+	--datadir=/usr/share \
+	--with-external-db \
+	--with-debian \
+	--with-vendor=debian \
+	--enable-shared \
+	--enable-python \
+	--with-lua \
+	LDFLAGS="$(LDFLAGS) -Wl,--as-needed" \
+	CPPFLAGS="$(CPPFLAGS)"
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(configure_flags)
+	cd python && ln -s ../debian
+
+override_dh_auto_build:
+	dh_auto_build
+	cd python && dh_auto_build --buildsystem=pybuild
+
+override_dh_auto_install:
+	dh_auto_install
+	# Remove Python, we use distutils built modules
+	rm -rf debian/tmp/usr/lib/python*
+	cd python && dh_auto_install --buildsystem=pybuild
+	# Kill all the junk this installs.
+	rm -f debian/tmp/usr/lib/rpm/config.guess \
+		debian/tmp/usr/lib/rpm/config.sub \
+		debian/tmp/usr/lib/*/*.la \
+		debian/tmp/usr/lib/*/rpm-plugins/*.la \
+		debian/tmp/usr/lib/rpm/rpm.log
+	# Fix permissions
+	chmod +x debian/tmp/usr/lib/rpm/rpm.daily
+
+override_dh_strip:
+	dh_strip --ddeb-migration='librpm-dbg (<< 4.12.0.1+dfsg1-5~)'
+
+%:
+	dh $@ --fail-missing --with python2,python3,autoreconf
