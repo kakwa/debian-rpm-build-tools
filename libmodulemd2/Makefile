@@ -5,7 +5,7 @@ NAME = libmodulemd2
 VERSION = 2.8.2
 
 # Revision number 
-RELEASE = 1
+RELEASE = 2
 
 # URL of the project 
 URL=https://github.com/fedora-modularity/libmodulemd
