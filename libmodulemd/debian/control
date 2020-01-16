@@ -24,7 +24,6 @@ Build-Depends:
  python-pycodestyle,
  python3-pycodestyle,
  pycodestyle,
- black,
  valgrind,
  gobject-introspection,
  python-gobject-2-dev,
