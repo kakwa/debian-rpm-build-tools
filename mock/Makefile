@@ -1,7 +1,7 @@
 # Name of the package
 NAME = mock
 
-VERSION = 1.4.21
+VERSION = 5.5
 
 UPSTREAM_RELEASE = 1
 

@@ -2,10 +2,10 @@
 NAME = createrepo-c
 
 # Version
-VERSION = 0.15.3
+VERSION = 1.0.4
 
 # Revision number 
-RELEASE = 2
+RELEASE = 1
 
 # URL of the project 
 URL=https://github.com/rpm-software-management/createrepo_c

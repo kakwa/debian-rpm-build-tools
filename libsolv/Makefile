@@ -2,10 +2,10 @@
 NAME = libsolv
 
 # Version
-VERSION = 0.7.10
+VERSION = 0.7.28
 
 # Revision number 
-RELEASE = 3
+RELEASE = 1
 
 # URL of the project 
 URL=https://github.com/openSUSE/libsolv

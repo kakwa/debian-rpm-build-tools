@@ -2,10 +2,10 @@
 NAME = librepo
 
 # Version
-VERSION = 1.11.1
+VERSION = 1.17.0
 
 # Revision number 
-RELEASE = 2
+RELEASE = 1
 
 # URL of the project 
 URL=https://github.com/rpm-software-management/librepo

@@ -2,7 +2,7 @@
 NAME = zchunk
 
 # Version
-VERSION = 1.1.4
+VERSION = 1.4.0
 
 # Revision number 
 RELEASE = 1

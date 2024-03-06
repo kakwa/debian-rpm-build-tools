@@ -2,7 +2,7 @@
 NAME = libcomps
 
 # Version
-VERSION = 0.1.14
+VERSION = 0.1.20
 
 # Revision number 
 RELEASE = 1
@@ -35,7 +35,7 @@ SKIP=<=:deb:8 >=:el:0 >=:fc:0 <=:ubu:18.4
 ########
 
 # example of source recovery url
-URL_SRC=$(URL)/archive/$(NAME)-$(VERSION).tar.gz
+URL_SRC=$(URL)/archive//refs/tags/$(VERSION).tar.gz
 
 # Including common rules and targets 
 include buildenv/Makefile.common

@@ -2,7 +2,7 @@
 NAME = libzstd
 
 # Version
-VERSION = 1.4.4
+VERSION = 1.5.5
 
 # Revision number 
 RELEASE = 1
