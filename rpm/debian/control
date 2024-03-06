@@ -23,7 +23,6 @@ Build-Depends: debhelper (>= 9.20160114),
                libcap-dev [linux-any],
                libdbus-1-dev,
                libsqlite3-dev,
-               python-all-dev,
                python3-all-dev,
                binutils-dev,
                bzip2,
@@ -54,7 +53,6 @@ Depends: ${shlibs:Depends},
          debugedit (= ${binary:Version}),
          rpm-common (= ${binary:Version})
 Suggests: alien,
-          python,
           elfutils,
           rpmlint,
           rpm2html,
@@ -188,30 +186,6 @@ Description: RPM shared library, development kit
  This package provides the development kit, containing static 
  libraries and header files necessary to build programs that use 
  librpm.
-
-Package: python-rpm
-Architecture: any
-Section: python
-Priority: optional
-Depends: ${misc:Depends},
-         ${shlibs:Depends},
-         ${python:Depends},
-         librpm9 (= ${binary:Version}),
-         librpmio9 (= ${binary:Version}),
-         librpmbuild9 (= ${binary:Version}),
-         librpmsign9 (= ${binary:Version}),
-         rpm-common (= ${binary:Version})
-Breaks: ${python:Breaks}
-Provides: ${python:Provides}
-Description: Python bindings for RPM
- The RPM Package Manager (RPM) is a command-line driven package
- management system capable of installing, uninstalling, verifying,
- querying, and updating computer software packages.
- .
- This package includes the Python bindings for librpm, allowing Python
- scripts to manipulate RPM packages and the RPM database.
- .
- This package installs the library for Python 2.
 
 Package: python3-rpm
 Architecture: any

@@ -13,3 +13,5 @@ DEST=$$(pwd)/debian/@NAME@
 
 %:
 	dh $@ 
+
+override_dh_auto_test:

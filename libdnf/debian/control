@@ -41,7 +41,7 @@ Build-Depends:
  libcppunit-dev,
 Standards-Version: 3.8.4
 Homepage: @URL@ 
-X-Python-Version: >= 2.5
+X-Python3-Version: >= 3.0
 
 Package: @NAME@
 Architecture: all
