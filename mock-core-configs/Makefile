@@ -2,7 +2,7 @@
 NAME = mock-core-configs
 
 # Version
-VERSION = 31.6
+VERSION = 40.2
 
 UPSTREAM_RELEASE = 1
 

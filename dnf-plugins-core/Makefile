@@ -2,7 +2,7 @@
 NAME = dnf-plugins-core
 
 # Version
-VERSION = 4.0.12
+VERSION = 4.5.0
 
 # Revision number 
 RELEASE = 1

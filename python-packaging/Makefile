@@ -2,7 +2,7 @@
 NAME = packaging
 
 # Version
-VERSION = 19.2
+VERSION = 23.2
 
 # Revision number 
 RELEASE = 1
