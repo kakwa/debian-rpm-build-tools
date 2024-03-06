@@ -2,7 +2,7 @@
 NAME = createrepo-c
 
 # Version
-VERSION = 0.15.3
+VERSION = 1.0.4
 
 # Revision number 
 RELEASE = 1

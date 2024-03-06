@@ -2,7 +2,7 @@
 NAME = rpm
 
 # Version
-VERSION = 4.15.1
+VERSION = 4.19.1
 
 # Revision number 
 RELEASE = 1

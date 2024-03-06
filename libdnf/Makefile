@@ -2,10 +2,10 @@
 NAME = libdnf
 
 # Version
-VERSION = 0.39.1
+VERSION = 0.73.0
 
 # Revision number 
-RELEASE = 2
+RELEASE = 1
 
 # URL of the project 
 URL=https://github.com/rpm-software-management/libdnf

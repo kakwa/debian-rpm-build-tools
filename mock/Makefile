@@ -1,12 +1,12 @@
 # Name of the package
 NAME = mock
 
-VERSION = 1.4.21
+VERSION = 5.5
 
 UPSTREAM_RELEASE = 1
 
 # Revision number 
-RELEASE = 1
+RELEASE = 2
 
 # URL of the project 
 URL=https://github.com/rpm-software-management/mock/releases/download
