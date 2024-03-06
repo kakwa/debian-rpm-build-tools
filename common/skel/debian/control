@@ -7,7 +7,6 @@ Build-Depends:
  rsync
 Standards-Version: 3.8.4
 Homepage: @URL@ 
-X-Python-Version: >= 2.5
 
 Package: @NAME@
 Architecture: all
