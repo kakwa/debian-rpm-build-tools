@@ -2,7 +2,7 @@
 NAME = scikit-build
 
 # Version
-VERSION = 0.10.0
+VERSION = 0.17.6
 
 # Revision number 
 RELEASE = 1

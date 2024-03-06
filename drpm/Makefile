@@ -2,7 +2,7 @@
 NAME = drpm
 
 # Version
-VERSION = 0.4.1
+VERSION = 0.5.2
 
 # Revision number 
 RELEASE = 1
