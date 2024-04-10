@@ -30,14 +30,14 @@ Homepage: @URL@
 
 Package: @NAME@
 Architecture: all
-Depends: ${misc:Depends}, libbz2-1.0, libcurl4, libglib2.0-0, libmagic1, libxml2, liblzma5, libssl1.1, librpm9, libdrpm, libexpat1, libzck, libzstd1, libmodulemd2, libyaml-0-2
+Depends: ${misc:Depends}, libbz2-1.0, libcurl4, libglib2.0-0, libmagic1, libxml2, liblzma5, libssl3, librpm9, libdrpm, libexpat1, libzck, libzstd1, libmodulemd2, libyaml-0-2
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
 Package: libcreaterepo-c1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libbz2-1.0, libcurl4, libglib2.0-0, libmagic1, libxml2, liblzma5, libssl1.1, librpm9, libdrpm, libexpat1, libzck, libzstd1, libmodulemd2, libyaml-0-2
+Depends: ${shlibs:Depends}, ${misc:Depends}, libbz2-1.0, libcurl4, libglib2.0-0, libmagic1, libxml2, liblzma5, libssl3, librpm9, libdrpm, libexpat1, libzck, libzstd1, libmodulemd2, libyaml-0-2
 Multi-Arch: same
 Description: library for creating RPM repository metadata
  The createrepo tool generates the repodata directory and XML metadata that

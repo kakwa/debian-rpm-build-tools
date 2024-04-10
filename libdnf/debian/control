@@ -44,7 +44,7 @@ X-Python3-Version: >= 3.0
 
 Package: @NAME@
 Architecture: all
-Depends: ${misc:Depends}, libsolv0, libmodulemd2, libjson-c4, librepo, libssl1.1, libsmartcols1, python3
+Depends: ${misc:Depends}, libsolv0, libmodulemd2, libjson-c4, librepo, libssl3, libsmartcols1, python3
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 

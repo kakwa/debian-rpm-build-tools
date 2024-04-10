@@ -22,7 +22,7 @@ Description: @SUMMARY@
 
 Package: libzck
 Architecture: i386 amd64
-Depends: ${misc:Depends}, libzstd1, libcurl4, libssl1.1
+Depends: ${misc:Depends}, libzstd1, libcurl4, libssl3
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
