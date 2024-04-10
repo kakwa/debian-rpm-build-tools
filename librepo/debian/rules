@@ -16,3 +16,7 @@ DEST=$$(pwd)/debian/@NAME@
 
 override_dh_auto_configure:
 	dh_auto_configure -- -DENABLE_TESTS=OFF -DWITH_ZCHUNK=ON -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3
+
+override_dh_auto_install:
+	dh_auto_install
+	if [ -e debian/tmp/usr/local/ ]; then mv debian/tmp/usr/local/lib/python* debian/tmp/usr/lib/; fi
