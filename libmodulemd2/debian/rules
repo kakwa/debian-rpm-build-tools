@@ -20,4 +20,4 @@ override_dh_auto_install:
 	dh_auto_install
 
 override_dh_auto_configure:
-	dh_auto_configure -- -Ddeveloper_build=false
+	dh_auto_configure --
