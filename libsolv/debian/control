@@ -29,7 +29,7 @@ Multi-Arch: same
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- libzck,
+ libzck1,
  libzstd1,
 Description: dependency solver using a satisfiability algorithm (shared library)
  This dependency solver code in this package is based on two major, but

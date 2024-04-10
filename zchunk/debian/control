@@ -16,11 +16,11 @@ X-Python3-Version: >= 3.0
 
 Package: @NAME@
 Architecture: i386 amd64
-Depends: libzck
+Depends: libzck1
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
-Package: libzck
+Package: libzck1
 Architecture: i386 amd64
 Depends: ${misc:Depends}, libzstd1, libcurl4, libssl3
 Description: @SUMMARY@ 
@@ -28,6 +28,6 @@ Description: @SUMMARY@
 
 Package: libzck-dev
 Architecture: i386 amd64
-Depends: libzck
+Depends: libzck1
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
