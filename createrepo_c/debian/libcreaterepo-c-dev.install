@@ -1,0 +1,3 @@
+usr/include/createrepo_c/*
+usr/lib/*/libcreaterepo_c.so
+usr/lib/*/pkgconfig/createrepo_c.pc
