@@ -15,7 +15,7 @@ DEST=$$(pwd)/debian/@NAME@
 	dh $@ 
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DENABLE_TESTS=OFF -DWITH_ZCHUNK=ON -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3
+	dh_auto_configure -- -DENABLE_TESTS=OFF -DWITH_ZCHUNK=ON -DPYTHON_DESIRED:FILEPATH=/usr/bin/python3 -DUSE_GPGME=ON
 
 override_dh_auto_install:
 	dh_auto_install
