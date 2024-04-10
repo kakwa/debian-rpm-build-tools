@@ -19,3 +19,4 @@ override_dh_makeshlibs:
 override_dh_auto_install:
 	dh_auto_install
 	if [ -e debian/createrepo-c/usr/local/ ]; then mv debian/createrepo-c/usr/local/lib/python* debian/createrepo-c/usr/lib/; fi
+	mv debian/createrepo-c/ debian/tmp
