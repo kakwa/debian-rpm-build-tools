@@ -67,7 +67,7 @@ remove-cruft::
 
 tweak-install::
 	if [ -e debian/tmp/usr/bin/repo2solv.sh ]; then mv debian/tmp/usr/bin/repo2solv.sh debian/tmp/usr/bin/repo2solv; fi
-	if [ -e debian/tmp/usr/local/lib/python3.10/dist-packages/ ]; then mv debian/tmp/usr/local/lib/python3.10/dist-packages/ debian/tmp/usr/lib/python3.10/; fi
+	if [ -e debian/tmp/usr/local/ ]; then mv debian/tmp/usr/local/lib/python* debian/tmp/usr/lib/; fi
 
 get-orig-source:
 	uscan --noconf --force-download --rename --download-current-version --destdir=..
