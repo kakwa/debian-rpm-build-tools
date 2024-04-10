@@ -17,3 +17,6 @@ DEST=$$(pwd)/debian/@NAME@
 override_dh_auto_install:
 	mkdir -p $(DEST)/usr/share/distribution-gpg-keys
 	cp -r keys/* $(DEST)/usr/share/distribution-gpg-keys/
+
+override_dh_strip_nondeterminism:
+	true
