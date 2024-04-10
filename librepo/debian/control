@@ -27,13 +27,13 @@ X-Python3-Version: >= 3.0
 
 Package: @NAME@
 Architecture: all
-Depends: ${misc:Depends}, libglib2.0-0, libexpat1, libgpgme11, libattr1, libcurl4, libssl3, libxml2, libzck, libzstd1
+Depends: ${misc:Depends}, libglib2.0-0, libexpat1, libgpgme11, libattr1, libcurl4, libssl3, libxml2, libzck1, libzstd1
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
 Package: @NAME@-dev
 Architecture: all
-Depends: ${misc:Depends}, @NAME@
+Depends: ${misc:Depends}, @NAME@, libgpgme11-dev
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 

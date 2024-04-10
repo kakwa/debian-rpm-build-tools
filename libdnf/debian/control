@@ -11,6 +11,7 @@ Build-Depends:
  libmodulemd2,
  libssl-dev,
  libgpgme-dev,
+ libgpgme11,
  libyaml-dev,
  libbz2-dev,
  libcurl4-openssl-dev,
@@ -27,13 +28,12 @@ Build-Depends:
  libpython3-dev,
  libzstd-dev,
  libzck-dev,
- librepo-dev,
  libsmartcols-dev,
  check,
  libglib2.0-dev,
  libjson-c-dev,
- librepo-dev,
  swig,
+ librepo-dev,
  gtk-doc-tools,
  sphinx-doc,
  python3-sphinx,
@@ -44,7 +44,7 @@ X-Python3-Version: >= 3.0
 
 Package: @NAME@
 Architecture: all
-Depends: ${misc:Depends}, libsolv0, libmodulemd2, libjson-c4, librepo, libssl3, libsmartcols1, python3
+Depends: ${misc:Depends}, libsolv0, libmodulemd2, libjson-c4, librepo, libssl3, libsmartcols1, python3, libgpgme11
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
 
