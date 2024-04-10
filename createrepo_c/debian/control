@@ -22,6 +22,8 @@ Build-Depends:
  pkg-config,
  python3-nose,
  libyaml-dev,
+ python3-setuptools,
+ zchunk,
  python3-dev
 Standards-Version: 3.8.4
 Homepage: @URL@ 
