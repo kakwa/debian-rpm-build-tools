@@ -16,7 +16,9 @@ case $1 in
     echo 12:deb:debian-12; exit 0;;
   trixie)
     echo 13:deb:debian-13; exit 0;;
-  
+  sid)
+    echo 14:deb:debian-14; exit 0;;
+
   # Ubuntu code names:
   precise)
     echo 12.4:ubu:ubuntu-12.4; exit 0;;

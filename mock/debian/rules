@@ -16,6 +16,8 @@ override_dh_auto_test:
 override_dh_python3:
 	dh_python3
 	chmod a-x $(CURDIR)/debian/mock/usr/lib/python3/dist-packages/mockbuild/trace_decorator.py
+	sed -i 's|^VERSION.*|VERSION="@VERSION@"|' $(CURDIR)/debian/mock/usr/lib/python3/dist-packages/mockbuild/constants.py
+	sed -i 's|^SYSCONFDIR.*|SYSCONFDIR="/etc/"|' $(CURDIR)/debian/mock/usr/lib/python3/dist-packages/mockbuild/constants.py
 
 override_dh_auto_build:
 
