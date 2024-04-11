@@ -35,7 +35,9 @@ install -o root -g root -m 644 kakwalab.gpg /etc/apt/trusted.gpg.d/
 rm kakwalab.gpg
 
 # Add the repository
-echo "deb [arch=amd64] https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${VERSION_CODENAME}/ ${VERSION_CODENAME} main" \
+echo "deb [arch=amd64] \
+https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${VERSION_CODENAME}/ \
+${VERSION_CODENAME} main" \
     >/etc/apt/sources.list.d/kakwalab-rpm-build-tools.list
 
 # Update repository indexes
