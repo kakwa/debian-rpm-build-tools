@@ -39,8 +39,8 @@ echo "deb [arch=amd64] https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${
     >/etc/apt/sources.list.d/kakwalab-rpm-build-tools.list
 
 # Update repository indexes
-sudo apt update
+apt update
 
 # Install mock
-sudo apt install mock
+apt install mock
 ```
