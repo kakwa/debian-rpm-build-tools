@@ -46,3 +46,33 @@ apt update
 # Install mock
 apt install mock
 ```
+
+Building
+--------
+
+This project relies on [amkecpak](https://amkecpak.readthedocs.io/en/latest/) to wrap source tarballs recovery, `pbuilder/cowbuilder` and reprepro run.
+
+To build the packages:
+
+```bash
+# both at the root or inside a given package directory
+make deb_chroot -j 4 DIST=trixie
+```
+To build/update the repository
+
+```bash
+# at the root
+make deb_repo -j 4 DIST=trixie
+```
+
+To update upstream version:
+
+```bash
+cd $PACKAGE
+
+# update the VERSION in Makefile
+vim Makefile
+
+# update the manifest
+make manifest
+```
