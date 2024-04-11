@@ -12,7 +12,7 @@ mandir="$datadir/man"
 sysconfdir="/etc"
 python_sitelib="/usr/lib/python3/dist-packages" # FIXME: hardcoding
 
-version=`dpkg-parsechangelog -S Version`
+version=@VERSION@
 
 
 #########################################
@@ -53,20 +53,3 @@ install -d $DESTDIR/var/cache/mock
 
 # just for %%ghosting purposes
 ln -s fedora-rawhide-x86_64.cfg $DESTDIR$sysconfdir/mock/default.cfg
-
-
-#########################################
-# The %build script:
-#########################################
-
-# We can't change the originals:
-
-for i in $DESTDIR$bindir/mockchain $DESTDIR$sbindir/mock; do
-    perl -p -i -e 's|^__VERSION__\s*=.*|__VERSION__="'"$version"'"|' $i
-    perl -p -i -e 's|^SYSCONFDIR\s*=.*|SYSCONFDIR="'"$sysconfdir"'"|' $i
-    perl -p -i -e 's|^PYTHONDIR\s*=.*|PYTHONDIR="'"$python_sitelib"'"|' $i
-    perl -p -i -e 's|^PKGPYTHONDIR\s*=.*|PKGPYTHONDIR="'"$python_sitelib/mockbuild"'"|' $i
-done
-for i in $DESTDIR$mandir/man1/*.1; do
-    perl -p -i -e 's|@VERSION@|'"$version"'"|' $i
-done
