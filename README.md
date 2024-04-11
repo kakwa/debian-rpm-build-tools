@@ -24,18 +24,23 @@ The generated packages are available here:
 To install the repository:
 
 ```bash
+# As Root
+
+. /etc/os-release
+
 # Add the GPG key
-wget -qO - https://mirror.kakwalab.ovh/debian-rpm-build-tools/GPG-KEY.pub | gpg --dearmor > kakwalab.gpg
-sudo install -o root -g root -m 644 kakwalab.gpg /etc/apt/trusted.gpg.d/
+wget -qO - https://mirror.kakwalab.ovh/debian-rpm-build-tools/GPG-KEY.pub | \
+    gpg --dearmor > kakwalab.gpg
+install -o root -g root -m 644 kakwalab.gpg /etc/apt/trusted.gpg.d/
 rm kakwalab.gpg
 
 # Add the repository
-. /etc/os-release
-sudo echo "deb [arch=amd64] https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${VERSION_CODENAME}/ ${VERSION_CODENAME} main" >/etc/apt/sources.list.d/kakwalab-rpm-build-tools.list
+echo "deb [arch=amd64] https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.${VERSION_CODENAME}/ ${VERSION_CODENAME} main" \
+    >/etc/apt/sources.list.d/kakwalab-rpm-build-tools.list
 
 # Update repository indexes
 sudo apt update
 
-# Install the rpm building tools
+# Install mock
 sudo apt install mock
 ```
