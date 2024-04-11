@@ -1,4 +1,0 @@
-version=3
-opts="repacksuffix=+dfsg1,dversionmangle=s/\+dfsg\d*$//" \
-  http://rpm.org/download.html \
-  http://ftp.rpm.org/releases/rpm-[\d\.]+.x/rpm-([\d\.]+).tar.bz2

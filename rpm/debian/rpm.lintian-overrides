@@ -1,3 +1,0 @@
-# These are line wrapping erros not easy to fix
-rpm: manpage-has-errors-from-man usr/share/man/man8/rpm.8.gz * cannot adjust line
-rpm: manpage-has-errors-from-man usr/share/man/man8/rpmbuild.8.gz * cannot adjust line

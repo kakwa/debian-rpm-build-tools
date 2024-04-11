@@ -1,1 +1,0 @@
-Test-Command: zstd -b1 >/dev/null 2>&1

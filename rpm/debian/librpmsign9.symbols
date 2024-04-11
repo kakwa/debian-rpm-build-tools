@@ -1,3 +1,0 @@
-librpmsign.so.8 librpmsign8 #MINVER#
- rpmPkgDelSign@Base 4.14.0+dfsg1
- rpmPkgSign@Base 4.14.0+dfsg1

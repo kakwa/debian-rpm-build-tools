@@ -1,3 +1,0 @@
-zstd: binary-without-manpage usr/bin/zstdmt
-zstd: binary-without-manpage usr/bin/unzstd
-zstd: binary-without-manpage usr/bin/zstdcat
