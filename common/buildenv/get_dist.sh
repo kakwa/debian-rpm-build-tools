@@ -62,31 +62,5 @@ case $1 in
     echo 23.10:ubu:ubuntu-23.10; exit 0;;
   noble)
     echo 24.4:ubu:ubuntu-24.4; exit 0;;
-
-  # Fedora code names:
-  fc24)
-    echo 24:fc:fedora-24; exit 0;;
-  fc25)
-    echo 25:fc:fedora-25; exit 0;;
-  fc26)
-    echo 26:fc:fedora-26; exit 0;;
-  fc27)
-    echo 27:fc:fedora-27; exit 0;;
-  fc28)
-    echo 28:fc:fedora-28; exit 0;;
-  fc29)
-    echo 29:fc:fedora-29; exit 0;;
-  fc30)
-    echo 30:fc:fedora-30; exit 0;;
-  fc31)
-    echo 31:fc:fedora-31; exit 0;;
-  
-  # RHEL/CentOS code names:
-  el6)
-    echo 6:el:epel-6; exit 0;;
-  el7)
-    echo 7:el:epel-7; exit 0;;
-  el8)
-    echo 8:el:epel-8; exit 0;;
 esac
 echo 0:unk;
