@@ -1,0 +1,29 @@
+Source: @NAME@
+Section: misc
+Priority: extra
+Maintainer: @MAINTAINER@ <@MAINTAINER_EMAIL@>
+Build-Depends:
+ debhelper (>= 7.0.50~),
+ python3 | python3-all,
+ libglib2.0-dev, 
+ git,
+ libdbus-glib-1-dev,
+ libgtk2.0-dev,
+ libglib2.0-dev,
+ libnotify-dev,
+ libpython3-dev, 
+ libssl-dev,
+ python3-pytest,
+ python3-pytest-timeout,
+ python3-pytest-random-order,
+ dh-python,
+ rpm,
+ pkg-config
+Standards-Version: 3.8.4
+Homepage: @URL@
+
+Package: @NAME@
+Architecture: all
+Depends: ${misc:Depends}, python3-distro, python3-requests, rpm
+Description: @SUMMARY@ 
+ @DESCRIPTION@ 
