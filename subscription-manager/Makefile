@@ -39,6 +39,8 @@ LICENSE=GPLv2
 
 # example of source recovery url
 URL_SRC=$(URL)/archive/refs/tags/$(NAME)-$(UPSTREAM_VERSION)-$(UPSTREAM_RELEASE).tar.gz
+URL1_CERTS=https://raw.githubusercontent.com/candlepin/subscription-manager-rhsm-certificates/1ccb22ccef40cd6b12409f00ae8b3abebdfc00c5/etc-conf/redhat-entitlement-authority.pem
+URL2_CERTS=https://raw.githubusercontent.com/candlepin/subscription-manager-rhsm-certificates/1ccb22ccef40cd6b12409f00ae8b3abebdfc00c5/etc-conf/redhat-uep.pem
 
 # Including common rules and targets 
 include buildenv/Makefile.common
@@ -62,4 +64,6 @@ $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
 	mv $(BUILD_DIR)/tmp/subscription-manager-subscription-manager-$(UPSTREAM_VERSION)-$(UPSTREAM_RELEASE)/* $(SOURCE_DIR)
 	rm -rf $(BUILD_DIR)/tmp
 	rm -f $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
+	$(WGS) -u $(URL1_CERTS) -o $(SOURCE_DIR)/redhat-entitlement-authority.pem
+	$(WGS) -u $(URL2_CERTS) -o $(SOURCE_DIR)/redhat-uep.pem
 	$(SOURCE_TAR_CMD)
