@@ -22,9 +22,13 @@ override_dh_auto_build:
 
 override_dh_auto_test:
 
+PYTHON_VERSION := $(shell python3 -c "import sys; print(f'python{sys.version_info.major}.{sys.version_info.minor}')")
+
 override_dh_auto_install:
-	make install PYTHON=python3 OS_DIST=debian PREFIX=/usr/local DESTDIR=$(DEST) PYTHON_SITELIB=/usr/local/lib/python3.12/dist-packages
+	make install PYTHON=python3 OS_DIST=debian PREFIX=/usr/local DESTDIR=$(DEST) PYTHON_SITELIB=/usr/local/lib/$(PYTHON_VERSION)/dist-packages
 	mv $(DEST)/usr/local/*  $(DEST)/usr/
-	mkdir -p  $(DEST)/usr/lib/python3/
-	mv $(DEST)/usr/lib/python3.12/dist-packages $(DEST)/usr/lib/python3/dist-packages
+	mkdir -p $(DEST)/usr/lib/python3/
+	mv $(DEST)/usr/lib/$(PYTHON_VERSION)/dist-packages $(DEST)/usr/lib/python3/dist-packages
 	rmdir $(DEST)/usr/local/
+	mkdir -p $(DEST)/etc/rhsm/ca/
+	cp redhat-entitlement-authority.pem redhat-uep.pem $(DEST)/etc/rhsm/ca/

@@ -24,6 +24,6 @@ Homepage: @URL@
 
 Package: @NAME@
 Architecture: all
-Depends: ${misc:Depends}, python3-distro, python3-requests, rpm
+Depends: ${misc:Depends}, python3-distro, python3-requests, rpm, python3-iniparse
 Description: @SUMMARY@ 
  @DESCRIPTION@ 
