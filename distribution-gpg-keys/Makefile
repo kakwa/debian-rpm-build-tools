@@ -2,7 +2,7 @@
 NAME = distribution-gpg-keys
 
 # Version
-VERSION = 1.102
+VERSION = 1.108
 
 UPSTREAM_RELEASE = 1
 
