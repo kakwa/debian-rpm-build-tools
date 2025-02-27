@@ -2,7 +2,8 @@ Pakste
 ======
 
 Pakste simplifies the creation and maintenance of DEB and RPM packages and repositories.
-It provides a Makefile and Github Actions based workflow to build and publish packages across multiple Linux distributions.
+
+It provides a Makefile + Github Actions based workflow to build and publish packages across multiple Linux distributions.
 
 .. image:: https://readthedocs.org/projects/amkecpak/badge/?version=latest
     :target: http://amkecpak.readthedocs.org/en/latest/?badge=latest
