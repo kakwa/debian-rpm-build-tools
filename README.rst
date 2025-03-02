@@ -1,17 +1,15 @@
 Pakste
 ======
 
-Pakste simplifies the creation and maintenance of DEB and RPM packages and repositories.
+A Makefile-based packaging framework for building DEB and RPM package repositories.
 
-It provides a Makefile + Github Actions based workflow to build and publish packages across multiple Linux distributions.
+.. image:: https://github.com/kakwa/pakste/actions/workflows/docs.yml/badge.svg
+    :target: https://github.com/kakwa/pakste/actions/workflows/docs.yml
+    :alt: Documentation Build Status
 
-.. image:: https://readthedocs.org/projects/pakste/badge/?version=latest
-    :target: http://pakste.readthedocs.org/en/latest/?badge=latest
-    :alt: Documentation Status
-
-:Documentation: `ReadTheDocs <http://pakste.readthedocs.org/en/latest/>`_
+:Documentation: `GitHub Pages <https://kakwa.github.io/pakste/>`_
 :Repository:    `GitHub <https://github.com/kakwa/pakste>`_
-:Author:        Pierre-Francois Carpentier © 2017-2025
+:Author:        Pierre-Francois Carpentier - copyright © 2017-2023
 
 Build Dependencies
 ==================
