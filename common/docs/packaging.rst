@@ -1,8 +1,8 @@
 Package Creation
----------------
+================
 
 Overview
-========
+--------
 
 Creating a package involves these steps:
 
@@ -13,13 +13,13 @@ Creating a package involves these steps:
 5. Build the package
 
 Initializing a Package
-=====================
+----------------------
 
 Create a package skeleton:
 
 .. sourcecode:: bash
 
-    $ ./common/init_pkg.sh -n foo
+    ./common/init_pkg.sh -n foo
 
 This creates the following structure:
 
@@ -39,7 +39,7 @@ This creates the following structure:
     └── MANIFEST          # Checksums of upstream sources
 
 Configuring the Makefile
-=======================
+------------------------
 
 The Makefile contains package metadata and upstream source configuration:
 
@@ -47,19 +47,19 @@ The Makefile contains package metadata and upstream source configuration:
 
     # Package name
     NAME = foo
-    
+
     # Version
     VERSION = 1.0.0
-    
+
     # Revision number
     RELEASE = 1
-    
+
     # URL to upstream source
     URL_SRC = https://example.com/$(NAME)-$(VERSION).tar.gz
-    
+
     # Description
     DESCRIPTION = "Description of the package"
-    
+
     # License of the package
     LICENSE = "MIT"
 
@@ -67,22 +67,22 @@ The Makefile contains package metadata and upstream source configuration:
     # debian/control and rpm/component.spec
 
 Generating the MANIFEST
-=====================
+-----------------------
 
 After configuring the Makefile, generate the MANIFEST file:
 
 .. sourcecode:: bash
 
-    $ cd foo/
-    $ make manifest
+    cd foo/
+    make manifest
 
 This downloads the upstream source and creates a MANIFEST file with checksums.
 
 Distribution-Specific Configuration
-=================================
+-----------------------------------
 
 Debian Packaging
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 Edit the following files:
 
@@ -91,7 +91,7 @@ Edit the following files:
 * **debian/copyright**: Copyright and license information
 
 RPM Packaging
-~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 Edit the **rpm/component.spec** file to configure:
 
@@ -102,18 +102,18 @@ Edit the **rpm/component.spec** file to configure:
 * File ownership
 
 Building the Package
-==================
+--------------------
 
 After configuration, build the package:
 
 .. sourcecode:: bash
 
     # Build DEB package
-    $ make deb
-    
+    make deb
+
     # Build RPM package
-    $ make rpm
-    
+    make rpm
+
     # Build in chroot for specific distribution
-    $ make deb_chroot DIST=bullseye
-    $ make rpm_chroot DIST=el9
+    make deb_chroot DIST=bullseye
+    make rpm_chroot DIST=el9

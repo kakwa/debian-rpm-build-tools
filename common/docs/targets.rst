@@ -1,18 +1,18 @@
 Makefile Reference
-------------------
+==================
 
 This page documents the main Makefile targets and variables available in Pakste.
 
 Package Initialization
-=====================
+----------------------
 
 .. sourcecode:: bash
 
     # Initialize a new package
-    $ ./common/init_pkg.sh -n <PKG_NAME>
+    ./common/init_pkg.sh -n <PKG_NAME>
 
 Common Targets
-==============
+--------------
 
 .. list-table::
    :header-rows: 1
@@ -37,7 +37,7 @@ Common Targets
      - When set to ``true``, keeps downloaded sources during clean
 
 Package Building Targets
-========================
+------------------------
 
 .. list-table::
    :header-rows: 1
@@ -66,9 +66,13 @@ Package Building Targets
    * - ``DIST``
      - *none*
      - Target distribution codename (e.g., bullseye, el9)
+   * - ``ARCH``
+     - host arch
+     - Target Architecture
+
 
 Repository Targets
-==================
+------------------
 
 .. list-table::
    :header-rows: 1
@@ -91,26 +95,29 @@ Repository Targets
    * - ``DIST``
      - *none*
      - Target distribution codename (e.g., bullseye, el9)
+   * - ``ARCH``
+     - host arch
+     - Target Architecture
    * - ``ERROR``
      - *none*
      - Set to ``skip`` to continue building repos despite package failures
 
 Examples
-========
+--------
 
 .. sourcecode:: bash
 
-    # Build a DEB package in a chroot for Debian Bullseye
-    $ make deb_chroot DIST=bullseye
+    # Build a DEB package in a chroot for Debian Trixie & arm64
+    make deb_chroot DIST=trixie ARCH=arm64
 
     # Build an RPM package in a chroot for RHEL 9
-    $ make rpm_chroot DIST=el9
+    make rpm_chroot DIST=el9
 
     # Build a complete DEB repository with parallel jobs
-    $ make deb_repo -j4 DIST=bullseye
+    make deb_repo -j4 DIST=bullseye
 
     # Build a complete RPM repository, continuing on errors
-    $ make rpm_repo DIST=el9 ERROR=skip
+    make rpm_repo DIST=el9 ERROR=skip
 
     # Clean but keep downloaded sources
-    $ make clean KEEP_CACHE=true
+    make clean KEEP_CACHE=true

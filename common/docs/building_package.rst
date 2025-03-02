@@ -13,25 +13,25 @@ Building Packages
 
 .. sourcecode:: bash
 
-    $ cd <package-directory>
-    $ make rpm_chroot DIST=el9  # Replace with target 
-      
+    cd <package-directory>
+    make rpm_chroot DIST=el9  # Replace with target
+
     # Results:
-    $ ls out/           # Binary package
-    $ ls src-out/       # Source package  
-    
- 
+    ls out/           # Binary package
+    ls src-out/       # Source package
+
+
 .deb Packages
 -------------
 
 .. sourcecode:: bash
 
-    $ cd <package-directory>
-    $ make deb_chroot DIST=bullseye  # Replace with target 
-        
+    cd <package-directory>
+    make deb_chroot DIST=bullseye  # Replace with target
+
     # Results:
-    $ ls out/           # Binary package
-    $ ls src-out/       # Source package
+    ls out/           # Binary package
+    ls src-out/       # Source package
 
 Clean
 -----
@@ -39,11 +39,11 @@ Clean
 .. sourcecode:: bash
 
     # Clean everything
-    $ make clean
+    make clean
 
     # Clean but keep upstream sources
-    $ make clean KEEP_CACHE=true
- 
+    make clean KEEP_CACHE=true
+
 
 Additional Setup
 ================
@@ -70,7 +70,7 @@ If you get errors like `E: Release signed by unknown key (key id EF0F382A1A7B650
 
 .. sourcecode:: bash
 
-    $ sudo apt install ubuntu-keyring debian-archive-keyring ubuntu-archive-keyring debian-keyring
+    sudo apt install ubuntu-keyring debian-archive-keyring ubuntu-archive-keyring debian-keyring
 
 TMPFS/RAMFS
 -----------
@@ -82,8 +82,8 @@ One-time mount:
 .. sourcecode:: bash
 
     # Mount tmpfs (as root)
-    $ mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/   # For cowbuilder/DEB builds
-    $ mount -t tmpfs -o size=16G tmpfs /var/lib/mock          # For mock/RPM builds
+    mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/   # For cowbuilder/DEB builds
+    mount -t tmpfs -o size=16G tmpfs /var/lib/mock          # For mock/RPM builds
 
 fstab:
 

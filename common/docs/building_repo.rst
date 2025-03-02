@@ -11,17 +11,17 @@ Configure repository metadata in **Makefile.config**:
     # Maintainer information
     MAINTAINER := Name of the Maintainer
     MAINTAINER_EMAIL := somebody@example.com
-    
+
     # Organization information
     PKG_ORG := or                # Short ID (2-3 letters)
     PKG_ORIGIN := organization   # Full name
-    
+
     # GPG signing key
     GPG_KEY := GPG_SIGNKEY
-    
+
     # Repository components
     DEB_REPO_COMPONENT := main   # main/contrib/non-free/etc
-    
+
     # Debian repository configuration
     define DEB_REPO_CONFIG
     Origin: $(PKG_ORIGIN)
@@ -34,7 +34,7 @@ Configure repository metadata in **Makefile.config**:
     Description: Repository containing misc packages
     SignWith: $(GPG_KEY)
     endef
-    
+
     export DEB_REPO_CONFIG
 
 GPG Key
@@ -71,7 +71,7 @@ Preparation
 
     # Optional: Clean everything before building
     make clean
-    
+
     # Optional: Clean but keep upstream sources
     make clean KEEP_CACHE=true
 
@@ -82,10 +82,10 @@ Building DEB Repository
 
     # Build for specific distribution
     make deb_repo DIST=bullseye
-    
+
     # Build with parallel jobs
     make deb_repo -j4 DIST=bullseye
-    
+
     # Continue on package build failures
     make deb_repo DIST=bullseye ERROR=skip
 

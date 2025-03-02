@@ -13,18 +13,24 @@ It provides a Makefile + Github Actions based workflow to build and publish pack
 :Repository:    `GitHub <https://github.com/kakwa/pakste>`_
 :Author:        Pierre-Francois Carpentier © 2017-2025
 
-Prerequisites
--------------
+Build Dependencies
+==================
 
 Install the required packaging tools for your distribution.
 
-Debian/Ubuntu:
+.. note::
+
+    If building locally (`make rpm` or `make deb`) you also need to install the build dependencies.
+
+Debian/Ubuntu
+-------------
 
 .. sourcecode:: bash
 
     apt-get install make debhelper reprepro cowbuilder wget
 
-RHEL/CentOS/Fedora:
+RHEL/CentOS/Fedora
+------------------
 
 .. sourcecode:: bash
 
@@ -34,15 +40,15 @@ RHEL/CentOS/Fedora:
 
     rpm build tools are also available `here for Debian/Ubuntu <https://github.com/kakwa/debian-rpm-build-tools?tab=readme-ov-file#repository>`_
 
-To build cross-arch:
+To build cross-arch
+-------------------
 
 .. sourcecode:: bash
 
     apt install binfmt-support qemu qemu-system-arm
 
-.. note::
-
-    If building locally (`make rpm` or `make deb`) you also need to install the build dependencies.
+Quick Reference
+===============
 
 Package Creation
 ----------------
