@@ -1,8 +1,8 @@
-Repository Management
----------------------
+Repository
+==========
 
 Configuration
-=============
+-------------
 
 Configure repository metadata in **Makefile.config**:
 
@@ -37,8 +37,32 @@ Configure repository metadata in **Makefile.config**:
     
     export DEB_REPO_CONFIG
 
+GPG Key
+-------
+
+Packages are signed with a GPG key. Here are essential commands for key management:
+
+.. sourcecode:: bash
+
+    # Generate a new GPG key
+    gpg --gen-key
+
+    # List available keys
+    gpg -K
+
+    # Export private key (for multiple build hosts)
+    gpg --export-secret-key -a "Your Name" > private.gpg
+
+    # Import private key on another system
+    gpg --import private.gpg
+
+    # Import public key into apt (for testing)
+    cat public.gpg | apt-key add -
+
+    gpg --export-secret-key -a "kakwa" > priv.gpg
+
 Building Repositories
-=====================
+---------------------
 
 Preparation
 ~~~~~~~~~~~
@@ -46,10 +70,10 @@ Preparation
 .. sourcecode:: bash
 
     # Optional: Clean everything before building
-    $ make clean
+    make clean
     
     # Optional: Clean but keep upstream sources
-    $ make clean KEEP_CACHE=true
+    make clean KEEP_CACHE=true
 
 Building DEB Repository
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,13 +81,13 @@ Building DEB Repository
 .. sourcecode:: bash
 
     # Build for specific distribution
-    $ make deb_repo DIST=bullseye
+    make deb_repo DIST=bullseye
     
     # Build with parallel jobs
-    $ make deb_repo -j4 DIST=bullseye
+    make deb_repo -j4 DIST=bullseye
     
     # Continue on package build failures
-    $ make deb_repo DIST=bullseye ERROR=skip
+    make deb_repo DIST=bullseye ERROR=skip
 
 Building RPM Repository
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,14 +95,14 @@ Building RPM Repository
 .. sourcecode:: bash
 
     # Build for specific distribution
-    $ make rpm_repo -j4 DIST=el9
+    make rpm_repo -j4 DIST=el9
 
 Publishing Repositories
-=======================
+-----------------------
 
 The repositories can be published via HTTP server or other methods:
 
 .. sourcecode:: bash
 
     # Example: Copy to web server
-    $ rsync -avz out/ user@server:/var/www/repos/
+    rsync -avz out/ user@server:/var/www/repos/

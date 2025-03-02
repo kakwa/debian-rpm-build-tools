@@ -1,14 +1,14 @@
-Pakste Documentation
-====================
+.. include:: ../../README.rst
+
+Table Of Content
+================
 
 .. toctree::
    :maxdepth: 2
 
-   tools
-   cheatsheet
-   init_package
+   targets
+   packaging
    building_package
    building_repo
-   misc
 
-.. include:: ../../README.rst
+

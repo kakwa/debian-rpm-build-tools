@@ -1,30 +1,4 @@
 Building Packages
-----------------
-
-Workflow Overview
-=================
-
-.. figure:: img/pkg_diagram.png
-    :scale: 80
-
-* **Orange steps**: Common for all packages (do not modify)
-* **Green steps**: Package-specific (customize for each package)
-
-Basic Operations
-================
-
-Cleaning
-~~~~~~~~
-
-.. sourcecode:: bash
-
-    # Clean everything
-    $ make clean
-
-    # Clean but keep upstream sources
-    $ make clean KEEP_CACHE=true
- 
-Building Packages
 =================
 
 .. note::
@@ -34,8 +8,8 @@ Building Packages
     You can also build packages locally on the host system using
     the `make deb` or `make rpm` targets provided you have the necessary build dependencies installed.
 
-RPM Packages
-~~~~~~~~~~~~
+.rpm Packages
+-------------
 
 .. sourcecode:: bash
 
@@ -47,8 +21,8 @@ RPM Packages
     $ ls src-out/       # Source package  
     
  
-DEB Packages
-~~~~~~~~~~~~
+.deb Packages
+-------------
 
 .. sourcecode:: bash
 
@@ -59,35 +33,47 @@ DEB Packages
     $ ls out/           # Binary package
     $ ls src-out/       # Source package
 
+Clean
+-----
+
+.. sourcecode:: bash
+
+    # Clean everything
+    $ make clean
+
+    # Clean but keep upstream sources
+    $ make clean KEEP_CACHE=true
+ 
+
 Additional Setup
 ================
 
-Sudoers configuration
-~~~~~~~~~~~~~~~~~~~~~
+Sudoers Configuration
+---------------------
 
-    Building in chroot requires root permission.
+Building in chroot requires root permission.
 
-    If **make deb_chroot** is run as a standard user, **sudo** will be used for cowbuilder calls.
+If **make deb_chroot** is run as a standard user, **sudo** will be used for cowbuilder calls.
 
-    If you want to avoid password promt add the following line to the sudoers configuration:
+If you want to avoid password promt add the following line to the sudoers configuration:
 
-    .. sourcecode:: bash
+.. sourcecode:: bash
 
-        # replace build-user with the user used to generate the packages
-        build-user ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
+    # replace build-user with the user used to generate the packages
+    build-user ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
 
-GPG Signing keys
+Signing keys
 
-    Cowbuilder requires the GPG keys of the targeted DIST.
+Cowbuilder requires the GPG keys of the targeted DIST.
 
-    If you get errors like `E: Release signed by unknown key (key id EF0F382A1A7B6500)`, try installing the keyrings:
+If you get errors like `E: Release signed by unknown key (key id EF0F382A1A7B6500)`, try installing the keyrings:
 
-    .. sourcecode:: bash
+.. sourcecode:: bash
 
-        $ sudo apt install ubuntu-keyring debian-archive-keyring ubuntu-archive-keyring debian-keyring
+    $ sudo apt install ubuntu-keyring debian-archive-keyring ubuntu-archive-keyring debian-keyring
 
 TMPFS/RAMFS
-~~~~~~~~~~~ 
+-----------
 
 If you have RAM to spare, using tmpfs mounts can significantly accelerate the build process.
 
@@ -108,15 +94,15 @@ fstab:
     tmpfs /var/lib/mock tmpfs defaults,size=16G 0 0           # For mock/RPM builds
 
 Building for fossil distributions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
-    Modern distributions disable the syscall **vsyscall** used by older libc versions (RHEL <= 6, Debian <= 7).
+Modern distributions disable the syscall **vsyscall** used by older libc versions (RHEL <= 6, Debian <= 7).
 
-    You will see  errors like the following in **dmesg**:
+You will see  errors like the following in **dmesg**:
 
-    .. sourcecode:: bash
+.. sourcecode:: bash
 
-        [  578.456176] sh[15402]: vsyscall attempted with vsyscall=none ip:ffffffffff600400 cs:33 sp:7ffd469c5aa8 ax:ffffffffff600400 si:7ffd469c6f23 di:0
-        [  578.456180] sh[15402]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007ffd469c5aa8 error 15
+    [  578.456176] sh[15402]: vsyscall attempted with vsyscall=none ip:ffffffffff600400 cs:33 sp:7ffd469c5aa8 ax:ffffffffff600400 si:7ffd469c6f23 di:0
+    [  578.456180] sh[15402]: segfault at ffffffffff600400 ip ffffffffff600400 sp 00007ffd469c5aa8 error 15
 
-    To work around this issue, add the **vsyscall=emulate** option in the kernel command line.
+To work around this issue, add the **vsyscall=emulate** option in the kernel command line.
