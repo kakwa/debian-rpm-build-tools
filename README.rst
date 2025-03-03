@@ -5,7 +5,7 @@ A Makefile-based packaging framework for building DEB and RPM package repositori
 
 .. image:: https://github.com/kakwa/pakste/actions/workflows/docs.yml/badge.svg
     :target: https://github.com/kakwa/pakste/actions/workflows/docs.yml
-    :alt: Documentation Build Status
+    :alt: Documentation
 
 :Documentation: `GitHub Pages <https://kakwa.github.io/pakste/>`_
 :Repository:    `GitHub <https://github.com/kakwa/pakste>`_
@@ -114,5 +114,9 @@ Build repositories (use -j N for parallel builds):
 .. sourcecode:: bash
 
     # From the root of the repository
-    make deb_repo -j 4 DIST=trixie # Debian repository
-    make rpm_repo -j 4 DIST=el9    # RPM repository
+
+    # Debian repository
+    make deb_repo -j 4 DIST=trixie
+
+    # RPM repository
+    make rpm_repo -j 4 DIST=el9
