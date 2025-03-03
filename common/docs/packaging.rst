@@ -160,13 +160,6 @@ Distribution-Specific Packaging
 
 Past this point, the packaging is pretty much .deb or .rpm vanilla packaging (with a bit of templating).
 
-Just follow the packaging documentation of each distribution:
-
-Distribution-Specific Packaging
--------------------------------
-
-Past this point, the packaging is pretty much .deb or .rpm vanilla packaging (with a bit of templating).
-
 Just follow the packaging documentation of each distribution & the usual standards:
 
 - **Filesystem Layout**: `Filesystem Hierarchy Standard <https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard>`_
