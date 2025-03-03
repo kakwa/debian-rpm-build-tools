@@ -1,7 +1,7 @@
 Makefile Reference
 ==================
 
-This page documents the main Makefile targets and variables available in Pakste.
+This page documents the main Makefile targets and variables available in Pakste at the individual package level and the repo level.
 
 Package Initialization
 ----------------------
@@ -16,13 +16,16 @@ Common Targets
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 15 65
 
    * - Target
+     - Level
      - Description
    * - ``help``
+     - package & repo/root
      - Display available targets and their descriptions
    * - ``clean``
+     - package & repo/root
      - Remove all build artifacts and directories
 
 .. list-table::
@@ -41,19 +44,25 @@ Package Building Targets
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 15 65
 
    * - Target
+     - Level
      - Description
    * - ``manifest``
+     - package
      - Create or update the MANIFEST file with source archive checksums
    * - ``deb``
+     - package
      - Build DEB package locally (requires build dependencies)
    * - ``rpm``
+     - package
      - Build RPM package locally (requires build dependencies)
    * - ``deb_chroot``
+     - package & repo/root
      - Build DEB package in a clean chroot environment
    * - ``rpm_chroot``
+     - package & repo/root
      - Build RPM package in a clean chroot environment
 
 .. list-table::
@@ -67,23 +76,25 @@ Package Building Targets
      - *none*
      - Target distribution codename (e.g., bullseye, el9)
    * - ``ARCH``
-     - host arch
-     - Target Architecture
-
+     - host architecture
+     - Target Architecture (e.g., arm64, riscv64, amd64)
 
 Repository Targets
 ------------------
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 15 65
 
    * - Target
+     - Level
      - Description
    * - ``deb_repo``
-     - Build a complete DEB repository for a distribution
+     - repo/root
+     - Build a complete .deb repository for a distribution & architecture
    * - ``rpm_repo``
-     - Build a complete RPM repository for a distribution
+     - repo/root
+     - Build a complete .rpm repository for a distribution & architecture
 
 .. list-table::
    :header-rows: 1
@@ -96,8 +107,8 @@ Repository Targets
      - *none*
      - Target distribution codename (e.g., bullseye, el9)
    * - ``ARCH``
-     - host arch
-     - Target Architecture
+     - host architecture
+     - Target Architecture (e.g., arm64, riscv64, amd64)
    * - ``ERROR``
      - *none*
      - Set to ``skip`` to continue building repos despite package failures

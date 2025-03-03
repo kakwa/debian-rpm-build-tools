@@ -1,3 +1,5 @@
+.. intro
+
 Pakste
 ======
 
@@ -7,9 +9,20 @@ Pakste
 
 A Makefile-based packaging framework for building DEB and RPM package repositories.
 
-:Documentation: `GitHub Pages <https://kakwa.github.io/pakste/>`_
-:Repository:    `GitHub <https://github.com/kakwa/pakste>`_
-:Author:        Pierre-Francois Carpentier - copyright © 2017-2023
+
+.. list-table::
+   :header-rows: 0
+   :widths: 100 100
+
+   * - Documentation
+     - `GitHub Pages <https://kakwa.github.io/pakste/>`_
+   * - Repository
+     - `GitHub <https://github.com/kakwa/pakste>`_
+   * - Author
+     - kakwalab ©
+
+
+.. build_deps_start
 
 Build Dependencies
 ==================
@@ -44,6 +57,8 @@ To build cross-arch
 .. sourcecode:: bash
 
     apt install binfmt-support qemu qemu-system-arm
+
+.. quick_ref
 
 Quick Reference
 ===============
