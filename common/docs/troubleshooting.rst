@@ -14,6 +14,9 @@ If you want to avoid password promt add the following line to the sudoers config
 
     # replace build-user with the user used to generate the packages
     build-user ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
+    build-user ALL=(ALL) NOPASSWD: /usr/sbin/mock
+    build-user ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/cache/pbuilder/*
+    build-user ALL=(ALL) NOPASSWD: /usr/bin/rm -rf -- /var/cache/pbuilder/*
 
 Repository Key Issues
 ---------------------

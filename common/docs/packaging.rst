@@ -19,7 +19,7 @@ Create a package skeleton:
 
 .. sourcecode:: bash
 
-    ./common/init_pkg.sh -n foo
+    ./common/init_pkg.sh -n mk-sh-skel
 
 This creates the following structure:
 
@@ -38,24 +38,24 @@ This creates the following structure:
     ├── Makefile          # Package metadata and build configuration
     └── MANIFEST          # Checksums of upstream sources
 
-Configuring the Makefile
-------------------------
+Package Metadata
+----------------
 
 The Makefile contains package metadata and upstream source configuration:
 
 .. sourcecode:: make
 
     # Package name
-    NAME = foo
+    NAME = mk-sh-skel
 
     # Version
     VERSION = 1.0.0
 
+    # URL of the project
+    URL = https://github.com/kakwa/mk-sh-skel
+
     # Revision number
     RELEASE = 1
-
-    # URL to upstream source
-    URL_SRC = https://example.com/$(NAME)-$(VERSION).tar.gz
 
     # Description
     DESCRIPTION = "Description of the package"
@@ -63,57 +63,114 @@ The Makefile contains package metadata and upstream source configuration:
     # License of the package
     LICENSE = "MIT"
 
-    # Build dependencies and package dependencies are defined in
-    # debian/control and rpm/component.spec
+    # URL to upstream source
+    URL_SRC = $(URL)/archive/$(VERSION).tar.gz
+
+Source Recovery & Preparation
+-----------------------------
+
+From there, you can add the upstream source recovery.
+
+Using wget + checksum tool:
+
+.. sourcecode:: make
+
+    # example of source recovery url
+    URL_SRC=$(URL)/archive/$(VERSION).tar.gz
+    
+    # Basic source archive recovery,
+    # this works fine if upstream is clean
+    $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
+        $(WGS) -u $(URL_SRC) -o $(SOURCE_ARCHIVE)
+
+Using git + checksum tool:
+
+.. sourcecode:: make
+
+    URL=https://github.com/kakwa/mk-sh-skel
+    
+    REVISION=dac9e68d96d5d7de9854728dd08f7824d1376eb2
+    
+    # Example of simple recovery, with good upstream
+    $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
+        $(GS) -u $(URL) -o $(SOURCE_ARCHIVE) -r $(REVISION)
+
+It is also possible to manually tweak the archive if necessary (leveraging ``$(SOURCE_DIR)`` and ``$(SOURCE_TAR_CMD)``):
+
+.. sourcecode:: make
+
+    # Example of upstream debian/ packaging removal
+    $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
+        $(WGS) -u $(URL_SRC) -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
+        mkdir -p $(BUILD_DIR)/tmp
+        tar -vxf $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz -C $(BUILD_DIR)/tmp
+        rm -rf $(BUILD_DIR)/tmp/$(NAME)-$(VERSION)/debian
+        mv $(BUILD_DIR)/tmp/$(NAME)-$(VERSION)/* $(SOURCE_DIR)
+        rm -rf $(BUILD_DIR)/tmp
+        rm -f $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
+        $(SOURCE_TAR_CMD)
 
 Generating the MANIFEST
 -----------------------
 
-After configuring the Makefile, generate the MANIFEST file:
+After configuring the Makefile, and whenever you update the upstream version, (re)generate the MANIFEST file:
 
 .. sourcecode:: bash
 
-    cd foo/
     make manifest
 
-This downloads the upstream source and creates a MANIFEST file with checksums.
+This downloads the upstream source and creates a MANIFEST file with checksums to ensure upstream is not doing something iffy.
 
-Distribution-Specific Configuration
------------------------------------
+.. note::
 
-Debian Packaging
-~~~~~~~~~~~~~~~~
+    In case of checksum error, an error like the following one will be displayed:
 
-Edit the following files:
+    .. sourcecode:: bash
 
-* **debian/control**: Package metadata and dependencies
-* **debian/rules**: Build instructions
-* **debian/copyright**: Copyright and license information
+        [ERROR] Bad checksum for 'https://github.com/kakwa/mk-sh-skel/archive/1.0.0.tar.gz'
+        expected: 2cdeaa0cd4ddf624b5bc7ka5dbdeb4c3dbe77df09eb58bac7621ee7b
+        got:      1cdea044ddf624b5bc7465dbdeb4c3dbe77df09eb58bac7621ee7b64
+        Makefile:38: recipe for target 'builddir/mk-sh-skel_1.0.0.orig.tar.gz' failed
+        make: *** [builddir/mk-sh-skel_1.0.0.orig.tar.gz] Error 1
 
-RPM Packaging
-~~~~~~~~~~~~~
+Skipping Version
+----------------
 
-Edit the **rpm/component.spec** file to configure:
+To skip certain versions:
 
-* Package metadata
-* Build and runtime dependencies
-* Build instructions
-* Installation steps
-* File ownership
+.. sourcecode:: make
 
-Building the Package
---------------------
+    # Skip builds for Debian < 9, All RHEL versions, Fedora > 40, Ubuntu <= 18.4
+    SKIP=<:deb:9 >=:el:0 >:fc:40 <=:ubu:18.4
 
-After configuration, build the package:
+Version Specific Packaging
+--------------------------
+
+If necessary, you can override any packaging file on a per distribution basis. Simply use the ``<FILE>.dist.<DIST>`` to override a default ``<FILE>``.
+
+For example:
 
 .. sourcecode:: bash
 
-    # Build DEB package
-    make deb
+    debian/control             # will be used as default
+    debian/control.dist.buster # will be used if build is called with DIST=buster
 
-    # Build RPM package
-    make rpm
+Distribution-Specific Packaging
+-------------------------------
 
-    # Build in chroot for specific distribution
-    make deb_chroot DIST=bullseye
-    make rpm_chroot DIST=el9
+Past this point, the packaging is pretty much .deb or .rpm vanilla packaging (with a bit of templating).
+
+Just follow the packaging documentation of each distribution:
+
+Distribution-Specific Packaging
+-------------------------------
+
+Past this point, the packaging is pretty much .deb or .rpm vanilla packaging (with a bit of templating).
+
+Just follow the packaging documentation of each distribution & the usual standards:
+
+- **Filesystem Layout**: `Filesystem Hierarchy Standard <https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard>`_
+- **Debian Reference**: `Debian Policy Manual <https://www.debian.org/doc/debian-policy/index.html>`_
+- **Debian/Ubuntu (.deb) Packaging**: `Debian New Maintainers' Guide <https://www.debian.org/doc/manuals/maint-guide/>`_
+- **Fedora/RHEL/CentOS (.rpm) Packaging**: `Fedora Packaging Guidelines <https://docs.fedoraproject.org/en-US/packaging-guidelines/>`_
+- **openSUSE (.rpm) Packaging**: `openSUSE Packaging Guide <https://en.opensuse.org/Portal:Packaging>`_

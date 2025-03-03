@@ -40,8 +40,8 @@ Debian/Ubuntu
 
     apt-get install make debhelper reprepro cowbuilder wget
 
-RHEL/CentOS/Fedora
-------------------
+RHEL/Rocky/Fedora
+-----------------
 
 .. sourcecode:: bash
 
@@ -54,9 +54,17 @@ RHEL/CentOS/Fedora
 To build cross-arch
 -------------------
 
+Debian/Ubuntu:
+
 .. sourcecode:: bash
 
-    apt install binfmt-support qemu qemu-system-arm
+    apt install binfmt-support qemu qemu-system-arm qemu-system-riscv
+
+RHEL/Rocky/Fedora:
+
+.. sourcecode:: bash
+
+    dnf install qemu-user-binfmt qemu-system-riscv qemu-system-aarch64
 
 .. quick_ref
 

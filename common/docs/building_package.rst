@@ -16,10 +16,11 @@ Building .rpm Packages
     cd <package-directory>
     make rpm_chroot DIST=el9  # Replace with target
 
-    # Results:
-    ls out/           # Binary package
-    ls src-out/       # Source package
-
+    tree *out
+    out
+    └── mk-sh-skel-0.0.1-1.amk+el9.noarch.rpm
+    src-out
+    └── mk-sh-skel-0.0.1-1.amk+el9.src.rpm
 
 Building .deb Packages
 ----------------------
@@ -29,9 +30,16 @@ Building .deb Packages
     cd <package-directory>
     make deb_chroot DIST=bullseye  # Replace with target
 
-    # Results:
-    ls out/           # Binary package
-    ls src-out/       # Source package
+    tree *out
+    out
+    └── mk-sh-skel_0.0.1-1~amk+deb13_all.deb
+    src-out
+    ├── mk-sh-skel_0.0.1-1~amk+deb13_amd64.buildinfo
+    ├── mk-sh-skel_0.0.1-1~amk+deb13_amd64.changes
+    ├── mk-sh-skel_0.0.1-1~amk+deb13.debian.tar.xz
+    ├── mk-sh-skel_0.0.1-1~amk+deb13.dsc
+    ├── mk-sh-skel_0.0.1-1~amk+deb13_source.changes
+    └── mk-sh-skel_0.0.1.orig.tar.gz
 
 Clean
 -----
