@@ -28,7 +28,7 @@ Building .deb Packages
 .. sourcecode:: bash
 
     cd <package-directory>
-    make deb_chroot DIST=bullseye  # Replace with target
+    make deb_chroot DIST=trixie  # Replace with target
 
     tree *out
     out
