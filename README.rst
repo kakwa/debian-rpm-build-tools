@@ -19,7 +19,7 @@ A Makefile-based packaging framework for building DEB and RPM package repositori
    * - Repository
      - `GitHub <https://github.com/kakwa/pakste>`_
    * - Author
-     - kakwalab ©
+     - kakwalab © 2025
 
 
 .. build_deps_start
