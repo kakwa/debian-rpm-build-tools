@@ -3,7 +3,7 @@ MAINTAINER       := anonymous
 MAINTAINER_EMAIL := anonymous@dev
 
 # Package Origin Configuration
-PKG_ORG         := amk
+PKG_ORG         := pak
 PKG_ORIGIN      := anonymous@dev
 GPG_KEY         :=
 

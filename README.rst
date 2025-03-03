@@ -130,6 +130,7 @@ One time setup:
     gpg --gen-key
 
     # Configure repository settings
+    cp Makefile.config.ex Makefile.config
     vim Makefile.config
 
 Build repositories (use -j N for parallel builds):
