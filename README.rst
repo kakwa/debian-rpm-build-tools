@@ -58,13 +58,13 @@ Debian/Ubuntu:
 
 .. sourcecode:: bash
 
-    apt install binfmt-support qemu qemu-system-arm qemu-system-riscv
+    apt install binfmt-support qemu qemu-system-arm qemu-system-riscv # customize with your arch
 
 RHEL/Rocky/Fedora:
 
 .. sourcecode:: bash
 
-    dnf install qemu-user-binfmt qemu-system-riscv qemu-system-aarch64
+    dnf install qemu-user-binfmt qemu-system-riscv qemu-system-aarch64 # customize with your arch
 
 .. quick_ref
 
