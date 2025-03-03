@@ -4,7 +4,12 @@ Repository
 Configuration
 -------------
 
-Configure repository metadata in **Makefile.config**:
+Create **Makefile.config** and set the repository metadata:
+
+.. sourcecode:: bash
+
+   # copy configuration example
+   cp Makefile.config.ex Makefile.config
 
 .. sourcecode:: make
 
@@ -44,6 +49,8 @@ Packages are signed with a GPG key. Here are essential commands for key manageme
 
 .. sourcecode:: bash
 
+    GPG_KEY="GPG_SIGNKEY"
+
     # Generate a new GPG key
     gpg --gen-key
 
@@ -51,15 +58,17 @@ Packages are signed with a GPG key. Here are essential commands for key manageme
     gpg -K
 
     # Export private key (for multiple build hosts)
-    gpg --export-secret-key -a "Your Name" > private.gpg
+    gpg --export-secret-key -a "${GPG_KEY}" > priv.gpg
 
     # Import private key on another system
-    gpg --import private.gpg
+    gpg --import priv.gpg
+
+    # Export public key
+    gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export "${GPG_KEY}"
 
     # Import public key into apt (for testing)
     cat public.gpg | apt-key add -
 
-    gpg --export-secret-key -a "kakwa" > priv.gpg
 
 Building Repositories
 ---------------------
