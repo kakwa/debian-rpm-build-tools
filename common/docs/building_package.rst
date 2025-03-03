@@ -45,11 +45,11 @@ Clean
     make clean KEEP_CACHE=true
 
 
-Additional Setup
-================
+Optional Setup
+--------------
 
 Sudoers Configuration
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 Building in chroot requires root permission.
 
@@ -63,6 +63,7 @@ If you want to avoid password promt add the following line to the sudoers config
     build-user ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
 
 Signing keys
+~~~~~~~~~~~~
 
 Cowbuilder requires the GPG keys of the targeted DIST.
 

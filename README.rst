@@ -1,11 +1,11 @@
 Pakste
 ======
 
-A Makefile-based packaging framework for building DEB and RPM package repositories.
-
 .. image:: https://github.com/kakwa/pakste/actions/workflows/docs.yml/badge.svg
-    :target: https://github.com/kakwa/pakste/actions/workflows/docs.yml
+    :target: https://kakwa.github.io/pakste/
     :alt: Documentation
+
+A Makefile-based packaging framework for building DEB and RPM package repositories.
 
 :Documentation: `GitHub Pages <https://kakwa.github.io/pakste/>`_
 :Repository:    `GitHub <https://github.com/kakwa/pakste>`_
