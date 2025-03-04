@@ -9,7 +9,6 @@ Pakste
 
 A Makefile-based packaging framework for building DEB and RPM package repositories.
 
-
 .. list-table::
    :header-rows: 0
    :widths: 100 100
@@ -20,7 +19,8 @@ A Makefile-based packaging framework for building DEB and RPM package repositori
      - `GitHub <https://github.com/kakwa/pakste>`_
    * - Author
      - kakwalab © 2025
-
+   * - License
+     - MIT
 
 .. build_deps_start
 
