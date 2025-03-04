@@ -95,9 +95,7 @@ Updating pakste:
 
 .. sourcecode:: bash
 
-    git remote add pakste-upstream https://github.com/kakwa/pakste
-    git fetch pakste-upstream
-    git merge pakste-upstream/main
+    make update
 
 Package Creation
 ----------------

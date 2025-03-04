@@ -268,7 +268,7 @@ clean: clean_pkg clean_repo
 .PHONY: internal_deb_repo rpm deb deb_repo rpm_repo export_key\
   clean_pkg clean_repo clean_rpm_repo help \
   deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist \
-  rpm_repo rpm_chroot_internal rpm_chroot
+  rpm_repo rpm_chroot_internal rpm_chroot update
 
 # Help Target
 # ----------------------------------------------------------------------------
@@ -293,3 +293,8 @@ endef
 export MAKE_HELP_MAIN
 help:
 	@echo "$$MAKE_HELP_MAIN"
+
+update:
+	@git remote add pakste-upstream https://github.com/kakwa/pakste
+	@git fetch pakste-upstream
+	@git merge pakste-upstream/main
