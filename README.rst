@@ -71,6 +71,34 @@ RHEL/Rocky/Fedora:
 Quick Reference
 ===============
 
+Repository Initialization
+-------------------------
+
+Create a bare repo and run the following:
+
+.. sourcecode:: bash
+
+    # Set with the bar 
+    REPO_URL=git@github.com:user/your-awesome-packages
+
+
+    REPO_DIR=$(basename ${REPO_URL} | sed 's/\.git$//')
+
+    git clone https://github.com/kakwa/pakste "$REPO_DIR"
+    cd "${REPO_DIR}"
+
+    git remote remove origin
+    git remote add origin $REPO_URL
+
+    git push origin main
+
+Updating pakste:
+
+.. sourcecode:: bash
+
+    git remote add pakste-upstream https://github.com/kakwa/pakste
+    git merge pakste-upstream/main
+
 Package Creation
 ----------------
 
