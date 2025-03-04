@@ -17,8 +17,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  check_repo:
+    runs-on: ubuntu-latest
+    outputs:
+      is_main_repo: ${{ steps.check.outputs.is_main_repo }}
+    steps:
+      - id: check
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == "kakwa/pakste" ]]; then
+            echo "is_main_repo=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main_repo=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Repository: $GITHUB_REPOSITORY"
+
   build:
-    if: github.ref == 'refs/heads/main'
+    needs: check_repo
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
