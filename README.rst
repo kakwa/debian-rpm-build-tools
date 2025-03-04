@@ -78,9 +78,8 @@ Create a bare repo and run the following:
 
 .. sourcecode:: bash
 
-    # Set with the bar 
+    # Set with your bare git repository uri
     REPO_URL=git@github.com:user/your-awesome-packages
-
 
     REPO_DIR=$(basename ${REPO_URL} | sed 's/\.git$//')
 
@@ -97,6 +96,7 @@ Updating pakste:
 .. sourcecode:: bash
 
     git remote add pakste-upstream https://github.com/kakwa/pakste
+    git fetch pakste-upstream
     git merge pakste-upstream/main
 
 Package Creation
