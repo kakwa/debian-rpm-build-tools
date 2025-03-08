@@ -91,10 +91,20 @@ Repository Targets
      - Description
    * - ``deb_repo``
      - repo/root
-     - Build a complete .deb repository for a distribution & architecture
+     - Build .deb repository for a specific distribution & architecture
    * - ``rpm_repo``
      - repo/root
-     - Build a complete .rpm repository for a distribution & architecture
+     - Build .rpm repository for a specific distribution & architecture
+   * - ``rpm_all_repos``
+     - repo/root
+     - Build all .rpm repositories for all targets (see RPM_ALL_TARGETS in Makefile.config)
+   * - ``deb_all_repos``
+     - repo/root
+     - Build all .deb repositories for all targets (see DEB_ALL_TARGETS in Makefile.config)
+   * - ``all_repos``
+     - repo/root
+     - Build all .deb and .rpm repositories for all targets (default target)
+
 
 .. list-table::
    :header-rows: 1
@@ -116,6 +126,8 @@ Repository Targets
 Examples
 --------
 
+In a package directory:
+
 .. sourcecode:: bash
 
     # Build a DEB package in a chroot for Debian Trixie & arm64
@@ -124,11 +136,24 @@ Examples
     # Build an RPM package in a chroot for RHEL 9
     make rpm_chroot DIST=el9
 
+At the root of the repository:
+
+.. sourcecode:: bash
+
     # Build a complete DEB repository with parallel jobs
     make deb_repo -j4 DIST=bullseye
 
     # Build a complete RPM repository, continuing on errors
     make rpm_repo DIST=el9 ERROR=skip
+
+    # Build every deb targets
+    make deb_all_repos -j4
+
+    # Build every rpm targets
+    make rpm_all_repos -j4
+
+    # Build everything
+    make -j4
 
     # Clean but keep downloaded sources
     make clean KEEP_CACHE=true

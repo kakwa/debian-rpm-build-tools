@@ -64,10 +64,9 @@ else
 RPM_REPO_DEP := rpm_chroot
 endif
 
-# Main Targets
+# Main Target
 # ----------------------------------------------------------------------------
-all:
-	@$(MAKE) deb_repo
+all: all_repos export_key
 
 clean_pkg: $(clean_PKG)
 
@@ -251,6 +250,24 @@ internal_rpm_repo: $(RPM_OUT_REPO)/repodata
 rpm_repo: $(RPM_REPO_DEP) $(OUT_DIR)/GPG-KEY.pub
 	$(MAKE) internal_rpm_repo
 
+
+# Build all repositories for all targets
+deb_all_repos:
+	@for target in $(DEB_ALL_TARGETS); do \
+		dist=$$(echo $$target | cut -d: -f1); \
+		arch=$$(echo $$target | cut -d: -f2); \
+		$(MAKE) deb_repo DIST=$$dist ARCH=$$arch; \
+	done
+
+rpm_all_repos:
+	@for target in $(RPM_ALL_TARGETS); do \
+		dist=$$(echo $$target | cut -d: -f1); \
+		arch=$$(echo $$target | cut -d: -f2); \
+		$(MAKE) rpm_repo DIST=$$dist ARCH=$$arch; \
+	done
+
+all_repos: deb_all_repos rpm_all_repos
+
 # GPG Key Export
 # ----------------------------------------------------------------------------
 export_key: $(OUT_DIR)/GPG-KEY.pub
@@ -265,29 +282,36 @@ clean: clean_pkg clean_repo
 
 # Phony Targets Declaration
 # ----------------------------------------------------------------------------
-.PHONY: internal_deb_repo rpm deb deb_repo rpm_repo export_key\
+.PHONY: internal_deb_repo rpm deb deb_repo rpm_repo export_key \
   clean_pkg clean_repo clean_rpm_repo help \
   deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist \
-  rpm_repo rpm_chroot_internal rpm_chroot update
+  rpm_repo rpm_chroot_internal rpm_chroot update deb_all_repos rpm_all_repos all_repos
 
 # Help Target
 # ----------------------------------------------------------------------------
 define MAKE_HELP_MAIN
 targets:
-* help      : Display this help
-* clean     : Clean work directories.
-              Use "make clean KEEP_CACHE=true" to keep downloaded content.
-* deb       : Build all .deb
-* deb_chroot: Build all .deb in build chroots (using cowbuilder)
-              option "DIST=<code name>", for example "make deb_chroot DIST=stretch"
-* deb_repo  : Build the complete .deb repo
-              Option "DIST=<code name>" must be specified.
-* rpm       : Build all .rpm packages
-* rpm_chroot: Build all .rpm packages in build chroots (using mock/mockchain)
-              The targeted distribution version must be specified using
-              option "DIST=<code name>", for example "make rpm_chroot DIST=el7"
-* rpm_repo  : Build the .rpm repository.
-              Option "DIST=<code name>" must be specified.
+* help         : Display this help
+* clean        : Clean work directories.
+                   Use "make clean KEEP_CACHE=true" to keep downloaded content.
+* deb          : Build all .deb
+* deb_chroot   : Build all .deb in build chroots (using cowbuilder)
+                   Parameter "DIST=<code name>" must be specified, for example "make deb_chroot DIST=trixie"
+                   Parameter "ARCH=<arch>" is optional (default=native), for example "make deb_chroot DIST=trixie ARCH=arm64"
+* deb_repo     : Build the complete .deb repo
+                   Parameter "DIST=<code name>" must be specified.
+                   Parameter "ARCH=<arch>" is optional.
+* rpm          : Build all .rpm packages
+* rpm_chroot   : Build all .rpm packages in build chroots (using mock/mockchain)
+                 The targeted distribution version must be specified using
+                    Parameter "DIST=<code name>" must be specified, for example "make rpm_chroot DIST=el9"
+                    Parameter "ARCH=<arch>" is optional (default=native), for example "make rpm_chroot DIST=el9 ARCH=aarch64"
+* rpm_repo     : Build the .rpm repository.
+                    Parameter "DIST=<code name>" must be specified.
+                    Parameter "ARCH=<arch>" is optional.
+* deb_all_repos: Build all .deb repositories for all targets (see DEB_ALL_TARGETS in Makefile.config)
+* rpm_all_repos: Build all .rpm repositories for all targets (see RPM_ALL_TARGETS in Makefile.config)
+* all_repos    : Build all .deb and .rpm repositories for all targets (default target)
 endef
 
 export MAKE_HELP_MAIN
