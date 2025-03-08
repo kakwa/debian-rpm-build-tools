@@ -251,20 +251,27 @@ rpm_repo: $(RPM_REPO_DEP) $(OUT_DIR)/GPG-KEY.pub
 	$(MAKE) internal_rpm_repo
 
 
-# Build all repositories for all targets
-deb_all_repos:
-	@for target in $(DEB_ALL_TARGETS); do \
-		dist=$$(echo $$target | cut -d: -f1); \
-		arch=$$(echo $$target | cut -d: -f2); \
-		$(MAKE) deb_repo DIST=$$dist ARCH=$$arch; \
-	done
+# Build Targets for All Repositories
+DEB_REPO_TARGETS := $(foreach target,$(DEB_ALL_TARGETS),deb_repo_$(subst :,_,$(target)))
+RPM_REPO_TARGETS := $(foreach target,$(RPM_ALL_TARGETS),rpm_repo_$(subst :,_,$(target)))
 
-rpm_all_repos:
-	@for target in $(RPM_ALL_TARGETS); do \
-		dist=$$(echo $$target | cut -d: -f1); \
-		arch=$$(echo $$target | cut -d: -f2); \
-		$(MAKE) rpm_repo DIST=$$dist ARCH=$$arch; \
-	done
+# Individual repo targets
+$(DEB_REPO_TARGETS): deb_repo_%:
+	$(eval PARTS := $(subst _, ,$(subst deb_repo_,,$@)))
+	$(eval DIST := $(word 1,$(PARTS)))
+	$(eval ARCH := $(word 2,$(PARTS)))
+	$(MAKE) deb_repo DIST=$(DIST) ARCH=$(ARCH)
+
+$(RPM_REPO_TARGETS): rpm_repo_%:
+	$(eval PARTS := $(subst _, ,$(subst rpm_repo_,,$@)))
+	$(eval DIST := $(word 1,$(PARTS)))
+	$(eval ARCH := $(word 2,$(PARTS)))
+	$(MAKE) rpm_repo DIST=$(DIST) ARCH=$(ARCH)
+
+# Main targets that depend on individual targets
+deb_all_repos: $(DEB_REPO_TARGETS)
+
+rpm_all_repos: $(RPM_REPO_TARGETS)
 
 all_repos: deb_all_repos rpm_all_repos
 
@@ -282,7 +289,8 @@ clean: clean_pkg clean_repo
 
 # Phony Targets Declaration
 # ----------------------------------------------------------------------------
-.PHONY: internal_deb_repo rpm deb deb_repo rpm_repo export_key \
+.PHONY: $(DEB_REPO_TARGETS) $(RPM_REPO_TARGETS) \
+  internal_deb_repo rpm deb deb_repo rpm_repo export_key \
   clean_pkg clean_repo clean_rpm_repo help \
   deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist \
   rpm_repo rpm_chroot_internal rpm_chroot update deb_all_repos rpm_all_repos all_repos
