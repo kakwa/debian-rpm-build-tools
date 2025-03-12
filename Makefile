@@ -280,8 +280,8 @@ all_repos: deb_all_repos rpm_all_repos
 export_key: $(OUT_DIR)/GPG-KEY.pub
 
 $(OUT_DIR)/GPG-KEY.pub:
-	mkdir -p $(OUT_DIR)
-	gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export "$(GPG_KEY)"
+	@mkdir -p $(OUT_DIR)
+	@gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export --no-tty "$(GPG_KEY)"
 
 # Main Cleanup Target
 # ----------------------------------------------------------------------------
