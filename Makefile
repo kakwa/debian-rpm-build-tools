@@ -281,7 +281,7 @@ export_key: $(OUT_DIR)/GPG-KEY.pub
 
 $(OUT_DIR)/GPG-KEY.pub:
 	@mkdir -p $(OUT_DIR)
-	@gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export --no-tty "$(GPG_KEY)"
+	@gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export --batch --no-tty "$(GPG_KEY)"
 
 # Main Cleanup Target
 # ----------------------------------------------------------------------------
