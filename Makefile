@@ -293,7 +293,7 @@ clean: clean_pkg clean_repo
   internal_deb_repo rpm deb deb_repo rpm_repo export_key \
   clean_pkg clean_repo clean_rpm_repo help \
   deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist \
-  rpm_repo rpm_chroot_internal rpm_chroot update deb_all_repos rpm_all_repos all_repos
+  rpm_repo rpm_chroot_internal rpm_chroot update deb_all_repos rpm_all_repos all_repos github_matrix
 
 # Help Target
 # ----------------------------------------------------------------------------
@@ -330,3 +330,6 @@ update:
 	@-git remote | grep -q '^pakste-upstream$$' || git remote add pakste-upstream https://github.com/kakwa/pakste
 	@git fetch pakste-upstream
 	@git merge pakste-upstream/main
+
+github_matrix:
+	@./common/buildenv/gh_matrix_gen.sh -r "$(RPM_ALL_TARGETS)" -d "$(DEB_ALL_TARGETS)"
