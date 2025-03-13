@@ -10,9 +10,13 @@ GPG_KEY         :=
 # Repository Settings
 DEB_REPO_COMPONENT := main
 
-# Mirror Configuration
-DEB_MIRROR      := https://ftp.debian.org/debian/
-UBU_MIRROR      := https://archive.ubuntu.com/ubuntu/
+# Distribution mirror configuration
+#ifeq ($(filter $(ARCH),amd64 i386),$(ARCH))
+#UBU_MIRROR ?= https://archive.ubuntu.com/ubuntu/
+#else
+#UBU_MIRROR ?= https://ports.ubuntu.com/ubuntu-ports
+#endif
+#DEB_MIRROR ?= https://ftp.debian.org/debian/
 
 # Targeted <version>:<arch> for *all_repos
 DEB_ALL_TARGETS := bookworm:amd64 bookworm:arm64 sid:amd64 sid:arm64 trixie:amd64 trixie:arm64 noble:amd64 noble:arm64
