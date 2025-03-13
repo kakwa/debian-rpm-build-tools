@@ -171,7 +171,8 @@ $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(IND
 	@find $(OUT_DIR)/ -type f -name "*debian.tar.xz" -print0 | xargs -0 -r mv -t $(OUT_SRC)/
 	
 	# Link built packages to local repository
-	@find $(OUT_DIR) -type f -name "*$(DIST_CODE)$(DIST_TAG)*.deb" -print0 | grep 'all\|$(ARCH)' | \
+	@find $(OUT_DIR) -type f -name "*$(DIST_CODE)$(DIST_TAG)*$(ARCH)*.deb" \
+		-o -name "*$(DIST_CODE)$(DIST_TAG)*all*.deb" -print0 | \
 		xargs -0 -r ln -f -t $(INDIVIDUAL_DEB_LOCAL_REPO_PATH)/
 	
 	# Update package index if requested
