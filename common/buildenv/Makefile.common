@@ -7,8 +7,8 @@ include buildenv/Makefile.deb
 
 # Configuration
 # ----------------------------------------------------------------------------
-ifneq ($(wildcard $(REPO_BASE_DIR)Makefile.config),)
-    include $(REPO_BASE_DIR)Makefile.config
+ifneq ($(wildcard ../Makefile.config),)
+    include ../Makefile.config
 endif
 
 #
