@@ -112,7 +112,11 @@ $(BUILD_DIR)/pkg_built_chroot.rpm.$(DIST): $(BUILD_DIR)/pkg_built.src.rpm.$(DIST
 	@find $(INDIVIDUAL_RPM_LOCAL_REPO_PATH)/results/$(DIST_FULL)-$(ARCH)/$$(rpm -qp $(CURDIR)/$(BUILD_DIR)/rpm.$(DIST)/SRPMS/*$(VERSION)-$(RELEASE)*.rpm \
 		--queryformat "%{NAME}-%{VERSION}-%{RELEASE}") \
 		-type f -name "*$(DIST)*$(ARCH)*.rpm" \
-		-o "*$(DIST)*noarch*.rpm" \
+		-not -name "*.src.rpm" -print0 | \
+		xargs -0 -r ln -f -t $(OUT_DIR)/
+	@find $(INDIVIDUAL_RPM_LOCAL_REPO_PATH)/results/$(DIST_FULL)-$(ARCH)/$$(rpm -qp $(CURDIR)/$(BUILD_DIR)/rpm.$(DIST)/SRPMS/*$(VERSION)-$(RELEASE)*.rpm \
+		--queryformat "%{NAME}-%{VERSION}-%{RELEASE}") \
+		-type f -name  "*$(DIST)*noarch*.rpm" \
 		-not -name "*.src.rpm" -print0 | \
 		xargs -0 -r ln -f -t $(OUT_DIR)/
 	@touch $@
