@@ -37,7 +37,7 @@ Debian/Ubuntu
 
 .. sourcecode:: bash
 
-    apt-get install make debhelper reprepro cowbuilder wget
+    apt install make debhelper reprepro cowbuilder wget
 
 RHEL/Rocky/Fedora
 -----------------
@@ -49,6 +49,12 @@ RHEL/Rocky/Fedora
 .. note::
 
     rpm build tools are also available `here for Debian/Ubuntu <https://github.com/kakwa/debian-rpm-build-tools?tab=readme-ov-file#repository>`_
+
+    Configure the repository and install the packages:
+
+    .. sourcecode:: bash
+
+        apt install mock createrepo-c rpm dnf gnupg2
 
 To build cross-arch
 -------------------
