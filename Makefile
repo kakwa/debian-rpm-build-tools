@@ -231,7 +231,7 @@ internal_deb_repo: $(DEB_OUT_DIR)/dists/$(DIST)/InRelease
 RPMS = $(shell find $(RPM_LOCAL_REPO_PATH) -name '*.rpm' -not -name '*.src.rpm' 2>/dev/null)
 SRC_RPMS = $(shell find $(RPM_LOCAL_REPO_PATH) -name '*.src.rpm' 2>/dev/null)
 
-OUT_RPMS = $(shell echo $(RPMS) | tr ' ' '\n' | sed 's|.*/|$(RPM_OUT_REPO)|g')
+OUT_RPMS = $(shell echo $(RPMS) | tr ' ' '\n' | sed 's|.*/|$(RPM_OUT_REPO)/|g')
 
 $(RPM_OUT_REPO):
 	mkdir -p $(RPM_OUT_REPO)
@@ -243,7 +243,7 @@ $(OUT_RPMS): $(RPMS) | $(RPM_OUT_REPO)
 rpm_sign: $(OUT_RPMS)
 
 $(RPM_OUT_REPO)/repodata: $(OUT_RPMS)
-	createrepo_c -o $(RPM_OUT_REPO) $(RPM_OUT_REPO)
+	createrepo_c -o $(RPM_OUT_REPO)/ $(RPM_OUT_REPO)/
 
 internal_rpm_repo: $(RPM_OUT_REPO)/repodata
 
