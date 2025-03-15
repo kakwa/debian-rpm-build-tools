@@ -1,0 +1,21 @@
+Origin: kakwa
+Label: kakwa
+Suite: noble
+Codename: noble
+Version: 3.1
+Date: Sat, 15 Mar 2025 16:25:58 UTC
+Architectures: arm64
+Components: main
+Description: Repository containing misc packages
+MD5Sum:
+ 5dba6611ea7829611ec921adac16b06f 3494 main/binary-arm64/Packages
+ 98290ade733f57e2437d9124414094a1 1348 main/binary-arm64/Packages.gz
+ 5641968e0786501f1e0a2dfe3e553595 140 main/binary-arm64/Release
+SHA1:
+ 0591acb23b924c97f3bcad44bbfa1ad22edb9420 3494 main/binary-arm64/Packages
+ 99d091568056546f4822e95db9e73424311be87e 1348 main/binary-arm64/Packages.gz
+ 74a5fed323c91d4a3c31009d3f5e7c38ea90c12d 140 main/binary-arm64/Release
+SHA256:
+ a29cee0e7640a98ae2544024f51a8abccc9e694934f6e9c77f03250d06431998 3494 main/binary-arm64/Packages
+ a81c7ac23b7029be3d20efaad201b6bb718cd7d29229fa24e7489cbd8ae4a044 1348 main/binary-arm64/Packages.gz
+ f63bcc8d080aa07304b7942cac60041778432672659ae6bb2b0ff968d1edd2f6 140 main/binary-arm64/Release
