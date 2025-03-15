@@ -7,10 +7,10 @@ Homepage: https://github.com/xsuchy/distribution-gpg-keys
 Priority: optional
 Section: kakwa
 Filename: pool/main/d/distribution-gpg-keys/distribution-gpg-keys_1.108-1~kwa+deb13_all.deb
-Size: 78578564
-SHA256: f4d9f6e29ed8bb6528f3877b4f581feabf4cb3107305d362c02739f13ceb3075
-SHA1: 851ee9add30d356eda5f2a2b28ff4b58c54143cc
-MD5sum: 0a860a12a9a17aad0266ed6a462c28c6
+Size: 78577740
+SHA256: cb83b20073e7c4df3d2f7a71f0e83d50c55670b604215540650ded692977004e
+SHA1: f014d3a54c5a8624e25d253efce12def668f0ea5
+MD5sum: 87d37d44859e6776e1be520fc67ead2d
 Description: Collection of GPG keys used in Linux Distributions
  Collection of GPG keys used in Linux Distributions
 
@@ -25,10 +25,10 @@ Homepage: https://github.com/rpm-software-management/mock
 Priority: optional
 Section: kakwa
 Filename: pool/main/m/mock/mock_6.0-1~kwa+deb13_all.deb
-Size: 106492
-SHA256: 1905f202954082453bf53908986cd28ea2f01ad2a4c7c5ef596099418dabd746
-SHA1: 45cc2b9aaa58eb7d081c7cae6e0c0307ef188e32
-MD5sum: 965008e0ce7fae95852373a1852ff038
+Size: 106480
+SHA256: dd0f64264e477491c3fa0cb69c5533b22066f665aee236cb0f0962f1209ee100
+SHA1: 40f9261ff55d45c7c5ccd1d663b1b0327d6cb7bf
+MD5sum: 7d291a845b7d358cc57e4bb095e3158c
 Description: Build rpm packages inside a chroot
  Mock creates chroots and builds rpms in them. Its only task is to
  reliably populate a chroot and attempt to build a package in that
@@ -45,9 +45,9 @@ Priority: optional
 Section: kakwa
 Filename: pool/main/m/mock-core-configs/mock-core-configs_42.1-1~kwa+deb13_all.deb
 Size: 22188
-SHA256: 3536c30acf1a8b1aee7b2c177b5a530edc259155c79dba50d745c5c5f8be3209
-SHA1: 937b57cca4058fb304e825186c2d8c96e9f87b07
-MD5sum: d7fa76b6a3dd6e05d6124d7e361ae92d
+SHA256: d91dfb8b3023849da00df735780ca38ff53e4fbd59b41deba8604c80e3e246d8
+SHA1: fde0c74859a3fae59a75e87c136b1b8fd4e459ab
+MD5sum: a7a9926331b27b4027a200a4744a41c7
 Description: Not a package summary
  Not a package summary
 
@@ -62,10 +62,10 @@ Homepage: https://pypi.org/project/templated-dictionary/
 Priority: optional
 Section: kakwa
 Filename: pool/main/p/python-templated-dictionary/python3-templated-dictionary_1.5.1-1~kwa+deb13_all.deb
-Size: 4816
-SHA256: 38405876fe41a52a3a8ab8e5f6c1fbbfab452995ca0ff2d4375d49a113289ae0
-SHA1: b3220d7d7481921c867c83a02cdb4a559ea12490
-MD5sum: ae0bad4cb0e2da4a1b15965aba97eb8e
+Size: 4812
+SHA256: ec3e64d3c92b55cd5c46f7c5b4286ef5ca2ba90fb8ff34660ea6df32fa4d69f6
+SHA1: 9b4ea77e3668995f970f1a8cc5f427c586d4cc16
+MD5sum: c67a633b84383660d7699c82e21b2c7f
 Description: Dictionary where getitem() is run through Jinja2 template.
 
 Package: subscription-manager
@@ -78,10 +78,10 @@ Homepage: https://github.com/candlepin/subscription-manager
 Priority: optional
 Section: kakwa
 Filename: pool/main/s/subscription-manager/subscription-manager_1.30.4.1-1~kwa+deb13_all.deb
-Size: 899584
-SHA256: af1636a743efd0c7496acc39509df2b92c4d0a1dcfc66856a84fc68aa83581e2
-SHA1: b237c16145b9c71928bd01d4ceb8819735bf2005
-MD5sum: 9bb9a6ac2fdb5963db43c94cb1faba8d
+Size: 899856
+SHA256: ec85a733e76cc3ede139b6ee9f7cb62e233e6386ee6aef0170092d63f9bc9afa
+SHA1: 38ff560234d68f4ec2f45460ea0efe47a5fa7766
+MD5sum: 7e514769185fc94fd36235f602072162
 Description: RHSM subscription-manager
  RHSM subscription-manager
 
