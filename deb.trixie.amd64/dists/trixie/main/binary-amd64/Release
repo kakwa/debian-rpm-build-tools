@@ -1,0 +1,7 @@
+Archive: trixie
+Version: 3.1
+Component: main
+Origin: kakwa
+Label: kakwa
+Architecture: amd64
+Description: Repository containing misc packages
