@@ -1,0 +1,84 @@
+name: Build Packages Repositories
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check_repo:
+    runs-on: ubuntu-latest
+    outputs:
+      is_main_repo: ${{ steps.check.outputs.is_main_repo }}
+    steps:
+      - id: check
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == "kakwa/pakste" ]]; then
+            echo "is_main_repo=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main_repo=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Repository: $GITHUB_REPOSITORY"
+
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Generate Matrix
+        id: set-matrix
+        run: |
+          MATRIX=$(make github_matrix);
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs:
+      - check_repo
+      - generate-matrix
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false'
+    runs-on: ${{ matrix.host }}
+    strategy:
+      matrix: 
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    name: ${{ matrix.target }}:${{ matrix.arch }}:${{ matrix.dist }}:${{ matrix.host }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install GPG Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --import
+
+      - name: Install Dependencies
+        run: |
+          wget -qO - https://mirror.kakwalab.ovh/debian-rpm-build-tools/GPG-KEY.pub | gpg --dearmor > kakwalab.gpg
+          sudo install -o root -g root -m 644 kakwalab.gpg /etc/apt/trusted.gpg.d/
+          echo "deb https://mirror.kakwalab.ovh/debian-rpm-build-tools/deb.noble/ noble main" | sudo tee /etc/apt/sources.list.d/kakwalab-rpm-build-tools.list
+          sudo apt update
+          sudo apt install -y make debhelper reprepro cowbuilder wget
+          sudo apt install -y binfmt-support qemu-utils qemu-user-static qemu-system-arm qemu-system-misc
+          sudo apt install -y debian-archive-keyring debian-keyring debian-ports-archive-keyring ubuntu-keyring
+          if [ "${{ matrix.target }}" == "rpm" ];then sudo apt install -y mock createrepo-c rpm dnf gnupg2; fi
+
+      - name: Create Tmpfs
+        run: |
+          sudo mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/
+
+      - name: Build Repositories
+        run: make ${{ matrix.target }}_repo ARCH=${{ matrix.arch }} DIST=${{ matrix.dist }} -j${{ matrix.jobs }}
+
+      - name: Random delay to mitigate for publication collision
+        run: sleep $(( $RANDOM % 180 ))
+
+      - name: Deploy Repositories to GitHub Pages
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          keep_files: true
+          force_orphan: false

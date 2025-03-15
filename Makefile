@@ -1,58 +1,90 @@
-# Name of the gpg key to use
-GPG_KEY=kakwa
-# Output directory for the repos
-OUT_DIR=out/
-# Package provider
-ORIGIN=kakwa
+# Configuration
+# ----------------------------------------------------------------------------
+ifneq ($(wildcard Makefile.config),)
+    include Makefile.config
+endif
 
-#####################################################################
+# Package Discovery
+# ----------------------------------------------------------------------------
+PKG := $(shell find ./* -maxdepth 0 -type d | grep -v '^./common\|^./out')
+clean_PKG := $(addprefix clean_,$(PKG))
+deb_PKG := $(addprefix deb_,$(PKG))
+deb_chroot_PKG := $(addprefix deb_chroot_,$(PKG))
+rpm_chroot_PKG := $(addprefix rpm_chroot_,$(PKG))
+rpm_PKG := $(addprefix rpm_,$(PKG))
+manifest_PKG := $(addprefix manifest_,$(PKG))
 
+# Output Directories
+# ----------------------------------------------------------------------------
+OUTDEB := $(OUT_DIR)/deb/$(DIST)/$(ARCH)
+OUTRPM := $(OUT_DIR)/rpm/$(DIST_TAG)/$(ARCH)
 
-PKG=$(shell find ./* -maxdepth 0 -type d |grep -v '^./common\|^./out')
-clean_PKG=$(addprefix clean_,$(PKG))
-deb_PKG=$(addprefix deb_,$(PKG))
-deb_chroot_PKG=$(addprefix deb_chroot_,$(PKG))
-manifest_PKG=$(addprefix manifest_,$(PKG))
-OUTDEB=$(shell echo $(OUT_DIR)/deb/`lsb_release -sc`/`dpkg --print-architecture`)
+# Build Directory Structure
+BUILD_DIR := builddir/$(ARCH)
+
+# Success/Failure Markers
+SUCCESS_MARKER := success.$(ARCH)
+FAILURE_MARKER := failure.$(ARCH)
+FAILURE_CHROOT_MARKER := failure.chroot.$(DIST).$(ARCH)
+FAILURE_RPM_CHROOT_MARKER := failure.rpm.chroot.$(DIST).$(ARCH)
 
 # Must be declared before the include
-DEB_OUT_DIR := $(shell readlink -f $(OUT_DIR))/deb.$(DIST)/
-LOCAL_REPO_PATH := $(DEB_OUT_DIR)/raw
-COW_NAME := $(DIST).$(shell echo $(LOCAL_REPO_PATH) | md5sum | sed 's/\ .*//').all.cow
-
-
-
+# Include Configuration Files
+# ----------------------------------------------------------------------------
 include ./common/buildenv/Makefile.vars
-include ./common/buildenv/Makefile.config
 
+DEB_OUT_DIR := $(shell readlink -f $(OUT_DIR))/deb.$(DIST).$(ARCH)
+LOCAL_REPO_PATH := $(DEB_OUT_DIR)/raw
 
+RPM_LOCAL_REPO_PATH := $(RPM_OUT_DIR)/raw
+RPM_OUT_DIR := $(shell readlink -f $(OUT_DIR))/rpm.$(DIST).$(ARCH)
+RPM_OUT_REPO := $(RPM_OUT_DIR)/$(DIST_TAG)/$(ARCH)
+
+# Export Configuration
+# ----------------------------------------------------------------------------
 export $(DEB_REPO_CONFIG)
 
+# Error Handling
+# ----------------------------------------------------------------------------
 ifeq ($(ERROR), skip)
-SKIP=-
+SKIP := -
 endif
 
+# Build Environment Selection
+# ----------------------------------------------------------------------------
+ifeq ($(NOCHROOT), true)
+DEB_REPO_DEP := deb
+else
+DEB_REPO_DEP := deb_chroot
+endif
 
 ifeq ($(NOCHROOT), true)
-DEB_REPO_DEP=deb
+RPM_REPO_DEP := rpm
 else
-DEB_REPO_DEP=deb_chroot
+RPM_REPO_DEP := rpm_chroot
 endif
 
-all:
-	$(MAKE) deb_repo
+# Main Target
+# ----------------------------------------------------------------------------
+all: all_repos export_key
 
 clean_pkg: $(clean_PKG)
 
 deb_internal: $(deb_PKG)
+rpm_internal: $(rpm_PKG)
 
 deb_chroot_internal: $(deb_chroot_PKG)
+rpm_chroot_internal: $(rpm_chroot_PKG)
 
 manifest: $(manifest_PKG)
 
+# Utility Targets
+# ----------------------------------------------------------------------------
 list_dist:
 	@sed -e 's/  \(.*\).*/\1/;tx;d;:x' ./common/buildenv/get_dist.sh | grep -v echo | sed 's/\(.*\))/* \1/'
 
+# Package Targets
+# ----------------------------------------------------------------------------
 $(PKG):
 	$(MAKE) -C $@
 
@@ -72,44 +104,45 @@ $(manifest_PKG):
 	@+echo  $(MAKE) -C $(patsubst manifest_%,%,$@) manifest
 	$(SKIP)@$(MAKE) -C $(patsubst manifest_%,%,$@) manifest
 
+$(rpm_PKG):
+	@+echo  $(MAKE) -C $(patsubst rpm_%,%,$@) rpm
+	$(SKIP)@$(MAKE) -C $(patsubst rpm_%,%,$@) rpm
+
+$(rpm_chroot_PKG):
+	@+echo  $(MAKE) -C $(patsubst rpm_chroot_%,%,$@) rpm_chroot
+	$(SKIP)@$(MAKE) -C $(patsubst rpm_chroot_%,%,$@) rpm_chroot
+
+# Simplified Package Build Targets
+# ----------------------------------------------------------------------------
 deb:
 	$(MAKE) deb_internal
 
-# build all the .deb packages
-# logic:
-# * init the out directory (as a local repo)
-# * init or update the cowbuilder chroot
-# * loop over building the packages:
-#   - try to build all packages (output in out directory/local repo)
-#   - count package build failures
-#   - if there are build failures (but no more than last iteration)
-#     update the local repo, and loop to retry failed package builds
-# * do a last build iteration to make sure every packages are build correctly
-#
-# The loop iteration permits to handle dependencies between built packages
+rpm:
+	$(MAKE) rpm_internal
+
+# Debian Build Target (Chroot)
 deb_chroot:
-	mkdir -p $(LOCAL_REPO_PATH)
-	cd $(LOCAL_REPO_PATH); dpkg-scanpackages . /dev/null >Packages
-	if ! [ -e $(COW_DIR)/$(COW_NAME) ];\
-	then\
+	# Initialize output directory as local repo
+	@mkdir -p $(LOCAL_REPO_PATH)
+	@cd $(LOCAL_REPO_PATH) && dpkg-scanpackages . /dev/null > Packages
+	@$(SUDO) mkdir -p $(COW_DIR)/aptcache/
+	
+	# Initialize or update cowbuilder chroot
+	@if ! [ -f $(COW_BASEPATH)/etc/hosts ]; then \
 		export TMPDIR=/tmp/; \
-		$(SUDO) cowbuilder --create \
-		  --basepath $(COW_DIR)/$(COW_NAME) \
-		  --debootstrap debootstrap \
-		  $(COW_DIST) $(OTHERMIRROR) \
-		  --mirror $(DEB_MIRROR) \
-		  $(BINDMOUNT) \
-		  $(COW_UBUNTU) \
-		  $(COW_OPTS);\
-		ret=$$?;\
-	else\
-		export TMPDIR=/tmp/;\
-		$(SUDO) cowbuilder --update \
-	      	  --basepath $(COW_DIR)/$(COW_NAME) \
-		  $(BINDMOUNT);\
-		ret=$$?;\
-	fi; exit $$ret
-	old=99998;\
+		$(SUDO) rm -rf -- $(COW_BASEPATH); \
+		$(SUDO) cowbuilder --create $(COWBUILDER_CREATE_ARGS); \
+	else \
+		export TMPDIR=/tmp/; \
+		$(SUDO) cowbuilder --update $(COWBUILDER_UPDATE_ARGS); \
+	fi
+	
+	# loop over building the packages:
+	#  - count package build failures
+	#  - if there are build failures (but no more than last iteration)
+	#    update the local repo, and loop to retry failed package builds
+	# This loop is a bruteforce way to deal with build ordering dependencies
+	@old=99998;\
 	new=99999;\
 	while [ $$new -ne $$old ] && [ $$new -ne 0 ];\
 	do\
@@ -118,37 +151,65 @@ deb_chroot:
 			COW_NAME=$(COW_NAME) \
 			SKIP_COWBUILDER_SETUP=true;\
 		old=$$new;\
-		new=$$(find ./ -type f -name "failure.chroot.$(DIST)" | wc -l);\
-		cd $(LOCAL_REPO_PATH); dpkg-scanpackages . /dev/null >Packages;cd -;\
+		new=$$(find ./ -type f -name "failure.chroot.$(DIST).$(ARCH)" | wc -l);\
+		cd $(LOCAL_REPO_PATH) && dpkg-scanpackages . /dev/null >Packages || exit 1;cd -;\
 		if [ $$new -ne 0 ];\
 		then\
 			export TMPDIR=/tmp/;\
-			$(SUDO) cowbuilder --update \
-			  --basepath $(COW_DIR)/$(COW_NAME) \
-			  $(BINDMOUNT);\
+			$(SUDO) cowbuilder --update $(COWBUILDER_UPDATE_ARGS); \
 		fi;\
 	done
-	$(MAKE) deb_chroot_internal UPDATE_REPO=false \
+	
+	# do a last build iteration to make sure every packages are build correctly
+	@$(MAKE) deb_chroot_internal UPDATE_REPO=false \
 		COW_NAME=$(COW_NAME) SKIP_COWBUILDER_SETUP=true
 
+# Build Status Reporting
+# ----------------------------------------------------------------------------
 deb_failed:
-	@echo "Package(s) for DIST '$(DIST)' that failed to build:"
-	@find ./ -type f -name "failure.chroot.$(DIST)" | sed 's|\./\([^/]*\)/.*|* \1|'
+	@echo "Package(s) for DIST '$(DIST)' ARCH '$(ARCH)' that failed to build:"
+	@find ./ -type f -name "failure.chroot.$(DIST).$(ARCH)" | sed 's|\./\([^/]*\)/.*|* \1|'
 
+rpm_failed:
+	@echo "Package(s) for DIST '$(DIST)' ARCH '$(ARCH)' that failed to build:"
+	@find ./ -type f -name "failure.rpm.chroot.$(DIST).$(ARCH)" | sed 's|\./\([^/]*\)/.*|* \1|'
 
+# RPM Build Target (Chroot)
+# ----------------------------------------------------------------------------
+rpm_chroot:
+	old=99998;\
+	new=99999;\
+	while [ $$new -ne $$old ] && [ $$new -ne 0 ];\
+	do\
+		$(MAKE) rpm_chroot_internal ERROR=skip;\
+		old=$$new;\
+		new=$$(find ./ -type f -name "failure.rpm.chroot.$(DIST).$(ARCH)" | wc -l);\
+		echo $$new -ne $$old;\
+	done
+	$(MAKE) rpm_chroot_internal
+
+# Utility Functions
+# ----------------------------------------------------------------------------
 deb_get_chroot_path:
-	@echo `readlink -f $(COW_DIR)/$(COW_NAME)`
+	@echo `readlink -f $(COW_BASEPATH)`
 
+# Cleanup Targets
+# ----------------------------------------------------------------------------
 clean_deb_repo:
 	-rm -rf "$(OUTDEB)"
 
 clean_repo:
 	-rm -rf "$(OUT_DIR)"
 
+clean_rpm_repo:
+	-rm -rf "$(OUTRPM)"
+
+# Debian Repository Creation
+# ----------------------------------------------------------------------------
 deb_repo: $(DEB_REPO_DEP) $(OUT_DIR)/GPG-KEY.pub
 	$(MAKE) internal_deb_repo
 
-$(DEB_OUT_DIR)/conf/distributions: common/buildenv/Makefile.config
+$(DEB_OUT_DIR)/conf/distributions:
 	mkdir -p $(DEB_OUT_DIR)/conf/
 	echo "$$DEB_REPO_CONFIG" >$(DEB_OUT_DIR)/conf/distributions
 
@@ -163,92 +224,112 @@ $(DEB_OUT_DIR)/dists/$(DIST)/InRelease: $(DEBS) $(DEB_OUT_DIR)/conf/distribution
 	  -Vb . includedeb $(DIST) $$deb || exit 1;\
 	done
 
-
 internal_deb_repo: $(DEB_OUT_DIR)/dists/$(DIST)/InRelease
 
+# RPM Repository Creation
+# ----------------------------------------------------------------------------
+RPMS = $(shell find $(RPM_LOCAL_REPO_PATH) -name '*.rpm' -not -name '*.src.rpm' 2>/dev/null)
+SRC_RPMS = $(shell find $(RPM_LOCAL_REPO_PATH) -name '*.src.rpm' 2>/dev/null)
+
+OUT_RPMS = $(shell echo $(RPMS) | tr ' ' '\n' | sed 's|.*/|$(RPM_OUT_REPO)/|g')
+
+$(RPM_OUT_REPO):
+	mkdir -p $(RPM_OUT_REPO)
+
+$(OUT_RPMS): $(RPMS) | $(RPM_OUT_REPO)
+	cp $(shell find $(RPM_LOCAL_REPO_PATH) -name `basename $@`) $@
+	rpmsign --addsign --key-id=$(GPG_KEY) $@
+
+rpm_sign: $(OUT_RPMS)
+
+$(RPM_OUT_REPO)/repodata: $(OUT_RPMS)
+	createrepo_c -o $(RPM_OUT_REPO)/ $(RPM_OUT_REPO)/
+
+internal_rpm_repo: $(RPM_OUT_REPO)/repodata
+
+rpm_repo: $(RPM_REPO_DEP) $(OUT_DIR)/GPG-KEY.pub
+	$(MAKE) internal_rpm_repo
+
+
+# Build Targets for All Repositories
+DEB_REPO_TARGETS := $(foreach target,$(DEB_ALL_TARGETS),deb_repo_$(subst :,_,$(target)))
+RPM_REPO_TARGETS := $(foreach target,$(RPM_ALL_TARGETS),rpm_repo_$(subst :,_,$(target)))
+
+# Individual repo targets
+$(DEB_REPO_TARGETS): deb_repo_%:
+	$(eval PARTS := $(subst _, ,$(subst deb_repo_,,$@)))
+	$(eval DIST := $(word 1,$(PARTS)))
+	$(eval ARCH := $(word 2,$(PARTS)))
+	$(MAKE) deb_repo DIST=$(DIST) ARCH=$(ARCH)
+
+$(RPM_REPO_TARGETS): rpm_repo_%:
+	$(eval PARTS := $(subst _, ,$(subst rpm_repo_,,$@)))
+	$(eval DIST := $(word 1,$(PARTS)))
+	$(eval ARCH := $(word 2,$(PARTS)))
+	$(MAKE) rpm_repo DIST=$(DIST) ARCH=$(ARCH)
+
+# Main targets that depend on individual targets
+deb_all_repos: $(DEB_REPO_TARGETS)
+
+rpm_all_repos: $(RPM_REPO_TARGETS)
+
+all_repos: deb_all_repos rpm_all_repos
+
+# GPG Key Export
+# ----------------------------------------------------------------------------
 export_key: $(OUT_DIR)/GPG-KEY.pub
 
 $(OUT_DIR)/GPG-KEY.pub:
-	mkdir -p $(OUT_DIR)
-	gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export "$(GPG_KEY)"
+	@mkdir -p $(OUT_DIR)
+	@gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export --batch --no-tty "$(GPG_KEY)"
 
+# Main Cleanup Target
+# ----------------------------------------------------------------------------
 clean: clean_pkg clean_repo
 
-.PHONY: internal_deb_repo deb_repo  export_key\
-  clean_pkg clean_repo help \
-  deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist
-  
-#### START help target ####
+# Phony Targets Declaration
+# ----------------------------------------------------------------------------
+.PHONY: $(DEB_REPO_TARGETS) $(RPM_REPO_TARGETS) \
+  internal_deb_repo rpm deb deb_repo rpm_repo export_key \
+  clean_pkg clean_repo clean_rpm_repo help \
+  deb_chroot deb_internal deb_chroot_internal deb_get_chroot_path list_dist \
+  rpm_repo rpm_chroot_internal rpm_chroot update deb_all_repos rpm_all_repos all_repos github_matrix
 
+# Help Target
+# ----------------------------------------------------------------------------
 define MAKE_HELP_MAIN
-
-General advices:
-
-If you want to speed-up build, use the usual -j parameter, for example:
-
-make clean -j 10
-make deb -j 10
-
-If you want to ignore package build failures, add ERROR=skip, for example:
-
-make deb ERROR=skip
-
-
-Available targets:
-
-Common targets:
-
-* help                : Display this help
-
-
-* clean               : Remove all packages work directories.
-
-                        It's possible to keep the cache directories
-                        with "KEEP_CACHE=true": "make clean KEEP_CACHE=true"
-
-
-* list_dist           : List distribution code names
-
-
-DEB targets:
-
-* deb                 : Build all the .deb packages
-
-
-* deb_chroot          : Build all the .deb packages in a clean chroot (using cowbuilder)
-
-                        The targeted distribution version must be specified using
-                        option "DIST=<code name>", for example "make deb_chroot DIST=stretch"
-
-                        this target requires root permission for cowbuilder
-                        (sudo or run directly as root)
-
-
-* deb_repo            : Build the .deb repository from the .deb generated by target deb or deb_chroot
-
-                        Option "DIST=<code name>" must be specified correctly.
-
-                        By default, all packages will be built in individual, clean chroots.
-	                However, if you want to build directly from host (no chroot) setting
-	                the option NOCHROOT=true.
-
-	                This will speed-up the build, but it requires having the proper build
-                        depedencies on the host for every packages.
-
-
-* deb_get_chroot_path : Display path of the chroot that will be used.
-
-                        If changing some elements of the chroot (the mirror used for example)
-                        it may be necessary to remove an existing chroot:
-
-                        rm -rf `make deb_get_chroot_path DIST=<code name>` # as root
-
+targets:
+* help         : Display this help
+* clean        : Clean work directories.
+                   Use "make clean KEEP_CACHE=true" to keep downloaded content.
+* deb          : Build all .deb
+* deb_chroot   : Build all .deb in build chroots (using cowbuilder)
+                   Parameter "DIST=<code name>" must be specified, for example "make deb_chroot DIST=trixie"
+                   Parameter "ARCH=<arch>" is optional (default=native), for example "make deb_chroot DIST=trixie ARCH=arm64"
+* deb_repo     : Build the complete .deb repo
+                   Parameter "DIST=<code name>" must be specified.
+                   Parameter "ARCH=<arch>" is optional.
+* rpm          : Build all .rpm packages
+* rpm_chroot   : Build all .rpm packages in build chroots (using mock/mockchain)
+                 The targeted distribution version must be specified using
+                    Parameter "DIST=<code name>" must be specified, for example "make rpm_chroot DIST=el9"
+                    Parameter "ARCH=<arch>" is optional (default=native), for example "make rpm_chroot DIST=el9 ARCH=aarch64"
+* rpm_repo     : Build the .rpm repository.
+                    Parameter "DIST=<code name>" must be specified.
+                    Parameter "ARCH=<arch>" is optional.
+* deb_all_repos: Build all .deb repositories for all targets (see DEB_ALL_TARGETS in Makefile.config)
+* rpm_all_repos: Build all .rpm repositories for all targets (see RPM_ALL_TARGETS in Makefile.config)
+* all_repos    : Build all .deb and .rpm repositories for all targets (default target)
 endef
 
 export MAKE_HELP_MAIN
 help:
 	@echo "$$MAKE_HELP_MAIN"
 
+update:
+	@-git remote | grep -q '^pakste-upstream$$' || git remote add pakste-upstream https://github.com/kakwa/pakste
+	@git fetch pakste-upstream
+	@git merge pakste-upstream/main
 
-#### END help target ####
-
+github_matrix:
+	@./common/buildenv/gh_matrix_gen.sh -r "$(RPM_ALL_TARGETS)" -d "$(DEB_ALL_TARGETS)"
