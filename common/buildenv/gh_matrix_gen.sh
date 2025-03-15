@@ -36,6 +36,7 @@ done
 process_dist_arch() {
     target="$1"
     dist_arch_list="$2"
+    job_count="$3"
     
     for dist_arch in $dist_arch_list; do
         # Select host based on architecture
@@ -43,17 +44,17 @@ process_dist_arch() {
             *:arm*|*:aarch*) host="ubuntu-24.04-arm" ;;
             *) host="ubuntu-latest" ;;
         esac
-        echo "$host:$target:$dist_arch"
+        echo "$host:$target:$dist_arch:$job_count"
     done
 }
 
 gen_columns() {
     # Process RPM distributions
-    process_dist_arch "rpm" "$rpm_dist_arch"
+    process_dist_arch "rpm" "$rpm_dist_arch" "1"
     # Process DEB distributions
-    process_dist_arch "deb" "$deb_dist_arch"
+    process_dist_arch "deb" "$deb_dist_arch" "8"
 }
 
 gen_columns | \
-	column -s ":" --table-columns "host,target,dist,arch" --json --table-name "to_remove" | \
+	column -s ":" --table-columns "host,target,dist,arch,jobs" --json --table-name "to_remove" | \
 	sed 's/^.\{0,3\}//' | sed 's/"to_remove": //' | tr '\n' ' ' |sed 's/ //g'
