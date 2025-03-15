@@ -9,7 +9,7 @@ Create **Makefile.config** and set the repository metadata:
 .. sourcecode:: bash
 
    # copy configuration example
-   cp Makefile.config.ex Makefile.config
+   cp common/Makefile.config.ex Makefile.config
 
 .. sourcecode:: make
 
