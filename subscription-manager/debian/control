@@ -14,6 +14,7 @@ Build-Depends:
  libpython3-dev, 
  libssl-dev,
  python3-pytest,
+ python3-setuptools,
  python3-pytest-timeout,
  python3-pytest-random-order,
  dh-python,
