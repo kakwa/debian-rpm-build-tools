@@ -1,5 +1,7 @@
 %define pkgname @NAME@
 
+%global debug_package %{nil}
+
 Name: %{pkgname}
 Version: @VERSION@
 Release: @RELEASE@%{?dist}
@@ -17,10 +19,14 @@ License: @LICENSE@
 Group: System/Servers
 Summary: @SUMMARY@ 
 BuildRoot: %{_tmppath}/%{pkgname}-%{zone}-%{version}-%{release}-build
-BuildArch: noarch
+#BuildArch: noarch
+# Build Dependencies
+#BuildRequires: systemd-rpm-macros
 #BuildRequires: sed
+# Runtime Dependencies
 #Requires: sed
-#Requires: python
+#Requires: systemd
+
 
 %description
 @DESCRIPTION@
@@ -47,18 +53,29 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %post
+#%systemd_post @NAME@.service
 true
 
 
 %preun
+#%systemd_preun @NAME@.service
+true
+
+
+%postun
+#%systemd_postun_with_restart @NAME@.service
 true
 
 %clean
-rm -rf \$RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644, root, root, 755)
+#%{_bindir}/@NAME@
+#%{_unitdir}/@NAME@.service
+#%config(noreplace) %{_sysconfdir}/@NAME@/@NAME@.conf
+
 
 %changelog
-* Wed Feb 01 2013 @MAINTAINER@ <@MAINTAINER_EMAIL@> 0.0.1-1
+* Sat Mar 15 2025 @MAINTAINER@ <@MAINTAINER_EMAIL@> 0.0.1-1
 - initial Version initiale
