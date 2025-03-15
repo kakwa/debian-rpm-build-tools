@@ -1,0 +1,87 @@
+Package: distribution-gpg-keys
+Version: 1.108-1~kwa+ubu24.04
+Architecture: all
+Maintainer: kawkwa <carpentier.pf@gmail.com>
+Installed-Size: 228154
+Homepage: https://github.com/xsuchy/distribution-gpg-keys
+Priority: optional
+Section: kakwa
+Filename: pool/main/d/distribution-gpg-keys/distribution-gpg-keys_1.108-1~kwa+ubu24.04_all.deb
+Size: 79270112
+SHA256: 44097a6d9371cb78ff06d84fca109a897ad4d20c3359e05bce13dc7d8dffdc31
+SHA1: 69be02ce668d56b0a388808b0480fce55ae61bfc
+MD5sum: 69faf6a432a30a1948edb706a9cff9eb
+Description: Collection of GPG keys used in Linux Distributions
+ Collection of GPG keys used in Linux Distributions
+
+Package: mock
+Version: 6.0-1~kwa+ubu24.04
+Architecture: all
+Maintainer: kawkwa <carpentier.pf@gmail.com>
+Installed-Size: 522
+Depends: python3:any, python3-rpm, python3-six, mock-core-configs, python3-distro, python3-pyroute2, distribution-gpg-keys, createrepo-c, dnf, python3-jinja2, dnf-plugins-core, python3-templated-dictionary, python3-backoff, podman, qemu-user-static, qemu-user-binfmt
+Suggests: pigz
+Homepage: https://github.com/rpm-software-management/mock
+Priority: optional
+Section: kakwa
+Filename: pool/main/m/mock/mock_6.0-1~kwa+ubu24.04_all.deb
+Size: 107866
+SHA256: f353b0677b5ad6f12d2b356716365f9e53bc6cbd2e8682f432d0acd88e8c9747
+SHA1: 257c24cc04dfa419c391cfd42b8f0805b00274a9
+MD5sum: 725b39811501968a169e15bd0b6c601a
+Description: Build rpm packages inside a chroot
+ Mock creates chroots and builds rpms in them. Its only task is to
+ reliably populate a chroot and attempt to build a package in that
+ chroot. It is used be the Fedora Extras project to build their
+ packages cleanly.
+
+Package: mock-core-configs
+Version: 42.1-1~kwa+ubu24.04
+Architecture: all
+Maintainer: kawkwa <carpentier.pf@gmail.com>
+Installed-Size: 602
+Homepage: https://github.com/rpm-software-management/mock/
+Priority: optional
+Section: kakwa
+Filename: pool/main/m/mock-core-configs/mock-core-configs_42.1-1~kwa+ubu24.04_all.deb
+Size: 22584
+SHA256: 90ac2347ce8edbb1b044f57cf263ae32841d478c69c3917ce8bb5faed144c404
+SHA1: c0749a118c78bebb47e59da594e5f2f51039dea8
+MD5sum: a127837f246dccd905ee1a0bcec8ea44
+Description: Not a package summary
+ Not a package summary
+
+Package: python3-templated-dictionary
+Source: python-templated-dictionary
+Version: 1.5.1-1~kwa+ubu24.04
+Architecture: all
+Maintainer: kawkwa <carpentier.pf@gmail.com>
+Installed-Size: 25
+Depends: python3, python3-all, python3-jinja2
+Homepage: https://pypi.org/project/templated-dictionary/
+Priority: optional
+Section: kakwa
+Filename: pool/main/p/python-templated-dictionary/python3-templated-dictionary_1.5.1-1~kwa+ubu24.04_all.deb
+Size: 4650
+SHA256: 01baaef4d3bfd2022310d6c3e8103205f9d59097aa233216f762e6f1701b194a
+SHA1: b3aaa105abb6d9d56c0011122a2d7bdfa247c51d
+MD5sum: 7b73df1bd0892ed19629cceab22fe75c
+Description: Dictionary where getitem() is run through Jinja2 template.
+
+Package: subscription-manager
+Version: 1.30.4.1-1~kwa+ubu24.04
+Architecture: all
+Maintainer: kawkwa <carpentier.pf@gmail.com>
+Installed-Size: 4508
+Depends: python3-distro, python3-requests, rpm, python3-iniparse
+Homepage: https://github.com/candlepin/subscription-manager
+Priority: optional
+Section: kakwa
+Filename: pool/main/s/subscription-manager/subscription-manager_1.30.4.1-1~kwa+ubu24.04_all.deb
+Size: 949808
+SHA256: 21f4dbd8367d41294f4ae34ca66c938ae0a6ad4bc5394f753c94e7ffb294e7e3
+SHA1: a0f6531e9d009484c69eba4187205c2f0dc74aca
+MD5sum: a1c684b90c3f5035f3e7e3ae74356997
+Description: RHSM subscription-manager
+ RHSM subscription-manager
+

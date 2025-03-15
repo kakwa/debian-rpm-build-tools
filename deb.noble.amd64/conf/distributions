@@ -1,0 +1,9 @@
+Origin: kakwa
+Label: kakwa
+Suite: noble
+Codename: noble
+Version: 3.1
+Architectures: amd64
+Components: main
+Description: Repository containing misc packages
+SignWith: rpmbuildtool
