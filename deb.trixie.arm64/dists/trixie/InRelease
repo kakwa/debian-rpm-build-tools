@@ -1,0 +1,31 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Origin: kakwa
+Label: kakwa
+Suite: trixie
+Codename: trixie
+Version: 3.1
+Date: Sat, 15 Mar 2025 16:25:01 UTC
+Architectures: arm64
+Components: main
+Description: Repository containing misc packages
+MD5Sum:
+ e8d15630b30e37d5c1749e86a836a901 3464 main/binary-arm64/Packages
+ 8fa377c97c031a57a367a9dd8be61d6c 1338 main/binary-arm64/Packages.gz
+ d3782bff1d62cc10f16d1b6f08b4bfb2 141 main/binary-arm64/Release
+SHA1:
+ f26560a47bba9a844412887e594d2bd256b53316 3464 main/binary-arm64/Packages
+ 25d3d10dacf9f5a886cfd020c75a63c1df93b872 1338 main/binary-arm64/Packages.gz
+ cf27b01051361270799139eb1773bd8f383c4eb9 141 main/binary-arm64/Release
+SHA256:
+ 8baaa27f41fbe9136d543cd9b53fb6e95851dc373fad4e635a9dae8ec76acd30 3464 main/binary-arm64/Packages
+ ab494970d6465ddb1396b257b23aa215d5a69b2086db792f8780399db922a0ba 1338 main/binary-arm64/Packages.gz
+ 125c4ff1bc755e379e2ca80a59107ec4d82508aca1d98ea3a591305e41ec6d76 141 main/binary-arm64/Release
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQjpxoFIJcXyh+WmKfrlgXHzRoIxQUCZ9Wp3QAKCRDrlgXHzRoI
+xa7JAP9xqcshn+YcRHJy5sDHkKa/Q/Cge2+53nZyGL3W743xWwEAqfQ87VHHVCOm
+DXy0cHNkhR2OxMohRuJrCZbADwaObQM=
+=tGrM
+-----END PGP SIGNATURE-----

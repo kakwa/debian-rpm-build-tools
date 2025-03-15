@@ -1,0 +1,9 @@
+Origin: kakwa
+Label: kakwa
+Suite: trixie
+Codename: trixie
+Version: 3.1
+Architectures: arm64
+Components: main
+Description: Repository containing misc packages
+SignWith: rpmbuildtool
