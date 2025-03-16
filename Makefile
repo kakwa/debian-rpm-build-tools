@@ -128,13 +128,18 @@ deb_chroot:
 	@$(SUDO) mkdir -p $(COW_DIR)/aptcache/
 	
 	# Initialize or update cowbuilder chroot
-	@if ! [ -f $(COW_BASEPATH)/etc/hosts ]; then \
+	if [ "$(BUILDER)" = "cowbuilder" ]; then \
+	    TEST_FILE=$(COW_BASEPATH)/etc/hosts; \
+	else \
+	    TEST_FILE=$(COW_BASEPATH); \
+	fi; \
+	if ! [ -f $$TEST_FILE ] || [ $$(( $$(date +%s) - $$(stat -c %Y $$TEST_FILE) )) -gt 86400 ]; then \
 		export TMPDIR=/tmp/; \
 		$(SUDO) rm -rf -- $(COW_BASEPATH); \
-		$(SUDO) cowbuilder --create $(COWBUILDER_CREATE_ARGS); \
+		$(SUDO) $(BUILDER) --create $(COWBUILDER_CREATE_ARGS); \
 	else \
 		export TMPDIR=/tmp/; \
-		$(SUDO) cowbuilder --update $(COWBUILDER_UPDATE_ARGS); \
+		$(SUDO) $(BUILDER) --update $(COWBUILDER_UPDATE_ARGS); \
 	fi
 	
 	# loop over building the packages:
@@ -156,7 +161,7 @@ deb_chroot:
 		if [ $$new -ne 0 ];\
 		then\
 			export TMPDIR=/tmp/;\
-			$(SUDO) cowbuilder --update $(COWBUILDER_UPDATE_ARGS); \
+			$(SUDO) $(BUILDER) --update $(COWBUILDER_UPDATE_ARGS); \
 		fi;\
 	done
 	
