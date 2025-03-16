@@ -34,6 +34,7 @@ jobs:
           echo "Repository: $GITHUB_REPOSITORY"
 
   generate-matrix:
+    needs: check_repo
     if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false' && vars.REPO_WORKFLOW_DISABLED != 'true'
     runs-on: ubuntu-latest
     outputs:
