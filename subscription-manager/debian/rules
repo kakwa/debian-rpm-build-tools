@@ -14,6 +14,9 @@ DEST=$$(pwd)/debian/@NAME@
 %:
 	dh $@ --with python3
 
+override_dh_clean:
+	rm -rf -- build_ext/build_ext/__pycache__
+
 override_dh_auto_clean:
 	make clean PYTHON=python3
 
