@@ -9,7 +9,6 @@ Table Of Content
    :maxdepth: 2
 
    getting_started
-   packaging
    building_package
    building_repo
    targets
