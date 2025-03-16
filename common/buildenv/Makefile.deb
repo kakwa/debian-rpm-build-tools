@@ -143,7 +143,7 @@ $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(IND
 		else \
 			TEST_FILE=$(COW_BASEPATH) \
 		fi; \
-		if ! [ -f $$TEST_FILE ] || [ $$(( $$(date +%s) - $$(stat -c %Y $$TEST_FILE) )) -gt 86400 ]; then \
+		if ! [ -f $$TEST_FILE ]; then \
 			export TMPDIR=/tmp/; \
 			$(SUDO) rm -rf -- $(COW_BASEPATH); \
 			$(SUDO) $(BUILDER) --create $(COWBUILDER_CREATE_ARGS) ; \
