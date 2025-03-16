@@ -1,6 +1,6 @@
-[![Build Packages Repositories](https://github.com/@@ORG@@/@@REPO@@/actions/workflows/repos.yml/badge.svg)](https://github.com/@@ORG@@/@@REPO@@/actions/workflows/repos.yml)
+[![Build Packages Repositories](https://github.com/@ORG@/@REPO@/actions/workflows/repos.yml/badge.svg)](https://github.com/@ORG@/@REPO@/actions/workflows/repos.yml)
 
-# @@REPO@@
+# @REPO@
 
 ## Ubuntu/Debian
 
@@ -14,13 +14,13 @@ export SUDO=sudo
 . /etc/os-release
 
 # Add the GPG key
-wget -qO - https://@@ORG@@.github.io/@@REPO@@/GPG-KEY.pub | \
-    gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/@@REPO@@.gpg
+wget -qO - https://@ORG@.github.io/@REPO@/GPG-KEY.pub | \
+    gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/@REPO@.gpg
 
 # Add the repository
 echo "deb [arch=$(dpkg --print-architecture)] \
-https://@@ORG@@.github.io/@@REPO@@/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ \
-${VERSION_CODENAME} main" | ${SUDO} tee /etc/apt/sources.list.d/@@REPO@@.list
+https://@ORG@.github.io/@REPO@/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ \
+${VERSION_CODENAME} main" | ${SUDO} tee /etc/apt/sources.list.d/@REPO@.list
 
 # update
 apt update
@@ -45,13 +45,13 @@ else
 fi
 
 # Create the repository file
-cat << EOF | ${SUDO} tee /etc/yum.repos.d/@@REPO@@.repo
-[@@REPO@@]
-name=@@REPO@@
-baseurl=https://@@ORG@@.github.io/@@REPO@@/rpm.${DISTRO_PREFIX}\$releasever.\$basearch/\$releasever/\$basearch/
+cat << EOF | ${SUDO} tee /etc/yum.repos.d/@REPO@.repo
+[@REPO@]
+name=@REPO@
+baseurl=https://@ORG@.github.io/@REPO@/rpm.${DISTRO_PREFIX}\$releasever.\$basearch/\$releasever/\$basearch/
 enabled=1
 gpgcheck=1
-gpgkey=https://@@ORG@@.github.io/@@REPO@@/GPG-KEY.pub
+gpgkey=https://@ORG@.github.io/@REPO@/GPG-KEY.pub
 EOF
 ```
 
