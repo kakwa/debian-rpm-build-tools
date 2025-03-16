@@ -8,7 +8,7 @@ Table Of Content
 .. toctree::
    :maxdepth: 2
 
-   dependencies
+   getting_started
    packaging
    building_package
    building_repo
