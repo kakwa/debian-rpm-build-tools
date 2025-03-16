@@ -167,3 +167,8 @@ Just follow the packaging documentation of each distribution & the usual standar
 - **Debian/Ubuntu (.deb) Packaging**: `Debian New Maintainers' Guide <https://www.debian.org/doc/manuals/maint-guide/>`_
 - **Fedora/RHEL/CentOS (.rpm) Packaging**: `Fedora Packaging Guidelines <https://docs.fedoraproject.org/en-US/packaging-guidelines/>`_
 - **openSUSE (.rpm) Packaging**: `openSUSE Packaging Guide <https://en.opensuse.org/Portal:Packaging>`_
+
+Also, take inspiration from existing packages:
+
+- **Fedora**: `Fedora Packaging Source <https://src.fedoraproject.org/projects/rpms/%2A>`_ (search a package, then click the `Files` menu).
+- **Debian**: `Debian Package Search <https://packages.debian.org/search?keywords=rpm>`_ (search a package, then look for the `*.debian.tar.xz` Download on the right).
