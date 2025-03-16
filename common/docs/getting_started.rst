@@ -39,6 +39,40 @@ Create a bare repo and run the following:
 
     git push origin main
 
+Repository Configuration
+------------------------
+
+If you don't have one, create a GPG signing key (leave the password empty):
+
+.. sourcecode:: bash
+
+    # Generate a new GPG key
+    gpg --gen-key
+
+Create **Makefile.config** and set the repository metadata:
+
+.. sourcecode:: bash
+
+    # copy configuration example
+    cp common/Makefile.config.ex Makefile.config
+
+    # tweak it
+    vim Makefile.config
+
+Optionally, create **REAME.md**:
+
+.. sourcecode:: bash
+
+    # copy configuration example
+    cp common/REAME.md.ex REAME.md
+
+    # Customize for your repo
+    sed -i 's/@ORG@/<name of your github org/user>/g' REAME.md
+    sed -i 's/@REPO@/<name your github repository>/g' REAME.md
+
+    # tweak it if necessary
+    vim REAME.md
+
 Updating Pakste
 ---------------
 

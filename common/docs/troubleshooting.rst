@@ -50,6 +50,34 @@ fstab:
     tmpfs /var/cache/pbuilder/ tmpfs defaults,size=16G 0 0    # For combuilder/DEB builds
     tmpfs /var/lib/mock tmpfs defaults,size=16G 0 0           # For mock/RPM builds
 
+
+GPG Key
+-------
+
+Packages are signed with a GPG key. Here are essential commands for key management:
+
+.. sourcecode:: bash
+
+    GPG_KEY="GPG_SIGNKEY"
+
+    # Generate a new GPG key
+    gpg --gen-key
+
+    # List available keys
+    gpg -K
+
+    # Export private key (for multiple build hosts)
+    gpg --export-secret-key -a "${GPG_KEY}" > priv.gpg
+
+    # Import private key on another system
+    gpg --import priv.gpg
+
+    # Export public key
+    gpg --armor --output $(OUT_DIR)/GPG-KEY.pub --export "${GPG_KEY}"
+
+    # Import public key into apt (for testing)
+    cat public.gpg | apt-key add -
+
 Building on old distributions
 -----------------------------
 
