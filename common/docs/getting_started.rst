@@ -22,7 +22,7 @@ RHEL/Rocky/Fedora:
 Repository Initialization
 -------------------------
 
-Create a bare repo and run the following:
+Create your own **bare*** git repository and run the following:
 
 .. sourcecode:: bash
 
