@@ -17,6 +17,9 @@ These packages are provided as is. They are known to be a bit rough with some fu
 Repository
 ----------
 
+The repository is available at the following url:
+* https://kakwa.github.io/debian-rpm-build-tools/
+
 To install the repository:
 
 ```bash
