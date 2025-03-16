@@ -130,7 +130,7 @@ $(BUILD_DIR)/pkg_built.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(INDIVIDUAL
 	@find $(BUILD_DIR)/ -type f -name "*debian.tar.xz" -print0 | xargs -0 -r mv -t $(OUT_SRC)/
 	@touch $@
 
-# Build Debian packages in a clean chroot environment (cowbuilder)
+# Build Debian packages in a clean chroot environment (cowbuilder/pbuilder)
 $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(INDIVIDUAL_DEB_LOCAL_REPO_PATH)/Packages
 	@cd $(BUILD_DIR)/deb.$(DIST)/$(PKGNAME)-$(VERSION) && dpkg-source -b ./
 	@$(SUDO) mkdir -p $(COW_DIR)/aptcache/
@@ -138,24 +138,29 @@ $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(IND
 	# Setup or update cowbuilder environment if needed
 	@if ! [ "$(SKIP_COWBUILDER_SETUP)" = "true" ]; then \
 		flock -x /tmp/cowbuilder.$(DIST).lock -c ' \
-		if ! [ -f $(COW_BASEPATH)/etc/hosts ]; then \
+		if [ "$(BUILDER)" = "cowbuilder" ]; then \
+			TEST_FILE=$(COW_BASEPATH)/etc/hosts \
+		else \
+			TEST_FILE=$(COW_BASEPATH) \
+		fi; \
+		if ! [ -f $$TEST_FILE ]; then \
 			export TMPDIR=/tmp/; \
 			$(SUDO) rm -rf -- $(COW_BASEPATH); \
-			$(SUDO) cowbuilder --create $(COWBUILDER_CREATE_ARGS) ; \
+			$(SUDO) $(BUILDER) --create $(COWBUILDER_CREATE_ARGS) ; \
 			ret=$$?; \
 		else \
 			export TMPDIR=/tmp/; \
-			$(SUDO) cowbuilder --update $(COWBUILDER_UPDATE_ARGS) ; \
-				ret=$$?; \
+			$(SUDO) $(BUILDER) --update $(COWBUILDER_UPDATE_ARGS) ; \
+			        ret=$$?; \
 		fi; exit $$ret;'; \
 	fi
 	
 	# Build package in chroot
 	@export TMPDIR=/tmp/; \
-	$(SUDO) cowbuilder --build \
-		$(BUILD_DIR)/deb.$(DIST)/*.dsc \
-		--buildresult $(OUT_DIR)/ \
-		$(COWBUILDER_BUILD_ARGS); \
+	$(SUDO) $(BUILDER) --build \
+		--buildresult $(shell pwd)/$(OUT_DIR)/ \
+		$(COWBUILDER_BUILD_ARGS) \
+		$(BUILD_DIR)/deb.$(DIST)/*.dsc; \
 	if [ $$? -ne 0 ]; then \
 		touch $(BUILD_DIR)/failure.chroot.$(DIST); \
 		exit 1; \
@@ -186,13 +191,13 @@ $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(IND
 	# Set the build success marker
 	@touch $@
 
-# Helper target to get cowbuilder chroot path
+# Helper target to get chroot path
 deb_get_chroot_path:
 	@echo $$(readlink -f $(COW_BASEPATH))
 
 # Conditional targets based on the TO_SKIP variable
 ifneq ($(TO_SKIP), true)
-# Build .deb in chroot
+# Build .deb in chroot (using cowbuilder or pbuilder)
 deb_chroot: $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST)
 
 # Build .deb locally
