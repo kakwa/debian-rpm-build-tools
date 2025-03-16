@@ -45,7 +45,7 @@ To set up this automation in your repository:
    - You can also manually trigger it from the Actions tab in your repository
 
 Disabling the Workflow
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 If you need to disable the workflow:
 
@@ -77,7 +77,7 @@ Build .deb repo for a specific distribution:
     make deb_repo -j4 DIST=trixie # ERROR=skip
 
 Building Specific .deb Repository
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Build .rpm repo for a specific distribution:
 
@@ -104,6 +104,6 @@ Build all targets declared in ``Makefile.config``:
 
     make all_repos
 
-.. info::
+.. note::
 
     From there, you can publish the ``out/`` directory on any static http hosting (S3, nginx, etc).

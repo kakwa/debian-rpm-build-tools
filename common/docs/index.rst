@@ -11,8 +11,5 @@ Table Of Content
    getting_started
    building_package
    building_repo
-   targets
    troubleshooting
-
-.. include:: ../../README.rst
-    :start-after: .. quick_ref
+   references

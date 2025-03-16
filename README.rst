@@ -2,15 +2,26 @@
 Pakste
 ======
 
+
 .. image:: https://github.com/kakwa/pakste/actions/workflows/docs.yml/badge.svg
     :target: https://kakwa.github.io/pakste/
     :alt: Documentation
 
+
+.. image:: https://raw.githubusercontent.com/kakwa/pakste/refs/heads/main/common/docs/assets/pakste_w.svg
+   :alt: Logo
+   :width: 160px
+   :align: left
+
+
+
 A Makefile-based packaging framework for building DEB and RPM package repositories leveraging Github Actions & Github Pages.
+
 
 .. list-table::
    :header-rows: 0
    :widths: 100 100
+   :align: left
 
    * - Documentation
      - `GitHub Pages <https://kakwa.github.io/pakste/>`_
@@ -20,6 +31,9 @@ A Makefile-based packaging framework for building DEB and RPM package repositori
      - kakwalab © 2025
    * - License
      - MIT
+
+
+
 
 .. build_deps_start
 
