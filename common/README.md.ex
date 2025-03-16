@@ -54,3 +54,7 @@ gpgcheck=1
 gpgkey=https://@@ORG@@.github.io/@@REPO@@/GPG-KEY.pub
 EOF
 ```
+
+# Building
+
+Check the [pakste documention](https://kakwa.github.io/pakste/).
