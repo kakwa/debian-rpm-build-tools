@@ -1,7 +1,7 @@
 # Name of the package
 NAME = mock
 
-VERSION = 6.0
+VERSION = 6.1
 
 UPSTREAM_RELEASE = 1
 
@@ -51,9 +51,3 @@ include buildenv/Makefile.common
 # more complex case with upstream source rework and rebuilding of the tar
 $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
 	$(WGS) -u $(URL_SRC) -o $(SOURCE_ARCHIVE)
-	#mkdir -p $(BUILD_DIR)/tmp
-	#tar -vxf $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz -C $(BUILD_DIR)/tmp
-	#mv $(BUILD_DIR)/tmp/$(NAME)-$(NAME)-$(VERSION)-$(UPSTREAM_RELEASE)/* $(SOURCE_DIR)
-	#rm -rf $(BUILD_DIR)/tmp
-	#rm -f $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
-	#$(SOURCE_TAR_CMD)
