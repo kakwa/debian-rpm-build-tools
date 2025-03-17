@@ -9,11 +9,6 @@ Ubuntu and Debian packages for [Mock](https://rpm-software-management.github.io/
 
 `mock` is a great tool to crossbuild packages for various rpm-based distributions & versions (ex: FC 35, RHEL 7, Suse 15, etc). And through qemu/binfmt, it could also be used to target different architectures (ppc64, aarch64, etc).
 
-Disclaimer
-----------
-
-These packages are provided as is. They are known to be a bit rough with some functionalities not working properly (ex: chroot generation without podman not working).
-
 Repository
 ----------
 
