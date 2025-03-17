@@ -37,6 +37,7 @@ ${VERSION_CODENAME} main" | tee /etc/apt/sources.list.d/debian-rpm-build-tools.l
 # update
 apt update
 ```
+Install `mock` & associated tools:
 
 ```bash
 # install mock & its dependencies
