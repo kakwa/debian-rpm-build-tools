@@ -2,12 +2,12 @@
 NAME = distribution-gpg-keys
 
 # Version
-VERSION = 1.108
+VERSION = 1.110
 
 UPSTREAM_RELEASE = 1
 
 # Revision number 
-RELEASE = 2
+RELEASE = 1
 
 # URL of the project 
 URL=https://github.com/xsuchy/distribution-gpg-keys
@@ -58,7 +58,7 @@ include buildenv/Makefile.common
 $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
 	$(WGS) -u $(URL_SRC) -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
 	mkdir -p $(BUILD_DIR)/tmp
-	tar -vxf $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz -C $(BUILD_DIR)/tmp
+	tar -xf $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz -C $(BUILD_DIR)/tmp
 	mv $(BUILD_DIR)/tmp/$(NAME)-$(NAME)-$(VERSION)-$(UPSTREAM_RELEASE)/* $(SOURCE_DIR)
 	rm -rf -- $(SOURCE_DIR)/keys/copr
 	rm -rf $(BUILD_DIR)/tmp
