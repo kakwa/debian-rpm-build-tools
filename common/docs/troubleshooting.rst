@@ -6,17 +6,30 @@ Sudoers Configuration
 
 Building in chroot requires root permission.
 
-If **make deb_chroot** is run as a standard user, **sudo** will be used for cowbuilder calls.
+If ``make deb_chroot``/``make rpm_chroot`` is run as a standard user, **sudo** will be used for cowbuilder calls.
 
 If you want to avoid password promt add the following line to the sudoers configuration:
 
 .. sourcecode:: bash
 
     # replace build-user with the user used to generate the packages
-    build-user ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
-    build-user ALL=(ALL) NOPASSWD: /usr/sbin/mock
-    build-user ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/cache/pbuilder/*
-    build-user ALL=(ALL) NOPASSWD: /usr/bin/rm -rf -- /var/cache/pbuilder/*
+    <BUILD_USER> ALL=(ALL) NOPASSWD: /usr/sbin/cowbuilder
+    <BUILD_USER> ALL=(ALL) NOPASSWD: /usr/sbin/pbuilder
+    <BUILD_USER> ALL=(ALL) NOPASSWD: /usr/sbin/mock
+    <BUILD_USER> ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/cache/pbuilder/*
+    <BUILD_USER> ALL=(ALL) NOPASSWD: /usr/bin/rm -rf -- /var/cache/pbuilder/*
+
+Internet Access During Build
+----------------------------
+
+By default, ``mock``/``pbuilder`` build environments don't have internet access.
+
+If you need access (for example, to use `go get` or `npm install`), add the following in your package ``Makefile``:
+
+.. sourcecode:: make
+
+    COWBUILD_BUILD_ADDITIONAL_ARGS=--use-network yes
+    MOCK_BUILD_ADDITIONAL_ARGS=--enable-network
 
 Repository Key Issues
 ---------------------
@@ -49,7 +62,6 @@ fstab:
     # Or add to /etc/fstab for persistence
     tmpfs /var/cache/pbuilder/ tmpfs defaults,size=16G 0 0    # For combuilder/DEB builds
     tmpfs /var/lib/mock tmpfs defaults,size=16G 0 0           # For mock/RPM builds
-
 
 GPG Key
 -------

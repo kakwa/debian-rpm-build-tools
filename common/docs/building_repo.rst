@@ -4,6 +4,28 @@ Repository
 GitHub Actions & Github Pages Automation
 ----------------------------------------
 
+Repository Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't have one, create a GPG signing key (leave the password empty):
+
+.. sourcecode:: bash
+
+    # Generate a new GPG key
+    gpg --gen-key
+
+Create **Makefile.config** and set the repository metadata, in particular ``GPG_KEY`` and ``DEB_ALL_TARGETS``/``RPM_ALL_TARGETS``:
+
+.. sourcecode:: bash
+
+    # copy configuration example
+    cp common/Makefile.config.ex Makefile.config
+
+    # tweak it
+    vim Makefile.config
+
+Finally, commit & push ``Makefile.config``.
+
 Setting Up Automated Builds
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -21,12 +43,6 @@ To set up this automation in your repository:
    - Take note of the Github Pages URL.
 
 2. **Configure GPG Signing Key**:
-
-   - Generate a GPG key for signing packages if you don't have one:
-
-     .. sourcecode:: bash
-
-         gpg --full-generate-key
 
    - Export your GPG private key:
 

@@ -14,14 +14,16 @@ export SUDO=sudo
 
 # Get your OS version
 . /etc/os-release
+# Get the architecture
+ARCH=$(dpkg --print-architecture)
 
 # Add the GPG key
 wget -qO - https://@ORG@.github.io/@REPO@/GPG-KEY.pub | \
-    gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/@REPO@.gpg
+    gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/@REPO@.gpg >/dev/null
 
 # Add the repository
-echo "deb [arch=$(dpkg --print-architecture)] \
-https://@ORG@.github.io/@REPO@/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ \
+echo "deb [arch=${ARCH}] \
+https://@ORG@.github.io/@REPO@/deb.${VERSION_CODENAME}.${ARCH}/ \
 ${VERSION_CODENAME} main" | ${SUDO} tee /etc/apt/sources.list.d/@REPO@.list
 
 # update
@@ -57,6 +59,8 @@ gpgkey=https://@ORG@.github.io/@REPO@/GPG-KEY.pub
 EOF
 ```
 
-# Building
+# Build The `.rpm`/`.deb` Repositories
 
-Check the [pakste documention](https://kakwa.github.io/pakste/).
+This project uses [Pakste](https://github.com/kakwa/pakste).
+
+Check the [Pakste Documention](https://kakwa.github.io/pakste/) for more details.

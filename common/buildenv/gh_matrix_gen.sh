@@ -50,7 +50,7 @@ process_dist_arch() {
 
 gen_columns() {
     # Process RPM distributions
-    process_dist_arch "rpm" "$rpm_dist_arch" "1"
+    process_dist_arch "rpm" "$rpm_dist_arch" "8"
     # Process DEB distributions
     process_dist_arch "deb" "$deb_dist_arch" "8"
 }

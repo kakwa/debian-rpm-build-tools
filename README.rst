@@ -16,10 +16,7 @@ Pakste
    :width: 160px
    :align: left
 
-
-
-A Makefile-based packaging framework for building DEB and RPM package repositories leveraging Github Actions & Github Pages.
-
+Pakste: a ``deb``/``rpm`` packaging & repo publishing toolkit leveraging Github Actions & Github Pages.
 
 .. list-table::
    :header-rows: 0
@@ -56,14 +53,22 @@ Debian/Ubuntu
 
 .. sourcecode:: bash
 
+    # if you want to use sudo
+    export SUDO=sudo
+
     # Configure repository
     . /etc/os-release
-    wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | gpg --dearmor | tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg
-    echo "deb [arch=$(dpkg --print-architecture)] https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ ${VERSION_CODENAME} main" | tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
-    apt update
+    ARCH=$(dpkg --print-architecture)
+    wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | \
+        gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg >/dev/null
+    echo "deb [arch=${ARCH}] \
+    https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.${ARCH}/ \
+    ${VERSION_CODENAME} main" | \
+        ${SUDO} tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
 
     # Install packages
-    apt install mock createrepo-c rpm dnf gnupg2
+    ${SUDO} apt update
+    ${SUDO} apt install mock createrepo-c rpm dnf gnupg2
 
 RHEL/Rocky/Fedora
 ~~~~~~~~~~~~~~~~~
