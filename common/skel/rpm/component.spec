@@ -19,6 +19,7 @@ License: @LICENSE@
 Group: System/Servers
 Summary: @SUMMARY@ 
 BuildRoot: %{_tmppath}/%{pkgname}-%{zone}-%{version}-%{release}-build
+BuildRequires: systemd-rpm-macros
 #BuildArch: noarch
 # Build Dependencies
 #BuildRequires: systemd-rpm-macros
@@ -37,7 +38,8 @@ BuildRoot: %{_tmppath}/%{pkgname}-%{zone}-%{version}-%{release}-build
 
 %install
 
-rm -rf $RPM_BUILD_ROOT
+rm -rf -- $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT
 #make install \
 #    DESTDIR=$RPM_BUILD_ROOT \
 #    PREFIX=%{_prefix}

@@ -129,9 +129,9 @@ deb_chroot:
 	
 	# Initialize or update cowbuilder chroot
 	if [ "$(BUILDER)" = "cowbuilder" ]; then \
-	    TEST_FILE=$(COW_BASEPATH)/etc/hosts; \
+	    TEST_FILE="$(COW_BASEPATH)/etc/hosts"; \
 	else \
-	    TEST_FILE=$(COW_BASEPATH); \
+	    TEST_FILE="$(COW_BASEPATH)"; \
 	fi; \
 	if ! [ -f $$TEST_FILE ] || [ $$(( $$(date +%s) - $$(stat -c %Y $$TEST_FILE) )) -gt 86400 ]; then \
 		export TMPDIR=/tmp/; \

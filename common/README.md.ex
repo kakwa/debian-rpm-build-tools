@@ -2,9 +2,11 @@
 
 # @REPO@
 
+The `.deb`/`.rpm` repositories are available at the following url: https://@ORG@.github.io/@REPO@/
+
 ## Ubuntu/Debian
 
-To install the repository on `Ubuntu`/`Debian`:
+If you are using `Ubuntu`/`Debian`, here how to install the repository:
 
 ```shell
 # If you are not root
@@ -28,7 +30,7 @@ apt update
 
 ## RHEL/Rocky/Fedora
 
-To install the repository on `RHEL`/`Rocky`/`Fedora`:
+If you are using `RHEL`/`Rocky`/`Fedora`, here how to install the repository:
 
 ```shell
 # If you are not root

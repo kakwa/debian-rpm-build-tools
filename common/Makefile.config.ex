@@ -20,7 +20,7 @@ DEB_REPO_COMPONENT := main
 
 # Targeted <version>:<arch> for *all_repos
 DEB_ALL_TARGETS := bookworm:amd64 bookworm:arm64 sid:amd64 sid:arm64 trixie:amd64 trixie:arm64 noble:amd64 noble:arm64
-RPM_ALL_TARGETS := el9:X86_64 el9:aarch64
+RPM_ALL_TARGETS := el9:x86_64 el9:aarch64
 
 # Repository Configuration
 define DEB_REPO_CONFIG

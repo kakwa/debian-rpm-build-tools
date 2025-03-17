@@ -139,9 +139,9 @@ $(BUILD_DIR)/pkg_built_chroot.deb.$(DIST): $(DEB_PREPARE) | $(DIRECTORIES) $(IND
 	@if ! [ "$(SKIP_COWBUILDER_SETUP)" = "true" ]; then \
 		flock -x /tmp/cowbuilder.$(DIST).lock -c ' \
 		if [ "$(BUILDER)" = "cowbuilder" ]; then \
-			TEST_FILE=$(COW_BASEPATH)/etc/hosts \
+			TEST_FILE="$(COW_BASEPATH)/etc/hosts"; \
 		else \
-			TEST_FILE=$(COW_BASEPATH) \
+			TEST_FILE="$(COW_BASEPATH)"; \
 		fi; \
 		if ! [ -f $$TEST_FILE ]; then \
 			export TMPDIR=/tmp/; \

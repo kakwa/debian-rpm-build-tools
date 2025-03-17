@@ -59,19 +59,19 @@ Create **Makefile.config** and set the repository metadata:
     # tweak it
     vim Makefile.config
 
-Optionally, create **REAME.md**:
+Optionally, create **README.md**:
 
 .. sourcecode:: bash
 
     # copy configuration example
-    cp common/REAME.md.ex REAME.md
+    cp common/README.md.ex README.md
 
     # Customize for your repo
-    sed -i 's/@ORG@/<name of your github org/user>/g' REAME.md
-    sed -i 's/@REPO@/<name your github repository>/g' REAME.md
+    sed -i 's/@ORG@/<name of your github org/user>/g' README.md
+    sed -i 's/@REPO@/<name your github repository>/g' README.md
 
     # tweak it if necessary
-    vim REAME.md
+    vim README.md
 
 Updating Pakste
 ---------------
