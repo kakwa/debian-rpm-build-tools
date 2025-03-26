@@ -2,7 +2,6 @@
 Pakste
 ======
 
-
 .. image:: https://github.com/kakwa/pakste/actions/workflows/docs.yml/badge.svg
     :target: https://kakwa.github.io/pakste/
     :alt: Documentation
@@ -11,12 +10,16 @@ Pakste
     :target: https://github.com/kakwa/pakste/actions/workflows/build-test.yml
     :alt: Tests
 
+|
+
 .. image:: https://raw.githubusercontent.com/kakwa/pakste/refs/heads/main/common/docs/assets/pakste_w.svg
    :alt: Logo
-   :width: 160px
+   :width: 150px
    :align: left
 
-Pakste: a ``deb``/``rpm`` packaging & repo publishing toolkit leveraging Github Actions & Github Pages.
+``deb``/``rpm`` packaging & repository publishing toolkit leveraging Github Actions & Github Pages.
+
+|
 
 .. list-table::
    :header-rows: 0
@@ -24,13 +27,28 @@ Pakste: a ``deb``/``rpm`` packaging & repo publishing toolkit leveraging Github 
    :align: left
 
    * - Documentation
-     - `GitHub Pages <https://kakwa.github.io/pakste/>`_
+     - `Pakste Manual <https://kakwa.github.io/pakste/>`_
    * - Repository
-     - `Git Repo on GitHub <https://github.com/kakwa/pakste>`_
+     - `Pakste on GitHub <https://github.com/kakwa/pakste>`_
    * - Author
      - kakwalab © 2025
    * - License
      - MIT
+
+Presentation
+============
+
+**Pakste** is a toolkit for developers working with Debian- and Red Hat-based distributions who need reasonably consistent and
+reproducible package builds across different environments, without the hassle of setting up build and hosting servers.
+
+**Key features**:
+
+* Wrapper & integration between the numerous ``.rpm`` and ``.deb`` build & repo tools and providing easier to remember commands like ``make rpm_chroot`` or ``make deb_chroot``.
+* Easy packaging bootstrapping.
+* Provide various source code recovery helpers to easily package upstream repositories with a good level reproducibility.
+* Multi-Distribution & Architecture targeting thanks to ``mock``/``pbuilder`` & ``binfmt`` respectively.
+* Build dependencies consistency, again, thanks to ``mock``/``pbuilder`` and their disposable build containers.
+* Github Action workflow for automated builds and publication via Github Pages (easily customizable for other destinations).
 
 .. build_deps_start
 
@@ -84,7 +102,7 @@ RHEL/Rocky/Fedora
 
 .. sourcecode:: bash
 
-    dnf install pbuilder apt dpkg debian-keyring ubu-keyring
+    dnf install pbuilder apt dpkg debian-keyring ubu-keyring reprepro
 
 .. quick_ref
 

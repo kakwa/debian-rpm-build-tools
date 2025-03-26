@@ -1,6 +1,21 @@
 Optional Setup & Troubleshooting
 ================================
 
+Troubleshooting The Build
+-------------------------
+
+If you need to troubleshoot the build in the chroot, run the ``<PKG>_shell_chroot``.
+
+This trigger a build and spawn a shell in case of failure, enabling you to troubleshoot from there:
+
+.. sourcecode:: bash
+
+    # Deb version
+    make deb_shell_chroot DIST=trixie
+
+    # rpm version
+    make rpm_shell_chroot DIST=el9
+
 Sudoers Configuration
 ---------------------
 

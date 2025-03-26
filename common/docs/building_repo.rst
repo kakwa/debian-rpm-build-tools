@@ -60,6 +60,17 @@ To set up this automation in your repository:
    - By default, the workflow runs when you push to the main branch
    - You can also manually trigger it from the Actions tab in your repository
 
+Disabling TMPFS Builds
+~~~~~~~~~~~~~~~~~~~~~~
+
+By default, a tmpfs is used for the build.
+
+If you have ram and/or space intensive builds (commulated >16GB), you can disable it:
+
+1. Go to repository Settings → Secrets and variables → Actions → Variables
+2. Create a new variable named ``NO_TMPFS`` with value ``true``
+
+
 Disabling the Workflow
 ~~~~~~~~~~~~~~~~~~~~~~
 

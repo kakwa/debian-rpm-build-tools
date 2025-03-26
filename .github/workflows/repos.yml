@@ -87,6 +87,7 @@ jobs:
           if [ "${{ matrix.target }}" == "rpm" ];then sudo apt install -y mock createrepo-c rpm dnf gnupg2; fi
 
       - name: Create Tmpfs
+        if: vars.NO_TMPFS != 'true'
         run: |
           sudo mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/
 

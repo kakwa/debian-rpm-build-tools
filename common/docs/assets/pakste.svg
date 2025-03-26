@@ -10,6 +10,7 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <circle r="199" fill="white" cx="200" cy="200" stroke-width="2" stroke="black"/>
   <defs
      id="defs866">
     <linearGradient

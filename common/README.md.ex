@@ -49,7 +49,8 @@ else
 fi
 
 # Create the repository file
-cat << EOF | ${SUDO} tee /etc/yum.repos.d/@REPO@.repo
+cat << EOF | ${SUDO} tee -a /etc/dnf/dnf.conf
+
 [@REPO@]
 name=@REPO@
 baseurl=https://@ORG@.github.io/@REPO@/rpm.${DISTRO_PREFIX}\$releasever.\$basearch/\$releasever/\$basearch/

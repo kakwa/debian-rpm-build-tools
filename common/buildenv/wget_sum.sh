@@ -127,7 +127,7 @@ verify_checksum() {
     cache_dir="$6"
 
     if [ -z "$expected_sum" ]; then
-        echo "[WARNING] No checksum found in manifest for $source_file"
+        exit_error "[ERROR] No checksum found in manifest for $source_file"
     elif [ "$expected_sum" != "$sum" ]; then
         exit_error "[ERROR] Bad checksum for '$url'\nexpected: $expected_sum\ngot:     $sum" "$outfile" "$cache_dir" "$source_file"
     else

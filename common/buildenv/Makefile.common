@@ -14,7 +14,7 @@ endif
 #
 # Main targets
 #
-.PHONY: all rpm_prepare rpm deb clean_build clean_cache clean reset_manifest manifest help deb_chroot deb_get_chroot_path rpm_chroot
+.PHONY: all rpm_prepare rpm deb clean_build clean_cache clean reset_manifest manifest help deb_chroot deb_get_chroot_path rpm_chroot rpm_shell_chroot deb_shell_chroot
 
 all: deb rpm
 

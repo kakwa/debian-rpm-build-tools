@@ -70,6 +70,13 @@ Package Building Targets
    * - ``rpm_chroot``
      - package & repo/root
      - Build RPM package in a clean chroot environment
+   * - ``deb_shell_chroot``
+     - package
+     - Debug, try to build DEB package and spawn a shell if error
+   * - ``rpm_shell_chroot``
+     - package
+     - Debug, try to build RPM package and spawn a shell if error
+
 
 .. list-table::
    :header-rows: 1
