@@ -349,6 +349,7 @@ update:
 	@echo "git diff"
 	@echo "git add ./"
 	@echo "git commit -a -m 'update pakste - upstream commit: $(shell  wget -qO- https://api.github.com/repos/kakwa/pakste/commits/main | grep '\"sha\"' | head -1 | sed 's/.*"\([^"]*\)",/\1/')'"
+	@echo "git push"
 
 github_matrix:
 	@./common/buildenv/gh_matrix_gen.sh -r "$(RPM_ALL_TARGETS)" -d "$(DEB_ALL_TARGETS)"
