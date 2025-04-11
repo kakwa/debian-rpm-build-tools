@@ -37,7 +37,8 @@ Recover Pakste:
 .. sourcecode:: bash
 
     # Download Pakste
-    wget -qO- https://github.com/kakwa/pakste/archive/refs/heads/main.tar.gz | tar --strip-components=1 -xz
+    wget -qO- https://github.com/kakwa/pakste/archive/refs/heads/main.tar.gz | \
+        tar --strip-components=1 -xz
 
 Optionally, create **README.md**:
 
@@ -65,12 +66,3 @@ Commit:
     git add ./
     git commit -a -m 'init'
     git push origin main
-
-Updating Pakste
----------------
-
-To update Pakste in your repository, run:
-
-.. sourcecode:: bash
-
-    make update

@@ -1,6 +1,15 @@
 Optional Setup & Troubleshooting
 ================================
 
+Updating Pakste
+---------------
+
+To update Pakste in your repository, run:
+
+.. sourcecode:: bash
+
+    make update
+
 Troubleshooting The Build
 -------------------------
 

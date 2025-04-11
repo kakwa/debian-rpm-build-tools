@@ -2,8 +2,8 @@
 include buildenv/Makefile.vars
 
 # Include build system makefiles
-include buildenv/Makefile.rpm
-include buildenv/Makefile.deb
+include buildenv/rpm.Makefile
+include buildenv/deb.Makefile
 
 # Configuration
 # ----------------------------------------------------------------------------
