@@ -29,6 +29,9 @@ LICENSE=GPLv2
 #   <version>: the version number to ignore
 #
 SKIP=>=:el:0 >=:fc:0
+
+NVD_CPE_PATTERN=cpe:2.3:a:rpm-software-management:mock:*
+
 ###############################################################################
 # Rule #
 ########

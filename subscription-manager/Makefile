@@ -33,6 +33,8 @@ LICENSE=GPLv2
 #
 #SKIP=<=:deb:8 <=:el:6 <=:fc:29 <=:ubu:18.4
 
+NVD_CPE_PATTERN=cpe:2.3:a:redhat:subscription-manager:*
+
 ###############################################################################
 # Rule #
 ########
