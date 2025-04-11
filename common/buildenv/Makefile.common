@@ -1,0 +1,83 @@
+# vim: set noet ts=4:
+include buildenv/Makefile.vars
+
+# Include build system makefiles
+include buildenv/Makefile.rpm
+include buildenv/Makefile.deb
+
+# Configuration
+# ----------------------------------------------------------------------------
+ifneq ($(wildcard ../Makefile.config),)
+    include ../Makefile.config
+endif
+
+#
+# Main targets
+#
+.PHONY: all rpm_prepare rpm deb clean_build clean_cache clean reset_manifest manifest help deb_chroot deb_get_chroot_path rpm_chroot rpm_shell_chroot deb_shell_chroot vulncheck
+
+all: deb rpm
+
+# Create build directories
+$(DIRECTORIES):
+	@mkdir -p $@
+
+# Vulnerability check target
+vulncheck:
+	@./buildenv/check-cves.sh -c "$(NVD_CPE_PATTERN)" $(if $(NVD_MIN_VERSION),-V "$(NVD_MIN_VERSION)") $(if $(NVD_IGNORE_CVES),-I "$(NVD_IGNORE_CVES)")
+
+# Cleaning targets
+clean_build:
+	@if [ -d $(BUILD_DIR_BASE) ]; then \
+		chmod -R 700 $(BUILD_DIR_BASE); \
+		rm -rf -- $(BUILD_DIR_BASE); \
+	fi
+
+clean_cache:
+	@if [ -d $(CACHE) ] && [ "$(KEEP_CACHE)" != "true" ]; then \
+		chmod -R 700 $(CACHE); \
+		rm -rf -- $(CACHE); \
+	fi
+
+clean: clean_build clean_cache
+	@rm -f ../out/*/*/results/*/*$(NAME)*/$(SUCCESS_MARKER)
+	@if [ -d $(OUT_DIR) ];then find $(OUT_DIR) -type f -name "*.rpm" -not -name "*.src.rpm" -printf "%f\0" | xargs -i -n 1 -0 find ../out/ -name {} -type f -delete;fi
+	@if [ -d ./out/ ];then find $(OUT_DIR) -type f -name "*.deb" -printf "%f\0" | xargs -i -n 1 -0 find ../out/ -name {} -type f -delete;fi
+	@if [ -d $(OUT_DIR) ];then chmod 700 -R $(OUT_DIR);rm -rf -- $(OUT_DIR);fi
+	@if [ -d $(OUT_SRC) ];then chmod 700 -R $(OUT_SRC);rm -rf -- $(OUT_SRC);fi
+	@rm -rf -- $(REPO_BASE_DIR)/rpm.*.*/raw/results/*/$(NAME)*
+
+# Manifest targets
+reset_manifest:
+	@truncate MANIFEST -s 0
+
+manifest: reset_manifest clean_cache $(SOURCE_ARCHIVE)
+
+# Help target
+define MAKE_HELP
+Available targets:
+
+* help       : Display this help message
+* manifest   : Download the upstream sources and (re)build the MANIFEST file
+               with the checksum of the upstream sources.
+               Running "make clean" is advisable before "make manifest".
+* clean      : Remove work directories (builddir/, cache/, out/, src-out/).
+               Keep the cache with "KEEP_CACHE=true": "make clean KEEP_CACHE=true"
+* deb        : Build the .deb packages
+* rpm        : Build the .rpm packages
+* deb_chroot : Build .deb packages in a clean chroot (using cowbuilder)
+               Specify distribution with "DIST=<code name>" (e.g., "make deb_chroot DIST=stretch")
+               Requires root permissions for cowbuilder
+* rpm_chroot : Build .rpm packages in a clean chroot (using mock)
+               Specify distribution with "DIST=<code name>" (e.g., "make rpm_chroot DIST=el7")
+               Requires root permissions for mock
+* list_dist  : List distribution code names
+* vulncheck  : Check for known vulnerabilities using NVD database
+endef
+export MAKE_HELP
+
+help:
+	@echo "$$MAKE_HELP"
+
+# Prevent parallel execution for certain targets
+.NOTPARALLEL: deb rpm clean deb_chroot manifest

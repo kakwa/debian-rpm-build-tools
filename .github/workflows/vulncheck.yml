@@ -1,0 +1,37 @@
+name: Check CVEs on NVD
+
+on:
+  schedule:
+    - cron: '32 03 * * *'  # Runs every day at 03:32 UTC
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check_repo:
+    if: github.ref == 'refs/heads/main' && vars.NVD_CHECK_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      is_main_repo: ${{ steps.check.outputs.is_main_repo }}
+    steps:
+      - id: check
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == "kakwa/pakste" ]]; then
+            echo "is_main_repo=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main_repo=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Repository: $GITHUB_REPOSITORY"
+
+  nvd_check:
+    needs: check_repo
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false' && vars.NVD_CHECK_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: sudo apt install -y make jq curl
+      - name: Check of CVEs
+        run: make vulncheck

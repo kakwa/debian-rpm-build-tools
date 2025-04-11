@@ -1,0 +1,76 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check_repo:
+    runs-on: ubuntu-latest
+    outputs:
+      is_main_repo: ${{ steps.check.outputs.is_main_repo }}
+    steps:
+      - id: check
+        run: |
+         if [[ "$GITHUB_REPOSITORY" == "kakwa/pakste" ]]; then
+           echo "is_main_repo=true" >> $GITHUB_OUTPUT
+         else
+           echo "is_main_repo=false" >> $GITHUB_OUTPUT
+         fi
+         echo "Repository: $GITHUB_REPOSITORY"   
+  build-test:
+    needs: check_repo
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dist: [trixie, el9]
+        include:
+          - dist: trixie
+            type: deb
+          - dist: el9
+            type: rpm
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up environment
+        run: |
+          # Install RPM tools for Debian
+          . /etc/os-release
+          wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg > /dev/null
+          echo "deb [arch=$(dpkg --print-architecture)] https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ ${VERSION_CODENAME} main" | sudo tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
+          sudo apt update
+          sudo apt install -y mock createrepo-c rpm dnf gnupg2
+          # Install Debian/Ubuntu tools
+          sudo apt install -y make debhelper reprepro cowbuilder wget jq
+          sudo apt install -y debian-archive-keyring debian-keyring debian-ports-archive-keyring ubuntu-keyring
+
+      - name: Initialize test package
+        run: |
+          ./common/init_pkg.sh -n testpackage
+ 
+      - name: Build package
+        run: |
+          make ${{ matrix.type }}_chroot DIST=${{ matrix.dist }} -C testpackage/ --trace
+
+      - name: Check build artifacts
+        run: |
+          find testpackage/out -type f -name "*.deb" -o -name "*.rpm" | sort
+
+      - name: Check Matrix
+        run: |
+          cp common/Makefile.config.ex ./Makefile.config
+          make github_matrix | jq .
+
+          # TODO
+          #- name: Build repository
+          #  run: |
+          #    make ${{ matrix.type }}_repo DIST=${{ matrix.dist }} --trace
+
+          #- name: Check Repo
+          #  run: |
+          #    find out -type f -name "*.deb" -o -name "*.rpm" | sort

@@ -1,0 +1,132 @@
+name: Build Repositories
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  check_repo:
+    if: github.ref == 'refs/heads/main' && vars.REPO_WORKFLOW_DISABLED != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      is_main_repo: ${{ steps.check.outputs.is_main_repo }}
+    steps:
+      - id: check
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == "kakwa/pakste" ]]; then
+            echo "is_main_repo=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main_repo=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Repository: $GITHUB_REPOSITORY"
+
+  generate-matrix:
+    needs: check_repo
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false' && vars.REPO_WORKFLOW_DISABLED != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Generate Matrix
+        id: set-matrix
+        run: |
+          MATRIX=$(make github_matrix);
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs:
+      - check_repo
+      - generate-matrix
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false' && vars.REPO_WORKFLOW_DISABLED != 'true'
+    runs-on: ${{ matrix.host }}
+    strategy:
+      matrix: 
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    name: ${{ matrix.target }}:${{ matrix.arch }}:${{ matrix.dist }}:${{ matrix.host }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install GPG Key
+        run: |
+          if [[ -n "${{ secrets.GPG_SIGNING_KEY }}" ]]; then
+            echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --import
+          else
+            echo "Error: GPG_SIGNING_KEY is not set"
+            echo "please set it in the repository settings"
+            echo "(Secrets & variables -> Actions -> New Repository Secret)"
+            exit 1
+          fi
+
+      - name: Install Dependencies
+        run: |
+          . /etc/os-release
+          if [ "${{ matrix.target }}" == "rpm" ];then wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg >/dev/null;fi
+          if [ "${{ matrix.target }}" == "rpm" ];then echo "deb [arch=$(dpkg --print-architecture)] https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ ${VERSION_CODENAME} main"  | sudo tee /etc/apt/sources.list.d/debian-rpm-build-tools.list ;fi
+          sudo apt update
+          sudo apt install -y make debhelper reprepro cowbuilder wget
+          sudo apt install -y binfmt-support qemu-utils qemu-user-static qemu-system-arm qemu-system-misc qemu-system-ppc qemu-system-s390x
+          sudo apt install -y debian-archive-keyring debian-keyring debian-ports-archive-keyring ubuntu-keyring
+          if [ "${{ matrix.target }}" == "rpm" ];then sudo apt install -y mock createrepo-c rpm dnf gnupg2; fi
+
+      - name: Create Tmpfs
+        if: vars.NO_TMPFS != 'true'
+        run: |
+          sudo mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/
+
+      - name: Build Repositories
+        run: make ${{ matrix.target }}_repo ARCH=${{ matrix.arch }} DIST=${{ matrix.dist }} -j${{ matrix.jobs }}
+
+      - name: Upload Build Artifacts
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-${{ matrix.target }}-${{ matrix.arch }}-${{ matrix.dist }}
+          path: ./out
+          retention-days: 1
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && needs.check_repo.outputs.is_main_repo == 'false' && vars.REPO_WORKFLOW_DISABLED != 'true'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./
+      - name: move repositories content
+        run: |
+          for repo in repo-*; do mv $repo/* .; rm -rf $repo; done
+      - name: Generate Directory Listings
+        uses: jayanta525/github-pages-directory-listing@v4.0.0
+        with:
+          FOLDER: ./
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
