@@ -75,7 +75,7 @@ download_file() {
         fi
         if ! [ "${no_link}" = "true" ]
         then
-            ln "${cache_dir}/${source_file}" "$outfile" ||
+            ln -f "${cache_dir}/${source_file}" "$outfile" ||
                 exit_error "[ERROR] Failed to copy from cache" "$outfile" "$cache_dir" "$source_file"
         fi
     else
