@@ -1,4 +1,5 @@
 [![Build Packages Repositories](https://github.com/kakwa/debian-rpm-build-tools/actions/workflows/repos.yml/badge.svg)](https://github.com/kakwa/debian-rpm-build-tools/actions/workflows/repos.yml)
+[![Check CVEs on NVD](https://github.com/kakwa/debian-rpm-build-tools/actions/workflows/vulncheck.yml/badge.svg)](https://github.com/kakwa/debian-rpm-build-tools/actions/workflows/vulncheck.yml)
 
 Presentation
 ------------
