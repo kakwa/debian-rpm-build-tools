@@ -66,3 +66,17 @@ Commit:
     git add ./
     git commit -a -m 'init'
     git push origin main
+
+.. warning::
+
+    Don't customize the following files & directory:
+
+    * ``common/``
+    * ``.github/workflows/build-test.yml``
+    * ``.github/workflows/repos.yml``
+    * ``.github/workflows/vulncheck.yml``
+    * ``.github/workflows/docs.yml``
+    * ``Makefile``
+    * ``README.rst``
+    
+    These resources are overwritten during Pakste updates.

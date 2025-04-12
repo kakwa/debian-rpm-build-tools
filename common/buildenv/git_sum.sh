@@ -14,6 +14,7 @@ tag=""
 revision=""
 use_submodules="false"
 tmp_dir=""
+cache_only="false"
 
 cleanup() {
     tmp_directory="$1"
@@ -47,6 +48,7 @@ Optional Arguments:
     -t <tag>          Git tag to check out
     -r <revision>     Git revision to check out
     -s                Initialize and update submodules
+    -O <outfile>      Only get the cache_dir output file
     -h                Show this help message
 EOF
     exit 0
@@ -123,7 +125,7 @@ verify_checksum() {
     fi
 }
 
-while getopts ":hu:o:m:cC:t:r:s" opt; do
+while getopts ":hu:o:m:cC:t:r:sO:" opt; do
     case $opt in
         h) help ;;
         u) url="$OPTARG" ;;
@@ -134,6 +136,7 @@ while getopts ":hu:o:m:cC:t:r:s" opt; do
         t) tag="$OPTARG" ;;
         r) revision="$OPTARG" ;;
         s) use_submodules="true" ;;
+        O) outfile="$OPTARG"; cache_only="true" ;;
         \?) error_exit "Invalid option: -$OPTARG" "$tmp_dir" ;;
         :) error_exit "Option -$OPTARG requires an argument" "$tmp_dir" ;;
     esac
@@ -161,8 +164,10 @@ if [ -n "$cache_dir" ] && [ -f "${cache_dir}/${source_file}" ]; then
     # Use cached file if available
     tar -xf "${cache_dir}/${source_file}" -C "$tmp_dir" || \
         error_exit "Cache extraction failed" "$tmp_dir"
-    cp "${cache_dir}/${source_file}" "$outfile" || \
-        error_exit "Cache file copy failed" "$tmp_dir"
+    if [ "$cache_only" = "false" ]; then
+        cp "${cache_dir}/${source_file}" "$outfile" || \
+            error_exit "Cache file copy failed" "$tmp_dir"
+    fi
 else
     # Download and package fresh
     checkout_repository "$url" "$co_dir" "$tag" "$revision" "$use_submodules" "$tmp_dir"

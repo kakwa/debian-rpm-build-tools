@@ -4,7 +4,7 @@
 help() {
   cat <<EOF
 usage: $(basename "$0") -u <url> -o <outfile> \\
-    [-m <manifest file>] [-c] [-C <cache dir>]
+    [-m <manifest file>] [-c] [-C <cache dir>] [-O <outfile>]
 Download files, checking them against a manifest
 
 arguments:

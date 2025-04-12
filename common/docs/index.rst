@@ -11,5 +11,6 @@ Table Of Content
    getting_started
    building_package
    building_repo
+   optional
    troubleshooting
    references

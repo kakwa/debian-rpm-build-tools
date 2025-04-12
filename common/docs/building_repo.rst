@@ -18,10 +18,10 @@ Create **Makefile.config** and set the repository metadata, in particular ``GPG_
 
 .. sourcecode:: bash
 
-    # copy configuration example
+    # Copy configuration example
     cp common/Makefile.config.ex Makefile.config
 
-    # tweak it
+    # Tweak it
     vim Makefile.config
 
 Finally, commit & push ``Makefile.config``.
@@ -69,7 +69,6 @@ If you have ram and/or space intensive builds (commulated >16GB), you can disabl
 
 1. Go to repository Settings → Secrets and variables → Actions → Variables
 2. Create a new variable named ``NO_TMPFS`` with value ``true``
-
 
 Disabling the Workflow
 ~~~~~~~~~~~~~~~~~~~~~~

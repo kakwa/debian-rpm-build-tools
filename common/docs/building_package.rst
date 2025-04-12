@@ -54,7 +54,7 @@ Building the ``.rpm`` Package:
     make rpm_chroot DIST=el9  # Replace with target
 
     tree *out
-    out
+    out/
     └── yourpackage-0.0.1-1.amk+el9.noarch.rpm
 
 Building the ``.deb`` Package:
@@ -64,7 +64,7 @@ Building the ``.deb`` Package:
     make deb_chroot DIST=trixie  # Replace with target
 
     tree out
-    out
+    out/
     └── yourpackage_0.0.1-1~amk+deb13_all.deb
 
 Clean:
@@ -86,22 +86,16 @@ The Makefile contains package metadata and upstream source configuration:
 
     # Package name
     NAME = mk-sh-skel
-
     # Version
     VERSION = 1.0.0
-
     # URL of the project
     URL = https://github.com/kakwa/mk-sh-skel
-
     # Revision number
     RELEASE = 1
-
     # Description
     DESCRIPTION = "Description of the package"
-
     # License of the package
     LICENSE = "MIT"
-
     # URL to upstream source
     URL_SRC = $(URL)/archive/$(VERSION).tar.gz
 
@@ -149,7 +143,7 @@ It is also possible to manually tweak the archive if necessary (leveraging ``$(S
 Skipping Version
 ~~~~~~~~~~~~~~~~
 
-If you want to disable the build for a given distribution, add the following:
+If you want to disable the build for a given distribution/version, add the following:
 
 .. sourcecode:: make
 
@@ -166,16 +160,6 @@ After configuring the Makefile, and whenever you update the upstream version, (r
     make manifest
 
 This downloads the upstream source and creates a MANIFEST file with checksums to ensure upstream is not doing something iffy.
-
-.. note::
-
-    In case of checksum error, an error like the following one will be displayed:
-
-    .. sourcecode:: bash
-
-        [ERROR] Bad checksum for 'https://github.com/kakwa/mk-sh-skel/archive/1.0.0.tar.gz'
-        expected: 2cdeaa0cd4ddf624b5bc7ka5dbdeb4c3dbe77df09eb58bac7621ee7b
-        got:      1cdea044ddf624b5bc7465dbdeb4c3dbe77df09eb58bac7621ee7b64
 
 Version Specific Packaging
 --------------------------

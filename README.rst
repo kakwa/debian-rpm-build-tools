@@ -17,7 +17,7 @@ Pakste
    :width: 150px
    :align: left
 
-``deb``/``rpm`` packaging & repository publishing toolkit leveraging Github Actions & Github Pages.
+``.deb``/``.rpm`` packaging & repository publishing toolkit leveraging Github Actions & Github Pages.
 
 |
 
@@ -38,17 +38,23 @@ Pakste
 Presentation
 ============
 
-**Pakste** is a toolkit for developers working with Debian- and Red Hat-based distributions who need reasonably consistent and
-reproducible package builds across different environments, without the hassle of setting up build and hosting servers.
+**Pakste** is a toolkit for developers packaging software for Debian and Red Hat-based distributions.
+It provides reasonably consistent and reproducible package builds across different distribution & version, without the hassle of setting up and maintaining build servers.
 
 **Key features**:
 
-* Wrapper & integration between the numerous ``.rpm`` and ``.deb`` build & repo tools and providing easier to remember commands like ``make rpm_chroot`` or ``make deb_chroot``.
-* Easy packaging bootstrapping.
-* Provide various source code recovery helpers to easily package upstream repositories with a good level reproducibility.
+* Wrapper & integration between ``.rpm`` and ``.deb`` build & repo management tools, providing easier to remember commands like ``make rpm_repo`` or ``make deb_repo``.
+* Helpers to easily package upstream repositories with a good level reproducibility.
 * Multi-Distribution & CPU Architecture targeting thanks to ``mock``/``pbuilder`` & ``binfmt`` respectively.
 * Build dependencies consistency, again, thanks to ``mock``/``pbuilder`` and their disposable build containers.
-* Github Action workflow for automated builds and publication via Github Pages (easily customizable for other destinations).
+* Github Action Workflow for automated builds and publication via Github Pages (easily customizable for other destinations).
+
+**Example projects**:
+
+* `Debian/Ubuntu packaging for RPM/Mock <https://github.com/kakwa/debian-rpm-build-tools>`_.
+* `Misc Open Feature Flag packages <https://github.com/funwithfeatureflags/fffpkg>`_.
+* `Packages for the author's projects <https://github.com/kakwa/kakwalab-pkg>`_.
+* `Misc packages from upstream projects <https://github.com/kakwa/misc-pkg>`_.
 
 .. build_deps_start
 
@@ -67,26 +73,28 @@ Debian/Ubuntu
 
     apt install make debhelper reprepro cowbuilder wget
 
-`.rpm` tools:
+`.rpm` tools (requires configuration):
 
 .. sourcecode:: bash
-
-    # if you want to use sudo
-    export SUDO=sudo
 
     # Configure repository
     . /etc/os-release
     ARCH=$(dpkg --print-architecture)
+    # GPG Key
     wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | \
-        gpg --dearmor | ${SUDO} tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg >/dev/null
+      gpg --dearmor | tee /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg >/dev/null
+    # Repository
     echo "deb [arch=${ARCH}] \
     https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.${ARCH}/ \
     ${VERSION_CODENAME} main" | \
-        ${SUDO} tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
+      tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
+    # Update
+    apt update
+
+.. sourcecode:: bash
 
     # Install packages
-    ${SUDO} apt update
-    ${SUDO} apt install mock createrepo-c rpm dnf gnupg2
+    apt install mock createrepo-c rpm dnf gnupg2
 
 RHEL/Rocky/Fedora
 ~~~~~~~~~~~~~~~~~
@@ -98,7 +106,6 @@ RHEL/Rocky/Fedora
     dnf install make rpm-sign expect rpm-build createrepo mock wget
 
 `.deb` tools:
-
 
 .. sourcecode:: bash
 

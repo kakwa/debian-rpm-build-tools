@@ -340,16 +340,21 @@ help:
 	@echo "$$MAKE_HELP_MAIN"
 
 update:
-	@echo "Deleting old pakste version"
+	@echo "Deleting old pakste version..."
 	@rm -rf ./common/ Makefile README.rst
-	@echo "Updating Pakste:"
+	@echo "Updating Pakste..."
 	@wget -qO- https://github.com/kakwa/pakste/archive/refs/heads/main.tar.gz | tar --strip-components=1 -xz
-	@echo "Don't forget to review and commit:\n"
-	@echo "git status"
-	@echo "git diff"
-	@echo "git add ./"
-	@echo "git commit -a -m 'update pakste - upstream commit: $(shell  wget -qO- https://api.github.com/repos/kakwa/pakste/commits/main | grep '\"sha\"' | head -1 | sed 's/.*"\([^"]*\)",/\1/')'"
-	@echo "git push"
+	@if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then \
+		echo "\nPlease review:"; \
+		echo 'git add $$(git ls-files -o --exclude-standard)'; \
+		echo 'git status' ;\
+		echo 'git diff' ;\
+		echo "\nAnd commit:"; \
+		echo "git commit -a -m 'update pakste - upstream commit: $$(wget -qO- https://api.github.com/repos/kakwa/pakste/commits/main | grep '\"sha\"' | head -1 | sed 's/.*"\([a-f0-9]*\)".*/\1/')'"; \
+		echo "git push"; \
+	else \
+		echo "Not inside a Git repository. Skipping Git review steps."; \
+	fi
 
 github_matrix:
 	@./common/buildenv/gh_matrix_gen.sh -r "$(RPM_ALL_TARGETS)" -d "$(DEB_ALL_TARGETS)"
