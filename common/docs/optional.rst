@@ -10,21 +10,7 @@ To update Pakste in your repository, run:
 
     make update
 
-From there, follow the instructions:
-
-.. sourcecode:: bash
-
-    Deleting old pakste version...
-    Updating Pakste...
-    
-    Please review:
-    git add $(git ls-files -o --exclude-standard
-    git status
-    git diff
-    
-    And commit:
-    git commit -a -m 'update pakste - upstream commit: a867e31dd63ef5a...'
-    git push
+From there, review and commit the change,
 
 Sudoers Configuration
 ---------------------
@@ -104,7 +90,6 @@ One-time mount:
 
     # Mount tmpfs (as root)
     mount -t tmpfs -o size=16G tmpfs /var/cache/pbuilder/   # For cowbuilder/DEB builds
-    mount -t tmpfs -o size=16G tmpfs /var/lib/mock          # For mock/RPM builds
 
 fstab:
 
@@ -112,7 +97,6 @@ fstab:
 
     # Or add to /etc/fstab for persistence
     tmpfs /var/cache/pbuilder/ tmpfs defaults,size=16G 0 0    # For combuilder/DEB builds
-    tmpfs /var/lib/mock tmpfs defaults,size=16G 0 0           # For mock/RPM builds
 
 GPG Key
 -------

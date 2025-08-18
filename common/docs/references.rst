@@ -201,14 +201,14 @@ Basic HTTP Recovery:
 .. sourcecode:: make
 
    $(SOURCE_ARCHIVE): $(CACHE) Makefile MANIFEST | $(SOURCE_DIR)
-       $(WGS) -u $(URL_SRC) -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
+       @$(WGS) -u $(URL_SRC) -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
 
 Basic Git Recovery:
 
 .. sourcecode:: make
 
    $(SOURCE_ARCHIVE): $(CACHE) Makefile MANIFEST | $(SOURCE_DIR)
-       $(GS) -u $(URL_GIT) -t "v$(VERSION)" -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
+       @$(GS) -u $(URL_GIT) -t "v$(VERSION)" -o $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
 
 Recovery + Clean-up (upstream `debian/` dir removal):
 

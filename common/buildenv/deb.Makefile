@@ -52,6 +52,9 @@ endif
 # Package source archive
 DEB_ARCHIVE := $(BUILD_DIR)/deb.$(DIST)/$(PKGNAME)_$(VERSION).orig.tar.gz
 
+# Full deb version
+FULL_VERSION_DEB := $(VERSION)-$(RELEASE)~$(PKG_ORG)+$(DIST_CODE)$(DIST_TAG)
+
 # Preparation dependencies
 DEB_PREPARE := $(DEB_ARCHIVE) $(DEB_CONTENT_OUT) \
   $(BUILD_DIR)/deb.$(DIST)/$(PKGNAME)-$(VERSION)/debian/changelog \
@@ -96,11 +99,12 @@ $(DEB_CONTROL_RULE_COPYRIGHT): $(DEB_CONTROL_IN) $(DEB_RULE_IN) $(DEB_COPYRIGHT_
 	@sed -i 's|@URL@|$(URL)|'                           $@ || (rm -f $@; exit 1)
 	@sed -i 's|@MAINTAINER@|$(MAINTAINER)|'             $@ || (rm -f $@; exit 1)
 	@sed -i 's|@MAINTAINER_EMAIL@|$(MAINTAINER_EMAIL)|' $@ || (rm -f $@; exit 1)
+	@sed -i 's|@FULL_VERSION_DEB@|$(FULL_VERSION_DEB)|' $@ || (rm -f $@; exit 1)
 
 # Generate Debian changelog file
 $(DEB_CHANGELOG): ./debian/changelog
 	@mkdir -p $(BUILD_DIR)/deb.$(DIST)/$(PKGNAME)-$(VERSION)/debian
-	@printf "$(PKGNAME) ($(VERSION)-$(RELEASE)~$(PKG_ORG)+$(DIST_CODE)$(DIST_TAG)) $(DIST); urgency=low\n" > $@
+	@printf "$(PKGNAME) ($(FULL_VERSION_DEB)) $(DIST); urgency=low\n" > $@
 	@printf "\n  * New version\n\n" >> $@
 	@printf " -- $(MAINTAINER) <$(MAINTAINER_EMAIL)>  %s\n" "Thu, 1 Jan 1970 00:00:00 +0000" >> $@
 

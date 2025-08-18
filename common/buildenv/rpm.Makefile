@@ -125,7 +125,7 @@ $(BUILD_DIR)/pkg_built_chroot.rpm.$(DIST): $(BUILD_DIR)/pkg_built.src.rpm.$(DIST
 rpm_shell_chroot:
 	@-$(MAKE) rpm_chroot MOCK_BUILD_ADDITIONAL_ARGS="$(MOCK_BUILD_ADDITIONAL_ARGS) --no-cleanup-after"
 	@-$(MOCK_COMMON) --install dnf vim tree
-	@-$(MOCK_COMMON) --cwd=/builddir/build/ --shell /bin/bash
+	@-$(MOCK_COMMON) --cwd=/builddir/build/ --shell /bin/bash --enable-network
 	@-$(MOCK_COMMON) --clean
 
 # Conditional targets based on the TO_SKIP variable

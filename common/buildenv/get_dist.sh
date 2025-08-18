@@ -77,7 +77,8 @@ case $1 in
   bullseye|deb11) echo "11:deb:debian-11:bullseye" ;;
   bookworm|deb12) echo "12:deb:debian-12:bookworm" ;;
   trixie|deb13) echo "13:deb:debian-13:trixie" ;;
-  sid|deb14) echo "14:deb:debian-14:sid" ;;
+  forky|deb14) echo "14:deb:debian-14:forky" ;;
+  sid|deb15) echo "15:deb:debian-15:sid" ;;
 
   # Ubuntu versions
   precise|ubu12.04) echo "12.04:ubu:ubuntu-12.04:precise" ;;

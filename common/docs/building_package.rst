@@ -23,20 +23,20 @@ Initialize a packaging skeleton:
 
 This creates the following structure:
 
-.. sourcecode:: none
+.. sourcecode:: bash
 
     foo/
     ├── buildenv -> ../common/buildenv
-    ├── debian/           # Debian packaging files
+    ├── debian/            # Debian packaging files
     │   ├── changelog
     │   ├── compat
-    │   ├── control       # Package metadata and dependencies
-    │   ├── rules         # Build instructions
+    │   ├── control        # Package metadata and dependencies
+    │   ├── rules          # Build instructions
     │   └── ...
     ├── rpm/
-    │   └── component.spec  # RPM spec file
-    ├── Makefile          # Package metadata and build configuration
-    └── MANIFEST          # Checksums of upstream sources
+    │   └── component.spec # RPM spec file
+    ├── Makefile           # Package metadata and build configuration
+    └── MANIFEST           # Checksums of upstream sources
 
 Building Packages
 -----------------
@@ -51,7 +51,7 @@ Building the ``.rpm`` Package:
 
 .. sourcecode:: bash
 
-    make rpm_chroot DIST=el9  # Replace with target
+    make rpm_chroot DIST=el9  # Replace 'el9' with target distro
 
     tree *out
     out/
@@ -61,7 +61,7 @@ Building the ``.deb`` Package:
 
 .. sourcecode:: bash
 
-    make deb_chroot DIST=trixie  # Replace with target
+    make deb_chroot DIST=trixie  # Replace 'trixie' with target distro
 
     tree out
     out/
@@ -71,8 +71,11 @@ Clean:
 
 .. sourcecode:: bash
 
-    # (uncomment KEEP_CACHE=true to keep downloads)
-    make clean #KEEP_CACHE=true
+    # Clean everything
+    make clean
+
+    # Clean, but retain upstream source download
+    make clean KEEP_CACHE=true
 
 Makefile Setup
 --------------
@@ -108,25 +111,25 @@ Using wget + checksum tool:
 
 .. sourcecode:: make
 
-    # example of source recovery url
+    # Example of source recovery url
     URL_SRC=$(URL)/archive/$(VERSION).tar.gz
     
-    # Basic source archive recovery,
-    # this works fine if upstream is clean
+    # Basic source archive recovery
     $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
-        $(WGS) -u $(URL_SRC) -o $(SOURCE_ARCHIVE)
+        @$(WGS) -u $(URL_SRC) -o $(SOURCE_ARCHIVE)
 
 Using git + checksum tool:
 
 .. sourcecode:: make
 
+    # Git URL
     URL=https://github.com/kakwa/mk-sh-skel
-    
+    # Revision
     REVISION=dac9e68d96d5d7de9854728dd08f7824d1376eb2
     
-    # Example of simple recovery, with good upstream
+    # Example of git source recovery
     $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
-        $(GS) -u $(URL) -o $(SOURCE_ARCHIVE) -r $(REVISION)
+        @$(GS) -u $(URL) -o $(SOURCE_ARCHIVE) -r $(REVISION)
 
 It is also possible to manually tweak the archive if necessary (leveraging ``$(SOURCE_DIR)`` and ``$(SOURCE_TAR_CMD)``):
 
@@ -135,10 +138,10 @@ It is also possible to manually tweak the archive if necessary (leveraging ``$(S
     # Example of upstream debian/ packaging removal
     # note the switch -o -> -O in $(WGS)
     $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
-        $(WGS) -u $(URL_SRC) -O $(NAME)-$(VERSION).tar.gz
-        tar -vxf $(CACHE_DIR)/$(NAME)-$(VERSION).tar.gz -C $(SOURCE_DIR) --strip-components=1
-        rm -rf $(SOURCE_DIR)/debian
-        $(SOURCE_TAR_CMD)
+        @$(WGS) -u $(URL_SRC) -O $(NAME)-$(VERSION).tar.gz
+        @tar -vxf $(CACHE_DIR)/$(NAME)-$(VERSION).tar.gz -C $(SOURCE_DIR) --strip-components=1
+        @rm -rf $(SOURCE_DIR)/debian
+        @$(SOURCE_TAR_CMD)
 
 Skipping Version
 ~~~~~~~~~~~~~~~~
