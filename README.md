@@ -22,13 +22,17 @@ To install the repository:
 . /etc/os-release
 
 # Add the GPG key
-wget -qO - https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub | \
-    gpg --dearmor > /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg
+wget -qO /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg https://kakwa.github.io/debian-rpm-build-tools/GPG-KEY.pub
 
-# Add the repository
-echo "deb [arch=$(dpkg --print-architecture)] \
-https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/ \
-${VERSION_CODENAME} main" | tee /etc/apt/sources.list.d/debian-rpm-build-tools.list
+# Add the repository (DEB822 format)
+cat > /etc/apt/sources.list.d/debian-rpm-build-tools.sources << EOF
+Types: deb
+URIs: https://kakwa.github.io/debian-rpm-build-tools/deb.${VERSION_CODENAME}.$(dpkg --print-architecture)/
+Suites: ${VERSION_CODENAME}
+Components: main
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/trusted.gpg.d/debian-rpm-build-tools.gpg
+EOF
 
 # update
 apt update

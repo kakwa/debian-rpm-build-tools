@@ -2,7 +2,7 @@
 NAME = distribution-gpg-keys
 
 # Version
-VERSION = 1.110
+VERSION = 1.117
 
 UPSTREAM_RELEASE = 1
 
@@ -10,7 +10,7 @@ UPSTREAM_RELEASE = 1
 RELEASE = 1
 
 # URL of the project 
-URL=https://github.com/xsuchy/distribution-gpg-keys
+URL=https://github.com/rpm-software-management/distribution-gpg-keys
 
 # short summary of what the package provides
 SUMMARY=Collection of GPG keys used in Linux Distributions
