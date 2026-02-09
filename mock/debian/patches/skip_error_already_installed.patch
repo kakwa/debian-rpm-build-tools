@@ -1,6 +1,6 @@
---- a/py/mockbuild/package_manager.py	2020-01-03 16:23:05.176272507 +0100
-+++ b/py/mockbuild/package_manager.py	2020-01-03 16:23:12.796094610 +0100
-@@ -426,6 +426,8 @@
+--- a/py/mockbuild/package_manager.py
++++ b/py/mockbuild/package_manager.py
+@@ -712,6 +712,8 @@
              for i, line in enumerate(e.msg.split('\n')):
                  if 'no such command: builddep' in line.lower():
                      raise BuildError("builddep command missing.\nPlease install package dnf-plugins-core.")
