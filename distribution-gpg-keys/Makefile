@@ -61,6 +61,7 @@ $(SOURCE_ARCHIVE): $(SOURCE_DIR) $(CACHE) Makefile MANIFEST
 	tar -xf $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz -C $(BUILD_DIR)/tmp
 	mv $(BUILD_DIR)/tmp/$(NAME)-$(NAME)-$(VERSION)-$(UPSTREAM_RELEASE)/* $(SOURCE_DIR)
 	rm -rf -- $(SOURCE_DIR)/keys/copr
+	rm -rf -- $(SOURCE_DIR)/debian
 	rm -rf $(BUILD_DIR)/tmp
 	rm -f $(BUILD_DIR)/$(NAME)-$(VERSION).tar.gz
 	$(SOURCE_TAR_CMD)

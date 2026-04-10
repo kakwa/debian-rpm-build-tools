@@ -2,7 +2,7 @@
 NAME = subscription-manager
 
 # Version
-UPSTREAM_VERSION = 1.30.12
+UPSTREAM_VERSION = 1.30.14
 
 UPSTREAM_RELEASE = 1
 
