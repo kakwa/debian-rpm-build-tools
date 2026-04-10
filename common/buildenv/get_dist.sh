@@ -103,6 +103,8 @@ case $1 in
   noble|ubu24.04) echo "24.04:ubu:ubuntu-24.04:noble" ;;
   oracular|ubu24.10) echo "24.10:ubu:ubuntu-24.10:oracular" ;;
   plucky|ubu25.04) echo "25.04:ubu:ubuntu-25.04:plucky" ;;
+  questing|ubu25.10) echo "25.10:ubu:ubuntu-25.19:questing" ;;
+  resolute|ubu26.04) echo "26.04:ubu:ubuntu-26.04:resolute" ;;
 
   # Generic Mapping for fc/RHEL
   fc[0-9]*) echo "${1#fc}:fc:fedora-${1#fc}:${1}" ;;
