@@ -6,7 +6,7 @@ VERSION = 6.7
 UPSTREAM_RELEASE = 1
 
 # Revision number 
-RELEASE = 1
+RELEASE = 2
 
 # URL of the project 
 URL=https://github.com/rpm-software-management/mock/releases/download
